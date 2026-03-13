@@ -1,0 +1,26 @@
+# Documents / binaries
+*.pdf
+*.doc
+*.docx
+*.ppt
+*.pptx
+*.zip
+*.exe
+
+# 构建目录
+build/
+bin/
+obj/
+cmake-build-*/
+
+# IDE 相关
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 编译生成的文件
+*.o
+*.a
+*.so
