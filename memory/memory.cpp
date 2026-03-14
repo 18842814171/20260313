@@ -1,23 +1,24 @@
-#include"bus.cpp"
-#include<vector>
-#define MEM_ID 001
-class Memory:public Device{
-public:
-//	<vector>addr
-	void process(){
-	if(in_queue.empty())
-		return;
+#include"memory.hpp"
+#include<iostream>
+using namespace std;
+Memorybasic::Memorybasic(){
+	for (int i=0; i<MEM_SIZE; i++){
+		mem[i]=0;
 	}
-	Message msg = in_queue.front();
-	in_queue.pop();
-	if (msg.type==MSG_READ){
-	Message resp;
-	resp.src = MEM_ID;
-	resp.type = MSG_RETURN;
-	resp.data =memory[msg.addr];
-	out_queue.push(resp);
-	}
-	}
+}
 
-
-};
+uint32_t Memorybasic::read(uint32_t addr){
+	if (addr/4>=MEM_SIZE){
+		cout<<" Address out of range\n";
+		return 0;
+	}
+	return mem[addr];
+}
+	
+void Memorybasic::write(uint32_t addr, uint32_t data){
+	 if (addr/4 >= MEM_SIZE){
+		 cout<<"Address out of range\n";
+		 return;
+	 }
+	 mem[addr]=data;
+}
