@@ -1,22 +1,7 @@
-#include"Instmngr.hpp"
 #include"utils/utils.hpp"
+#include"Instmngr.hpp"
 
-
-struct CPU{
-    int reg[32]={0};
-};
-
-struct Memory {
-    int dummy = 0;
-};
-
-struct DecodedInst {
-    int rd;
-    int rs1;
-    int rs2;
-};
-
-void inst_add(CPU& cpu, Memory& , DecodedInst &inst){
+void inst_add(CPU& cpu, Memory& , DecodedInst& inst){
     cpu.reg[inst.rd] = cpu.reg[inst.rs1] + cpu.reg[inst.rs2];
 }
 
