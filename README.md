@@ -16,3 +16,6 @@ memory
 
 bus:queue---message
 # 20260313
+
+^^^^^^important^^^^^^^^^^
+run in the root dir

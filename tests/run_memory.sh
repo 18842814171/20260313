@@ -1,6 +1,6 @@
 #!/bin/bash
 
-g++ -I../memory ../memory/memory.cpp test_membasic.cpp  -o test_membasic
+g++ -I./include ./memory/memory.cpp ./tests/test_membasic.cpp  -o ./build/test_membasic
 
-./test_membasic
+./build/test_membasic
 
