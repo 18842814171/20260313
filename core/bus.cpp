@@ -1,6 +1,7 @@
 #include<vector>
 #include<cstdint>
 class Message{
+public:
 	uint32_t src;//source device id
 	uint32_t dst;//destination device id
 	uint32_t addr;//address

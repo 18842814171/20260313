@@ -1,3 +1,5 @@
+#ifndef MEMORY_HPP
+#define MEMORY_HPP
 #include<cstdint>
 #include<vector>
 #define MEM_ID 001
@@ -19,26 +21,16 @@ public:
 	}
 };*/
 
-class Memorybasic{
+class Memory{
 	private:
 		static const uint32_t MEM_SIZE = 1024;
 		uint32_t mem[MEM_SIZE];
 	public:
-		Memorybasic();
+		Memory();
 		uint32_t read(uint32_t addr);
 		void write(uint32_t addr, uint32_t data);
 
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
+#endif

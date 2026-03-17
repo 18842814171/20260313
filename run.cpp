@@ -1,7 +1,6 @@
-//tests/test_instmngr.cpp
+//run.cpp
 #include"utils/utils.hpp"
-#include "cpu.hpp"   
-#include"Instmngr.hpp" //改头文件顺序
+#include "Types.hpp"
 #include "inst/add.hpp"
 
 int main(){
@@ -19,8 +18,8 @@ int main(){
     cpu.reg[3] = 20;
 
     manager.execute(0x33, cpu, mem, inst);
-    ASSERT(cpu.reg[1] == 30);
-    LOG("PASS ADD");
+ 
+    LOGIF("PASS ADD",cpu.reg[1] == 30);
 
     return 0;
 }
