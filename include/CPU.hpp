@@ -28,6 +28,8 @@ public:
     void dump_registers() const;
     void dump_state(const std::string& prefix = "") const;
 
+    std::string get_inst_name(uint32_t opcode) const;
+
 private:
     Memory& memory;
     InstManager* inst_manager = nullptr;

@@ -77,6 +77,10 @@ void CPU::dump_state(const std::string& prefix) const {
     // 可選擇性印出常用暫存器，例如 a0~a7, sp, ra 等
 }
 
+std::string CPU::get_inst_name(uint32_t opcode) const {
+        return inst_manager->get_name(opcode);
+    }
+
 CPU::~CPU() {
     delete inst_manager;
     inst_manager = nullptr;

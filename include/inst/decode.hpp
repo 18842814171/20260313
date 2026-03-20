@@ -2,7 +2,7 @@
 #define DECODE_HPP
 #pragma once
 #include <cstdint>
-
+#include "encoding.hpp"
 class Inst {
 public:
     uint32_t raw;
@@ -16,8 +16,9 @@ public:
     uint32_t rs2()    const { return bits(20, 5); }
     uint32_t funct7() const { return bits(25, 7); }
 
+    
     uint32_t inst_id() const {
-        return opcode() | (funct3() << 7) | (funct7() << 10);
+       return make_inst_id(opcode(), funct3(), funct7());
     }
 
     int32_t i_imm() const {
@@ -51,10 +52,7 @@ public:
             21
         );
     }
-    inline uint32_t make_inst_id(uint32_t opcode, uint32_t funct3, uint32_t funct7)
-    {
-        return opcode | (funct3 << 7) | (funct7 << 10);
-    }
+    
 
 private:
     uint32_t bits(unsigned lo, unsigned len) const {
