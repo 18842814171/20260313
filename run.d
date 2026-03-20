@@ -1,14 +1,11 @@
-run.o: run.cpp include/utils/utils.hpp include/Types.hpp \
- include/Instmngr.hpp include/Types.hpp include/Memory.hpp \
- include/CPU.hpp include/utils/system.hpp include/utils/utils.hpp \
- include/inst/opcode.hpp include/inst/add.hpp
+run.o: run.cpp include/utils/utils.hpp include/CPU.hpp \
+ include/utils/system.hpp include/utils/utils.hpp include/Instmngr.hpp \
+ include/inst/opcode.hpp include/inst/decode.hpp include/Memory.hpp
 include/utils/utils.hpp:
-include/Types.hpp:
-include/Instmngr.hpp:
-include/Types.hpp:
-include/Memory.hpp:
 include/CPU.hpp:
 include/utils/system.hpp:
 include/utils/utils.hpp:
+include/Instmngr.hpp:
 include/inst/opcode.hpp:
-include/inst/add.hpp:
+include/inst/decode.hpp:
+include/Memory.hpp:

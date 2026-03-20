@@ -8,6 +8,8 @@
 
 #if DEBUG == 1
 #include <iostream>
+
+
 namespace
 {
 	namespace debug

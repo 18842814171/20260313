@@ -2,7 +2,7 @@
 
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -g \
-           -Iinclude -Iinclude/utils \
+           -Iinclude -Iinclude/utils -Iinclude/inst \
            -MMD -MP
 
 LDFLAGS = 
@@ -10,7 +10,7 @@ LDFLAGS =
 # 核心來源檔（不包含 tests/）
 SOURCES = \
     core/CPU.cpp \
-    core/bus.cpp \
+    core/Instmngr.cpp \
     memory/Memory.cpp \
 	run.cpp
 

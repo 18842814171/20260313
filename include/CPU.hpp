@@ -2,13 +2,12 @@
 #ifndef CPU_HPP
 #define CPU_HPP
 // include/cpu.hpp
-
-
 #include <cstdint>
 #include <cstdio>
 #include <string>
 
-#include "Types.hpp"
+class Memory;      
+class InstManager;
 #include "utils/system.hpp"   // 如果有 DRAM_BASE 等常量
 #include "utils/utils.hpp"    // 你的 debug 宏 + 位移函數
 
@@ -36,6 +35,6 @@ private:
     void init_instruction_table();
 
     // 暫時內建簡單取指+解碼（之後可抽成 Decoder 類）
-    bool fetch_and_decode(uint32_t& raw, DecodedInst& decoded);
+    //bool fetch_and_decode(uint32_t& raw, Inst& decoded);
 };
 #endif

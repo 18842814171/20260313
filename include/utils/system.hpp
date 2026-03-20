@@ -14,6 +14,8 @@
 #define CHECK(a) 
 #endif
 
+
+
 //============================右移============================
 // 逻辑右移
 inline int logicalRightShift(int i, int amount)

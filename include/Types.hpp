@@ -1,11 +1,4 @@
-#include "Instmngr.hpp"
-#include "Memory.hpp"
-#include "CPU.hpp"
-
+// Forward declarations
 class CPU;
-
 class Memory;
-
-class InstManager;
-
-struct DecodedInst;
+class Inst;
