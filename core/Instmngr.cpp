@@ -1,11 +1,11 @@
 #include "Instmngr.hpp"
 #include "CPU.hpp"
 #include "Memory.hpp"
-#include "decode.hpp"
+#include "Decoder.hpp"
 
 // Include all instruction logic here
-#include "inst/add.hpp"
-#include "inst/sub.hpp"
+#include "inst/arithm.hpp"
+
 #include "inst/opcode.hpp" // For INST_ADD, etc.
 
 void InstManager::register_inst(int opcode, const std::string& name, InstFunc fn) {
@@ -17,6 +17,8 @@ void InstManager::register_all_instructions() {
     register_inst(INST_ADD, "ADD", inst_add);
     
     register_inst(INST_SUB, "SUB", inst_sub);
+
+    register_inst(INST_ADDI, "ADDI", inst_addi);
 }
 
 void InstManager::execute(CPU& cpu, Memory& mem, const Inst& inst) {

@@ -36,7 +36,6 @@ private:
 
     void init_instruction_table();
 
-    // 暫時內建簡單取指+解碼（之後可抽成 Decoder 類）
-    //bool fetch_and_decode(uint32_t& raw, Inst& decoded);
+
 };
 #endif

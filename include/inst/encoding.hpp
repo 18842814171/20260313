@@ -16,5 +16,5 @@ constexpr uint32_t INST_SUB =
 constexpr uint32_t INST_ADDI =
     make_inst_id(0x13, 0b000);  // OP_IMM = 0x13, funct3 = 0b000 for ADD/ADDI
 
-//constexpr uint32_t INST_LW =
-    //make_inst_id(0x03, 0b010, 0);
+constexpr uint32_t INST_LW =
+    make_inst_id(0x03, 0b010, 0);

@@ -12,5 +12,4 @@ constexpr unsigned OP_JALR   = 0b1100111;
 constexpr unsigned OP_BRANCH = 0b1100011;
 constexpr unsigned OP_LOAD   = 0b0000011;
 constexpr unsigned OP_STORE  = 0b0100011;
-constexpr unsigned OP_OP_IMM = 0b0010011;
 constexpr unsigned OP_OP     = 0b0110011;

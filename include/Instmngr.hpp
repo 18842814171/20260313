@@ -10,7 +10,7 @@ class CPU;
 class Memory;
 class Inst;
 #include "inst/opcode.hpp"
-#include "decode.hpp"
+#include "Decoder.hpp"
 
 using InstFunc = void(*)(CPU&, Memory&, const Inst&);
 
