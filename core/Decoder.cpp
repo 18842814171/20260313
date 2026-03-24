@@ -38,7 +38,7 @@ int32_t Inst::j_imm() const {
             21
         );
     }
-uint32_t Inst::calc_addr(const CPU& cpu, const Inst& inst) {
+uint32_t Inst::calc_addr(const CPU& cpu, Inst inst) const{
     uint32_t rs1 = inst.rs1();
     int32_t  imm;
 

@@ -3,6 +3,8 @@
 #pragma once
 #include <cstdint>
 #include "encoding.hpp"
+#include "CPU.hpp"
+#include "opcode.hpp"
 class Inst {
 public:
     uint32_t raw;
@@ -28,7 +30,7 @@ public:
     int32_t u_imm() const;
 
     int32_t j_imm() const;
-    uint32_t calc_addr(const CPU& cpu, const Inst& inst);    
+    uint32_t calc_addr(const CPU& cpu, Inst inst)const;    
 
 private:
     uint32_t bits(unsigned lo, unsigned len) const;

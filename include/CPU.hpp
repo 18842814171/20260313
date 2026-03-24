@@ -8,34 +8,25 @@
 
 class Memory;      
 class InstManager;
-#include "utils/system.hpp"   // 如果有 DRAM_BASE 等常量
-#include "utils/utils.hpp"    // 你的 debug 宏 + 位移函數
+
+#include "utils/utils.hpp"   
 
 class CPU {
 public:
-    uint32_t reg[32]{};          // x0 永遠應為 0
-    uint32_t pc = 0x80000000;    // 跟 Spike 一致
+    uint32_t reg[32]{};
+    uint32_t pc = 0x10000;
 
-    explicit CPU(Memory& mem_ref);
+    CPU(Memory& mem_ref, InstManager& im_ref); 
     ~CPU();
-    // 單步執行一條指令
-    bool step();
+    bool step();//single instruction 
+    void run(size_t max_steps = 0);//multiple instructions
 
-    // 執行指定數量指令（0 = 無限，直到錯誤或手動停止）
-    void run(size_t max_steps = 0);
-
-    // 除錯用
-    void dump_registers() const;
-    void dump_state(const std::string& prefix = "") const;
-
+    void set_pc(uint32_t new_pc) { pc = new_pc; }
+    void dump_registers() const; 
+    void dump_state(const std::string& prefix = "") const; 
     std::string get_inst_name(uint32_t opcode) const;
-
 private:
     Memory& memory;
-    InstManager* inst_manager = nullptr;
-
-    void init_instruction_table();
-
-
+    InstManager& inst_manager;   
 };
 #endif

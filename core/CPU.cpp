@@ -1,27 +1,23 @@
 //CPU.cpp
 #include "CPU.hpp"
 // Standard practice: include the header for this class first
-#include "Instmngr.hpp"   // NOW the compiler knows what 'new InstManager()' means
+#include "Instmngr.hpp"   
 #include "Memory.hpp"
 #include <cstring>
 #include "Decoder.hpp"
-CPU::CPU(Memory& mem_ref) : memory(mem_ref),
-      inst_manager(new InstManager()) {
-    reg[0] = 0;  // x0 永遠為 0
-    init_instruction_table();
+CPU::CPU(Memory& mem_ref, InstManager& im_ref)
+    : memory(mem_ref), inst_manager(im_ref)
+{
+    reg[0] = 0;
 }
 
-void CPU::init_instruction_table() {
-    inst_manager->register_all_instructions();
-    LOG("Instruction table initialized with " + std::to_string(inst_manager->size()) + " entries");
-}
 
 bool CPU::step()
 {   
     LOG("===== STEP =====");
     LOG("PC = " + std::to_string(pc));
         
-    uint32_t raw = memory.read(pc);
+    uint32_t raw = memory.read_word(pc);
     
     LOG("RAW = " + std::to_string(raw));
     Inst inst(raw);
@@ -34,7 +30,7 @@ bool CPU::step()
     LOG("rs2 = " + std::to_string(inst.rs2()));
 
     POP;
-    inst_manager->execute(*this, memory, inst);
+    inst_manager.execute_inst(*this, memory, inst);
 
     pc += 4;
 
@@ -69,6 +65,10 @@ void CPU::dump_state(const std::string& prefix) const {
 }
 
 std::string CPU::get_inst_name(uint32_t opcode) const {
-        return inst_manager->get_name(opcode);
+        return inst_manager.get_name(opcode);
     }
 
+
+CPU::~CPU() {
+    
+}

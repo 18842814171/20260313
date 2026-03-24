@@ -7,17 +7,12 @@ CXXFLAGS = -std=c++17 -Wall -Wextra -g \
 
 LDFLAGS = 
 
-# 核心來源檔（不包含 tests/）
 SOURCES = \
-    core/CPU.cpp \
-    core/Instmngr.cpp \
     memory/Memory.cpp \
-	run.cpp
+	$(wildcard core/*.cpp) \
+	loader/loader.cpp 
+	
 
-# 測試來源檔
-TEST_SOURCES = \
-    run.cpp 
-    
 
 # 所有物件檔
 SOURCES_OBJS = $(SOURCES:.cpp=.o)
@@ -38,7 +33,7 @@ $(TARGET): $(SOURCES_OBJS)
 	$(CXX) $^ $(LDFLAGS) -o $@
 
 # 測試程式（每個測試單獨產生一個可執行檔）
-build/run: run.o $(SOURCES_OBJS)
+build/run:  $(SOURCES_OBJS)
 	@echo "Linking $@ ..."
 	$(CXX) $^ $(LDFLAGS) -o $@
 
@@ -58,8 +53,3 @@ clean:
 
 .PHONY: all clean test
 
-# 簡單測試目標（可擴充）
-#test: $(TEST_TARGETS)
-#	@echo "Running tests..."
-#	@./build/test_instmngr || echo "test_instmngr failed"
-#	@./build/test_membasic || echo "test_membasic failed"

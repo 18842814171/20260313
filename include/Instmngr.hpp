@@ -24,11 +24,14 @@ class InstManager{
 public:
     
     void register_inst(int opcode, const std::string& name, InstFunc fn);
-    void register_all_instructions();
-    void execute(CPU& cpu, Memory& mem, const Inst& inst);
+    
     std::string get_name(int opcode) const;
     size_t size() const;
 
+    bool has_instruction(uint32_t id) const;
+    
+    void execute_inst(CPU& cpu, Memory& mem, const Inst& inst);
+    
 private:
     std::unordered_map<int, InstEntry> table_;
 };

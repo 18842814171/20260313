@@ -1,6 +1,7 @@
 #ifndef UTIL_HPP
 #define UTIL_HPP
 #include <cassert>
+#include <sstream>
 #include <cstring>
 #ifndef DEBUG
 #define DEBUG 1
@@ -41,6 +42,23 @@ namespace
 		{
 			std::cout << "==============================\n";
 		}
+
+		inline std::string to_hex(uint32_t value) {
+			std::stringstream ss;
+			ss << "0x" << std::hex << value;
+			return ss.str();
+		}
+		
+		inline std::string to_dec(uint32_t value) {
+			return std::to_string(value);
+		}
+
+		template<typename T>
+		std::string format(const char* fmt, T value) {
+			char buffer[64];
+			snprintf(buffer, sizeof(buffer), fmt, value);
+			return std::string(buffer);
+		}
 	}
 }
 
@@ -50,6 +68,8 @@ namespace
 #define PUSH debug::_0__counts_push()
 #define RUN(a) (a)
 #define POP debug::_0__counts_pop()
+#define HEX(value) debug::to_hex(value)
+#define DEC(value) debug::to_dec(value)
 
 #endif
 #if DEBUG != 1
@@ -59,7 +79,8 @@ namespace
 #define RUN(a)
 #define PUSH
 #define POP
-
+#define HEX(value) 
+#define DEC(value)
 #endif
 #endif
 

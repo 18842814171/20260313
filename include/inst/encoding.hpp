@@ -18,3 +18,7 @@ constexpr uint32_t INST_ADDI =
 
 constexpr uint32_t INST_LW =
     make_inst_id(0x03, 0b010, 0);
+
+// SW (S-type)
+constexpr uint32_t INST_SW = 
+    make_inst_id(0x23, 0b010);
