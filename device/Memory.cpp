@@ -1,4 +1,4 @@
-#include "Memory.hpp"
+#include "Device.hpp"
 #include<iostream>
 #include <cstring>
 #include <stdexcept>

@@ -9,10 +9,11 @@
 class CPU;
 class Memory;
 class Inst;
+#include "Pipe.hpp"
 #include "inst/opcode.hpp"
 #include "Decoder.hpp"
 
-using InstFunc = void(*)(CPU&, Memory&, const Inst&);
+using InstFunc = void(*)(CPU&, Pipe&);
 
 struct InstEntry {
     InstFunc handler;
@@ -30,7 +31,7 @@ public:
 
     bool has_instruction(uint32_t id) const;
     
-    void execute_inst(CPU& cpu, Memory& mem, const Inst& inst);
+    void execute_inst(CPU& cpu, Pipe& p);
     
 private:
     std::unordered_map<int, InstEntry> table_;

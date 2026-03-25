@@ -1,55 +1,103 @@
 //CPU.cpp
 #include "CPU.hpp"
-// Standard practice: include the header for this class first
+#include "Pipe.hpp"
 #include "Instmngr.hpp"   
-#include "Memory.hpp"
+#include "Device.hpp"
 #include <cstring>
-#include "Decoder.hpp"
+
 CPU::CPU(Memory& mem_ref, InstManager& im_ref)
     : memory(mem_ref), inst_manager(im_ref)
 {
     reg[0] = 0;
 }
 
+void CPU::fetch(Pipe& p) {
+    p.pc = pc;
+    p.inst = Inst(memory.read_word(pc));
+}
+
+void CPU::decode(Pipe& p) {
+    p.inst_id = p.inst.inst_id();
+
+    p.rs1 = p.inst.rs1();
+    p.rs2 = p.inst.rs2();
+    p.rd  = p.inst.rd();
+
+    p.val_rs1 = reg[p.rs1];
+    p.val_rs2 = reg[p.rs2];
+
+    p.imm = p.inst.imm();
+}
+
+void CPU::memory_access(Pipe& p) {
+    if (p.mem_read) {
+        p.mem_data = memory.read_word(p.alu_result);
+    } 
+    else if (p.mem_write) {
+        // p.val_rs2 contains the data to be stored (set during Decode)
+        memory.write_word(p.alu_result, p.val_rs2);
+    }
+}
+
+void CPU::writeback(Pipe& p) {
+    // 1. Check if the instruction format even supports writing to rd
+    // 2. Ensure we aren't trying to write to the hardwired zero register (x0)
+    if (p.inst.writes_rd() && p.rd != 0) {
+        
+        // If it's a load, use memory data; otherwise, use the ALU result
+        if (p.inst.is_load()) {
+            reg[p.rd] = p.mem_data;
+        } else {
+            reg[p.rd] = p.alu_result; 
+        }
+    }
+
+    if (!pc_modified)
+        pc += 4;
+}
+
+void CPU::execute(Pipe& p) {
+    // We pass 'this' (the CPU), the memory reference, and the instruction
+    // stored in the pipeline register to the manager.
+    inst_manager.execute_inst(*this, p);
+    
+    // Note: Usually, the 'alu_result' or 'pc_modified' logic 
+    // happens inside the specific instruction handlers called by the manager.
+}
 
 bool CPU::step()
 {   
-    LOG("===== STEP =====");
-    LOG("PC = " + std::to_string(pc));
-        
-    uint32_t raw = memory.read_word(pc);
     
-    LOG("RAW = " + std::to_string(raw));
-    Inst inst(raw);
-    LOG("Decoded:");
-    PUSH;
+    Pipe p{};
 
-    LOG("opcode = " + std::to_string(inst.opcode()));
-    LOG("rd = " + std::to_string(inst.rd()));
-    LOG("rs1 = " + std::to_string(inst.rs1()));
-    LOG("rs2 = " + std::to_string(inst.rs2()));
-
-    POP;
-    inst_manager.execute_inst(*this, memory, inst);
-
-    pc += 4;
+    fetch(p);
+    decode(p);
+    execute(p);
+    memory_access(p);
+    writeback(p);
 
     return true;
+
 }
 
 
 void CPU::run(size_t max_steps) {
-    size_t count = 0;
-    while (max_steps == 0 || count < max_steps) {
-        GAP;
-        LOG("Step " + std::to_string(count + 1));
-        if (!step()) {
-            LOG("Execution stopped.");
+    
+    size_t steps = 0;
+
+    while (!halt) {
+        if (max_steps && steps >= max_steps)
             break;
-        }
-        count++;
+
+        if (!step())
+            break;
+
+        steps++;
     }
+
+    LOG("Program exited with code: " + std::to_string(exit_code));
 }
+
 
 void CPU::dump_registers() const {
     for (int i = 0; i < 32; i += 4) {
@@ -72,3 +120,17 @@ std::string CPU::get_inst_name(uint32_t opcode) const {
 CPU::~CPU() {
     
 }
+
+uint32_t CPU::calc_addr(const CPU& cpu, Inst inst) const{
+    uint32_t rs1 = inst.rs1();
+    int32_t  imm;
+
+    if (inst.opcode() == OP_LOAD) {
+        imm = inst.i_imm();           // I-type immediate
+    } else {
+        imm = inst.s_imm();           // S-type immediate
+    }
+
+    return cpu.reg[rs1] + static_cast<uint32_t>(imm);
+    }
+    

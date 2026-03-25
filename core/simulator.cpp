@@ -2,12 +2,17 @@
 #include "utils/utils.hpp"
 #include "Instmngr.hpp"
 #include "CPU.hpp"
-#include "Memory.hpp"
+#include "Device.hpp"
 #include "Decoder.hpp"
 #include "Loader.hpp"
 // Include all instruction logic here
 #include "inst/arithm.hpp"
 #include "inst/load_store.hpp"
+#include "inst/auipc.hpp"
+#include "inst/beq.hpp"
+#include "inst/ecall.hpp"
+#include "inst/lui.hpp"
+
 #include "inst/opcode.hpp" // For INST_ADD, etc.
 #include <iostream>
 #include <fstream>
@@ -34,41 +39,22 @@ void register_all_instructions(InstManager *im) {
     im->register_inst(INST_SUB, "SUB", inst_sub);
     im->register_inst(INST_ADDI, "ADDI", inst_addi);
 
+    // U-type
+    im->register_inst(INST_AUIPC, "AUIPC", inst_auipc);
+    im->register_inst(INST_LUI,   "LUI",   inst_lui);     // implement similarly to auipc but without PC
+
     // Load & Store
     im->register_inst(INST_LW,   "LW",   inst_lw);
     im->register_inst(INST_SW,   "SW",   inst_sw);
+
+    im->register_inst(INST_BEQ,   "BEQ",   inst_beq);
+    // System
+    im->register_inst(INST_ECALL, "ECALL", inst_ecall);
     LOG("Instruction table initialized with " + std::to_string(im->size()) + " entries");
 }
 
-void execute(CPU& cpu, Memory& mem, const Inst& inst, InstManager *im) {
-    im->execute_inst(cpu, mem, inst);
-}
-
-void test_mem(Memory mem, std::string infile, std::string outfile) {
-    LOG("\n=== Memory Test ===");
-    // Test 1: Write and read word
-    uint32_t test_addr = 0x1000;
-    uint32_t test_value = 0xDEADBEEF;
-    
-    mem.write_word(test_addr, test_value);
-    uint32_t read_value = mem.read_word(test_addr);
-    
-    if (read_value == test_value) {
-        LOG("SUCCESS: Write/Read word correct");
-    } else {
-        LOG("FAILURE: Expected 0x"+HEX(test_value) 
-                  +" got 0x"+DEC(read_value));
-    }
-    
-    // Test 2: Load from file
-    std::cout << "\nTest 2: Load from file" << std::endl;
-    if (!infile.empty() && load_elf(infile, mem)) {
-        LOG("SUCCESS: Loaded from"+infile);
-    } else {
-        LOG("SKIPPED: No input file provided or load failed");
-    }
-    
-   
+void execute(CPU& cpu, Pipe& p, InstManager *im) {
+    im->execute_inst(cpu,p);
 }
 
 void simulator(std::string infile, std::string outfile){

@@ -19,6 +19,16 @@ constexpr uint32_t INST_ADDI =
 constexpr uint32_t INST_LW =
     make_inst_id(0x03, 0b010, 0);
 
-// SW (S-type)
+// ====================== S-type ======================
 constexpr uint32_t INST_SW = 
-    make_inst_id(0x23, 0b010);
+    make_inst_id(0x23, 0b010);          // STORE, funct3=010  ← you already had this
+
+// ====================== U-type (the ones that crashed your run) ======================
+constexpr uint32_t INST_LUI   = make_inst_id(0x37, 0);   // opcode 0x37, no funct3/funct7
+constexpr uint32_t INST_AUIPC = make_inst_id(0x17, 0);   // opcode 0x17, no funct3/funct7
+
+// ====================== B-type ======================
+constexpr uint32_t INST_BEQ   = make_inst_id(0x63, 0b000);   // BRANCH, funct3=000
+
+// ====================== System ======================
+constexpr uint32_t INST_ECALL = make_inst_id(0x73, 0b000);   // SYSTEM, funct3=000, imm=0 for ECALL

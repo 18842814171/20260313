@@ -1,8 +1,5 @@
 core/Decoder.o: core/Decoder.cpp include/Decoder.hpp \
- include/inst/encoding.hpp include/CPU.hpp include/utils/utils.hpp \
- include/inst/opcode.hpp
+ include/inst/encoding.hpp include/inst/opcode.hpp
 include/Decoder.hpp:
 include/inst/encoding.hpp:
-include/CPU.hpp:
-include/utils/utils.hpp:
 include/inst/opcode.hpp:

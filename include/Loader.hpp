@@ -1,4 +1,4 @@
-#include "Memory.hpp"
+#include "Device.hpp"
 // ELF32 headers for RV32I
 struct Elf32_Ehdr {
     unsigned char e_ident[16];

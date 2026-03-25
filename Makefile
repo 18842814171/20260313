@@ -8,7 +8,7 @@ CXXFLAGS = -std=c++17 -Wall -Wextra -g \
 LDFLAGS = 
 
 SOURCES = \
-    memory/Memory.cpp \
+    $(wildcard device/*.cpp) \
 	$(wildcard core/*.cpp) \
 	loader/loader.cpp 
 	
@@ -22,25 +22,20 @@ DEP_FILES = $(SOURCES_OBJS:.o=.d)
 TARGET = simulator
 
 # 測試目標（可執行檔）
-TEST_TARGETS = build/run 
+#TEST_TARGETS = build/run 
 
-# 預設目標：產生主程式 + 測試程式
-all: $(TARGET) $(TEST_TARGETS)
+# 預設目標：產生主程式 
+all: $(TARGET) 
 
 # 主模擬器
 $(TARGET): $(SOURCES_OBJS)
 	@echo "Linking $@ ..."
 	$(CXX) $^ $(LDFLAGS) -o $@
 
-# 測試程式（每個測試單獨產生一個可執行檔）
-build/run:  $(SOURCES_OBJS)
-	@echo "Linking $@ ..."
-	$(CXX) $^ $(LDFLAGS) -o $@
-
 # 通用編譯規則
 %.o: %.cpp
 	@echo "Compiling: $<"
-	@mkdir -p $(@D)   # 確保 build/ 目錄存在（如果未來移動物件檔）
+	@mkdir -p $(dir $@)   
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # 自動依賴包含
@@ -49,7 +44,7 @@ build/run:  $(SOURCES_OBJS)
 # 清理
 clean:
 	rm -rf $(SOURCES_OBJS)  $(DEP_FILES) \
-	       $(TARGET) $(TEST_TARGETS) build/*.o build/*.d
+	       $(TARGET)
 
-.PHONY: all clean test
+.PHONY: all clean
 

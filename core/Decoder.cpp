@@ -3,9 +3,6 @@
 #include <cstdint>
 #include "encoding.hpp"
 
-uint32_t Inst::inst_id() const {
-       return make_inst_id(opcode(), funct3(), funct7());
-    }
 
 int32_t Inst::i_imm() const {
         return sext(bits(20,12), 12);
@@ -38,20 +35,29 @@ int32_t Inst::j_imm() const {
             21
         );
     }
-uint32_t Inst::calc_addr(const CPU& cpu, Inst inst) const{
-    uint32_t rs1 = inst.rs1();
-    int32_t  imm;
 
-    if (inst.opcode() == OP_LOAD) {
-        imm = inst.i_imm();           // I-type immediate
-    } else {
-        imm = inst.s_imm();           // S-type immediate
+int32_t Inst::imm() const { //choose imm type
+    switch (opcode()) {
+        case OP_IMM:
+        case OP_LOAD:
+        case OP_JALR:
+            return i_imm();
+
+        case OP_STORE:
+            return s_imm();
+
+        case OP_BRANCH:
+            return b_imm();
+
+        case OP_LUI:
+        case OP_AUIPC:
+            return u_imm();
+
+        case OP_JAL:
+            return j_imm();
     }
-
-    return cpu.reg[rs1] + static_cast<uint32_t>(imm);
-    }
-    
-
+    return 0;
+}
 
 uint32_t Inst::bits(unsigned lo, unsigned len) const {
         return (raw >> lo) & ((len == 32) ? 0xFFFFFFFFu : ((1u << len) - 1));
@@ -61,3 +67,58 @@ int32_t Inst::sext(uint32_t val, unsigned width) const {
         uint32_t sign = 1u << (width - 1);
         return (val ^ sign) - sign;
     }
+
+uint32_t Inst::inst_id() const{ // Use internal 'raw'
+    uint32_t op = opcode();
+    uint32_t f3 = funct3();
+    uint32_t f7 = funct7();
+
+    switch (op) {
+        case OP_OP:
+            return make_inst_id(op, f3, f7);
+
+        case OP_IMM:
+            // SLLI, SRLI, and SRAI require part of funct7 (bit 30)
+            if (f3 == 0x1 || f3 == 0x5) 
+                return make_inst_id(op, f3, f7); 
+            return make_inst_id(op, f3, 0);
+
+        case OP_LOAD:
+        case OP_STORE:
+        case OP_BRANCH:
+        case OP_JALR:
+            return make_inst_id(op, f3, 0);
+
+        case OP_LUI:
+        case OP_AUIPC:
+        case OP_JAL:
+            return make_inst_id(op, 0, 0);
+        
+        case 0x73: // SYSTEM
+            if (f3 == 0) { // Privileged instructions
+                uint32_t imm12 = raw >> 20;
+                if (imm12 == 0) return INST_ECALL;
+                //if (imm12 == 1) return INST_EBREAK;
+            }
+            return make_inst_id(op, f3, 0); // CSR instructions
+    }
+    return 0;
+}
+
+bool Inst::writes_rd() const {
+    uint32_t op = opcode();
+    switch (op) {
+        case OP_LUI:
+        case OP_AUIPC:
+        case OP_JAL:
+        case OP_JALR:
+        case OP_LOAD:
+        case OP_IMM:
+        case OP_OP:
+            return true;
+        case 0x73: // SYSTEM (CSR instructions write to rd, ECALL/EBREAK do not)
+            return funct3() != 0; 
+        default:
+            return false;
+    }
+}
