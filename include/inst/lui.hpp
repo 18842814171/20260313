@@ -9,8 +9,8 @@ inline void inst_lui(CPU& cpu, Pipe& p) {
     PUSH;
     int imm20 = p.imm;                  // already <<12 by decoder
     LOG("imm20<<12 = " + std::to_string(imm20));
-    p.rd = imm20;
+    p.alu_result = imm20;
     POP;
+    p.reg_write = true;
 }
 
-// If you see ADDI with large imm or other I-type, they are already covered by inst_addi

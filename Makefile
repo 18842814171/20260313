@@ -41,10 +41,13 @@ $(TARGET): $(SOURCES_OBJS)
 # 自動依賴包含
 -include $(DEP_FILES)
 
-# 清理
 clean:
-	rm -rf $(SOURCES_OBJS)  $(DEP_FILES) \
-	       $(TARGET)
+	rm -rf $(OBJS) $(DEP_FILES) $(TARGET) simulator_debug
+# Debug build (very useful for GDB)
+debug: CXXFLAGS += -O0
+debug: $(TARGET)
+	@cp $(TARGET) simulator_debug 
+	@echo "Debug build created: simulator_debug"
 
-.PHONY: all clean
+.PHONY: all clean debug
 

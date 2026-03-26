@@ -30,5 +30,11 @@ constexpr uint32_t INST_AUIPC = make_inst_id(0x17, 0);   // opcode 0x17, no func
 // ====================== B-type ======================
 constexpr uint32_t INST_BEQ   = make_inst_id(0x63, 0b000);   // BRANCH, funct3=000
 
+//======================= J-type ======================
+constexpr uint32_t INST_JAL  = make_inst_id(0X6f, 0, 0);
+constexpr uint32_t INST_JALR  = make_inst_id(0X67, 0, 0);
+
 // ====================== System ======================
-constexpr uint32_t INST_ECALL = make_inst_id(0x73, 0b000);   // SYSTEM, funct3=000, imm=0 for ECALL
+// imm12 encoded in "funct7 slot" (decoder key only)
+constexpr uint32_t INST_ECALL  = make_inst_id(0x73, 0b000, 0);   // imm12 = 0
+constexpr uint32_t INST_EBREAK = make_inst_id(0x73, 0b000, 1);   // imm12 = 1

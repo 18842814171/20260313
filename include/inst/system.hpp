@@ -7,6 +7,22 @@
 #include "Pipe.hpp"
 #define DEBUG 1
 
+inline void inst_ebreak(CPU& cpu, Pipe& p) {
+    LOG(cpu.get_inst_name(p.inst_id));
+    PUSH;
+
+    LOG("EBREAK - Breakpoint");
+
+    // Simplest behavior: stop execution
+    cpu.halt = true;
+
+    // Optional: distinguish from normal exit
+    cpu.exit_code = -1;
+
+    POP;
+}
+
+
 inline void inst_ecall(CPU& cpu, Pipe& p) {
     LOG(cpu.get_inst_name(p.inst_id));
     PUSH;

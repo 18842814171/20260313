@@ -22,9 +22,10 @@ void InstManager::execute_inst(CPU& cpu, Pipe& p) {
         auto it = table_.find(id);
         if (it != table_.end()) {
             const auto& entry = it->second;
-            LOG("Instruction ID 0x%08x\n"+entry.name+HEX(id));
+            LOG("Instruction ID "+entry.name+HEX(id));
+            entry.handler(cpu, p); 
         } else {
-            LOG("Error: Unknown Instruction ID 0x%08x\n"+ HEX(id));
+            LOG("Error: Unknown Instruction ID "+ HEX(id));
             cpu.halt = true;
         }
     }

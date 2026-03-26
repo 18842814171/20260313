@@ -14,15 +14,15 @@ inline void inst_auipc(CPU& cpu, Pipe& p) {
     // AUIPC adds the 20-bit immediate shifted left by 12 to the PC
     // imm[31:12] is the immediate value, shifted left by 12
     // The immediate is sign-extended to 32 bits
-    uint32_t imm = p.imm;  // Get the 20-bit immediate (bits 31-12)
-    uint32_t result = p.pc + (imm << 12);
+   
+    uint32_t result = p.pc + p.imm;
     
     LOG("pc = " + std::to_string(p.pc));
-    LOG("imm = " + std::to_string(imm));
+    LOG("imm = " + std::to_string(p.imm));
     LOG("result = " + std::to_string(result));
     
-    p.rd = result;
-    
+    p.alu_result = result;
+    p.reg_write = true;
     POP;
 }
 

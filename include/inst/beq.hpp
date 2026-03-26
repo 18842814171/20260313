@@ -20,5 +20,6 @@ inline void inst_beq(CPU& cpu,  Pipe& p) {
     } else {
         LOG("branch not taken");
     }
+    p.reg_write = true;
     POP;
 }

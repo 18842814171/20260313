@@ -10,7 +10,8 @@
 #include "inst/load_store.hpp"
 #include "inst/auipc.hpp"
 #include "inst/beq.hpp"
-#include "inst/ecall.hpp"
+#include "inst/jump.hpp"
+#include "inst/system.hpp"
 #include "inst/lui.hpp"
 
 #include "inst/opcode.hpp" // For INST_ADD, etc.
@@ -48,8 +49,12 @@ void register_all_instructions(InstManager *im) {
     im->register_inst(INST_SW,   "SW",   inst_sw);
 
     im->register_inst(INST_BEQ,   "BEQ",   inst_beq);
+    im->register_inst(INST_JAL,  "JAL",  inst_jal);
+    im->register_inst(INST_JALR, "JALR", inst_jalr);
     // System
+    im->register_inst(INST_EBREAK, "EBREAK", inst_ebreak);
     im->register_inst(INST_ECALL, "ECALL", inst_ecall);
+    //im->register_inst(INST_ECALL, "ECALL", inst_ecall);
     LOG("Instruction table initialized with " + std::to_string(im->size()) + " entries");
 }
 

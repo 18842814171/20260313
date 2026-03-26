@@ -1,3 +1,4 @@
+//Decoder.cpp
 #include "Decoder.hpp"
 
 #include <cstdint>
@@ -72,15 +73,20 @@ uint32_t Inst::inst_id() const{ // Use internal 'raw'
     uint32_t op = opcode();
     uint32_t f3 = funct3();
     uint32_t f7 = funct7();
-
+    // NOTE: third argument is overloaded:
+    // - R-type: full funct7
+    // - shift-immediate: bit30 only
+    // - SYSTEM: csr (imm12)
     switch (op) {
         case OP_OP:
             return make_inst_id(op, f3, f7);
 
         case OP_IMM:
             // SLLI, SRLI, and SRAI require part of funct7 (bit 30)
-            if (f3 == 0x1 || f3 == 0x5) 
-                return make_inst_id(op, f3, f7); 
+            if (f3 == 0x1 || f3 == 0x5) {
+                uint32_t f7_bit30 = (f7 >> 5) & 0x1; // extract bit 30
+                return make_inst_id(op, f3, f7_bit30);
+            }
             return make_inst_id(op, f3, 0);
 
         case OP_LOAD:
@@ -94,13 +100,14 @@ uint32_t Inst::inst_id() const{ // Use internal 'raw'
         case OP_JAL:
             return make_inst_id(op, 0, 0);
         
-        case 0x73: // SYSTEM
+        case OP_SYSTEM: // SYSTEM
             if (f3 == 0) { // Privileged instructions
                 uint32_t imm12 = raw >> 20;
                 if (imm12 == 0) return INST_ECALL;
-                //if (imm12 == 1) return INST_EBREAK;
+                if (imm12 == 1) return INST_EBREAK;
             }
-            return make_inst_id(op, f3, 0); // CSR instructions
+            uint32_t csr = raw >> 20; // imm12
+            return make_inst_id(op, f3, csr); // CSR instructions
     }
     return 0;
 }
@@ -116,7 +123,7 @@ bool Inst::writes_rd() const {
         case OP_IMM:
         case OP_OP:
             return true;
-        case 0x73: // SYSTEM (CSR instructions write to rd, ECALL/EBREAK do not)
+        case OP_SYSTEM: // SYSTEM (CSR instructions write to rd, ECALL/EBREAK do not)
             return funct3() != 0; 
         default:
             return false;

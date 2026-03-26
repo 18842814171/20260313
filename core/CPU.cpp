@@ -3,6 +3,8 @@
 #include "Pipe.hpp"
 #include "Instmngr.hpp"   
 #include "Device.hpp"
+#include "utils/utils.hpp"
+#define DEBUG 1s
 #include <cstring>
 
 CPU::CPU(Memory& mem_ref, InstManager& im_ref)
@@ -18,15 +20,20 @@ void CPU::fetch(Pipe& p) {
 
 void CPU::decode(Pipe& p) {
     p.inst_id = p.inst.inst_id();
-
+    
     p.rs1 = p.inst.rs1();
     p.rs2 = p.inst.rs2();
     p.rd  = p.inst.rd();
 
     p.val_rs1 = reg[p.rs1];
     p.val_rs2 = reg[p.rs2];
-
+    LOG("p.rs1:" + DEC(p.rs1));
+    LOG("p.rs2:" + DEC(p.rs2));
+    LOG("p.rd:" + DEC(p.rd));
+    LOG("p.val_rs1:" + DEC(p.val_rs1));
+    LOG("p.val_rs2:" + DEC(p.val_rs2));
     p.imm = p.inst.imm();
+    LOG("p.imm:" + DEC(p.imm));
 }
 
 void CPU::memory_access(Pipe& p) {
@@ -42,17 +49,18 @@ void CPU::memory_access(Pipe& p) {
 void CPU::writeback(Pipe& p) {
     // 1. Check if the instruction format even supports writing to rd
     // 2. Ensure we aren't trying to write to the hardwired zero register (x0)
-    if (p.inst.writes_rd() && p.rd != 0) {
+    if (p.reg_write && p.rd != 0) {
         
         // If it's a load, use memory data; otherwise, use the ALU result
-        if (p.inst.is_load()) {
+        if (p.mem_read) {
             reg[p.rd] = p.mem_data;
         } else {
             reg[p.rd] = p.alu_result; 
         }
     }
-
-    if (!pc_modified)
+    printf("WB: rd=%u, alu=0x%08x, mem=0x%08x, write=%d\n",
+       p.rd, p.alu_result, p.mem_data, p.reg_write);
+    if (!p.pc_modified)
         pc += 4;
 }
 
@@ -61,8 +69,6 @@ void CPU::execute(Pipe& p) {
     // stored in the pipeline register to the manager.
     inst_manager.execute_inst(*this, p);
     
-    // Note: Usually, the 'alu_result' or 'pc_modified' logic 
-    // happens inside the specific instruction handlers called by the manager.
 }
 
 bool CPU::step()
@@ -91,7 +97,7 @@ void CPU::run(size_t max_steps) {
 
         if (!step())
             break;
-
+        dump_registers();
         steps++;
     }
 
