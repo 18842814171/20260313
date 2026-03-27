@@ -106,8 +106,8 @@ uint32_t Inst::inst_id() const{ // Use internal 'raw'
                 if (imm12 == 0) return INST_ECALL;
                 if (imm12 == 1) return INST_EBREAK;
             }
-            uint32_t csr = raw >> 20; // imm12
-            return make_inst_id(op, f3, csr); // CSR instructions
+            
+            return 0; // CSR instructions ignored
     }
     return 0;
 }

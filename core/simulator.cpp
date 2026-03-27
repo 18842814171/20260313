@@ -74,11 +74,10 @@ void simulator(std::string infile, std::string outfile){
     LOG("Program entry point: 0x"+HEX(entry_point));
     
     // Set program counter to entry point
-    cpu.set_pc(entry_point);
-    
+    cpu.set_pc(0x101c4);  // jump straight to main
+    cpu.reg[2]=0x20000;
     // Run the program (execute instructions)
-    cpu.run(10);  // Run up to 1000 steps or until program ends
-    
+    cpu.run(30);  
     // Dump registers after execution
     LOG("\n=== Final Register State ===");
     cpu.dump_registers();

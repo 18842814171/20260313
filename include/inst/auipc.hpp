@@ -15,15 +15,16 @@ inline void inst_auipc(CPU& cpu, Pipe& p) {
     // imm[31:12] is the immediate value, shifted left by 12
     // The immediate is sign-extended to 32 bits
    
-    uint32_t result = p.pc + p.imm;
+    uint32_t result = p.pc + (uint32_t)p.imm;
     
-    LOG("pc = " + std::to_string(p.pc));
-    LOG("imm = " + std::to_string(p.imm));
-    LOG("result = " + std::to_string(result));
+    LOG("pc = " + DEC(p.pc));
+    LOG("imm = " + DEC(p.imm));
+    LOG("result = " + DEC(result));
     
     p.alu_result = result;
     p.reg_write = true;
     POP;
+    LOG("p address = " + HEX((uint64_t)&p));
 }
 
 #endif

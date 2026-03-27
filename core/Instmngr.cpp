@@ -19,6 +19,10 @@ bool InstManager::has_instruction(uint32_t id) const {
     
 void InstManager::execute_inst(CPU& cpu, Pipe& p) {
         uint32_t id = p.inst_id;
+        if (id == 0) {
+        LOG("Skipping unsupported SYSTEM instruction");
+        return;
+    }
         auto it = table_.find(id);
         if (it != table_.end()) {
             const auto& entry = it->second;
@@ -26,7 +30,7 @@ void InstManager::execute_inst(CPU& cpu, Pipe& p) {
             entry.handler(cpu, p); 
         } else {
             LOG("Error: Unknown Instruction ID "+ HEX(id));
-            cpu.halt = true;
+            //cpu.halt = true;
         }
     }
 

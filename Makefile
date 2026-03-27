@@ -42,12 +42,7 @@ $(TARGET): $(SOURCES_OBJS)
 -include $(DEP_FILES)
 
 clean:
-	rm -rf $(OBJS) $(DEP_FILES) $(TARGET) simulator_debug
-# Debug build (very useful for GDB)
-debug: CXXFLAGS += -O0
-debug: $(TARGET)
-	@cp $(TARGET) simulator_debug 
-	@echo "Debug build created: simulator_debug"
+	rm -rf $(OBJS) $(DEP_FILES) $(TARGET) 
 
 .PHONY: all clean debug
 

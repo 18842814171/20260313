@@ -15,10 +15,12 @@ CPU::CPU(Memory& mem_ref, InstManager& im_ref)
 
 void CPU::fetch(Pipe& p) {
     p.pc = pc;
+    LOG("pc: "+HEX(p.pc));
     p.inst = Inst(memory.read_word(pc));
 }
 
 void CPU::decode(Pipe& p) {
+    LOG("decode p address = " + HEX((uint64_t)&p));
     p.inst_id = p.inst.inst_id();
     
     p.rs1 = p.inst.rs1();
@@ -34,13 +36,16 @@ void CPU::decode(Pipe& p) {
     LOG("p.val_rs2:" + DEC(p.val_rs2));
     p.imm = p.inst.imm();
     LOG("p.imm:" + DEC(p.imm));
+    
 }
 
 void CPU::memory_access(Pipe& p) {
     if (p.mem_read) {
+        LOG("LW addr = " + HEX(p.alu_result));
         p.mem_data = memory.read_word(p.alu_result);
     } 
     else if (p.mem_write) {
+        LOG("SW addr = " + HEX(p.alu_result));
         // p.val_rs2 contains the data to be stored (set during Decode)
         memory.write_word(p.alu_result, p.val_rs2);
     }
@@ -58,6 +63,7 @@ void CPU::writeback(Pipe& p) {
             reg[p.rd] = p.alu_result; 
         }
     }
+    
     printf("WB: rd=%u, alu=0x%08x, mem=0x%08x, write=%d\n",
        p.rd, p.alu_result, p.mem_data, p.reg_write);
     if (!p.pc_modified)
@@ -77,11 +83,14 @@ bool CPU::step()
     Pipe p{};
 
     fetch(p);
+    if (p.pc == 0x101c4) {
+    LOG("=== ENTERING MAIN ===");
+    }
     decode(p);
     execute(p);
     memory_access(p);
     writeback(p);
-
+    
     return true;
 
 }
@@ -114,7 +123,7 @@ void CPU::dump_registers() const {
 }
 
 void CPU::dump_state(const std::string& prefix) const {
-    LOG(prefix + "  PC = 0x" + std::to_string(pc));
+    LOG(prefix + "  PC = " + HEX(pc));
     
 }
 
