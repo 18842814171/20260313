@@ -70,3 +70,39 @@ uint32_t load_elf(const std::string& filename, Device& mem) {
 
     return ehdr.e_entry;  // Returns 32-bit entry point
 }
+
+uint32_t get_symbol(const std::string& filename, const std::string& symbol_name) {
+    std::ifstream file(filename, std::ios::binary);
+    if (!file) return 0;
+
+    Elf32_Ehdr ehdr;
+    file.read(reinterpret_cast<char*>(&ehdr), sizeof(ehdr));
+
+    // Read Section Headers
+    std::vector<Elf32_Shdr> shdrs(ehdr.e_shnum);
+    file.seekg(ehdr.e_shoff, std::ios::beg);
+    file.read(reinterpret_cast<char*>(shdrs.data()), ehdr.e_shnum * sizeof(Elf32_Shdr));
+
+    for (const auto& shdr : shdrs) {
+        if (shdr.sh_type == SHT_SYMTAB) {
+            // Find the associated String Table
+            Elf32_Shdr strtab_shdr = shdrs[shdr.sh_link];
+            std::vector<char> strtab(strtab_shdr.sh_size);
+            file.seekg(strtab_shdr.sh_offset, std::ios::beg);
+            file.read(strtab.data(), strtab_shdr.sh_size);
+
+            // Read Symbols
+            size_t num_syms = shdr.sh_size / sizeof(Elf32_Sym);
+            std::vector<Elf32_Sym> syms(num_syms);
+            file.seekg(shdr.sh_offset, std::ios::beg);
+            file.read(reinterpret_cast<char*>(syms.data()), shdr.sh_size);
+
+            for (const auto& sym : syms) {
+                if (sym.st_name != 0 && std::string(&strtab[sym.st_name]) == symbol_name) {
+                    return sym.st_value;
+                }
+            }
+        }
+    }
+    return 0; // Symbol not found
+}

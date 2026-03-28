@@ -62,6 +62,9 @@ namespace
 	}
 }
 
+
+// Add a helper macro
+#define SCOPE LogScope _scope
 #define LOG(a) debug::_0__log_func(a)
 #define LOGIF(a,b) debug::_0__log_if_func((a), (b))
 #define GAP debug::_0__gap_func()
@@ -70,7 +73,10 @@ namespace
 #define POP debug::_0__counts_pop()
 #define HEX(value) debug::to_hex(value)
 #define DEC(value) debug::to_dec(value)
-
+struct LogScope {
+    LogScope() { PUSH; }
+    ~LogScope() { POP; }
+};
 #endif
 #if DEBUG != 1
 #define LOG(a)

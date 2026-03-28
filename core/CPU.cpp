@@ -4,7 +4,7 @@
 #include "Instmngr.hpp"   
 #include "Device.hpp"
 #include "utils/utils.hpp"
-#define DEBUG 1s
+#define DEBUG 1
 #include <cstring>
 
 CPU::CPU(Memory& mem_ref, InstManager& im_ref)
@@ -14,12 +14,14 @@ CPU::CPU(Memory& mem_ref, InstManager& im_ref)
 }
 
 void CPU::fetch(Pipe& p) {
+    SCOPE;
     p.pc = pc;
     LOG("pc: "+HEX(p.pc));
     p.inst = Inst(memory.read_word(pc));
 }
 
 void CPU::decode(Pipe& p) {
+    SCOPE;
     LOG("decode p address = " + HEX((uint64_t)&p));
     p.inst_id = p.inst.inst_id();
     
@@ -40,6 +42,7 @@ void CPU::decode(Pipe& p) {
 }
 
 void CPU::memory_access(Pipe& p) {
+    SCOPE;
     if (p.mem_read) {
         LOG("LW addr = " + HEX(p.alu_result));
         p.mem_data = memory.read_word(p.alu_result);
@@ -52,6 +55,7 @@ void CPU::memory_access(Pipe& p) {
 }
 
 void CPU::writeback(Pipe& p) {
+    SCOPE;
     // 1. Check if the instruction format even supports writing to rd
     // 2. Ensure we aren't trying to write to the hardwired zero register (x0)
     if (p.reg_write && p.rd != 0) {
@@ -71,30 +75,37 @@ void CPU::writeback(Pipe& p) {
 }
 
 void CPU::execute(Pipe& p) {
+    SCOPE;
     // We pass 'this' (the CPU), the memory reference, and the instruction
     // stored in the pipeline register to the manager.
     inst_manager.execute_inst(*this, p);
     
 }
 
+
 bool CPU::step()
-{   
-    
+{    
     Pipe p{};
+    GAP;
+    SCOPE; // This stays alive until the VERY END of step()
 
-    fetch(p);
-    if (p.pc == 0x101c4) {
-    LOG("=== ENTERING MAIN ===");
-    }
+    LOG("Fetch Phase:");
+    fetch(p); // fetch() has its own SCOPE, so its logs will be indented further
+
+    LOG("Decode Phase:");
     decode(p);
-    execute(p);
+
+    LOG("Execute Phase:");
+    execute(p); // execute() -> execute_inst() -> inst_addi() all have SCOPEs
+
+    LOG("Memory Access:");
     memory_access(p);
+
+    LOG("Writeback:");
     writeback(p);
-    
+
     return true;
-
-}
-
+} // Indentation finally POPS here
 
 void CPU::run(size_t max_steps) {
     
@@ -128,7 +139,7 @@ void CPU::dump_state(const std::string& prefix) const {
 }
 
 std::string CPU::get_inst_name(uint32_t opcode) const {
-        return inst_manager.get_name(opcode);
+        return "### " + inst_manager.get_name(opcode) + " ###";
     }
 
 

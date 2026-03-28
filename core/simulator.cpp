@@ -71,11 +71,21 @@ void simulator(std::string infile, std::string outfile){
     CPU cpu(mem,im);
         // Load ELF file
     uint32_t entry_point = load_elf(infile, mem);
-    LOG("Program entry point: 0x"+HEX(entry_point));
     
+    uint32_t main_addr = get_symbol(infile, "main");
+    uint32_t gp_val  = get_symbol(infile, "__global_pointer$");
+
+    if (main_addr == 0) {
+        throw std::runtime_error("Could not find 'main' symbol!");
+    }
+    LOG("Program entry point: 0x"+HEX(entry_point));
+    LOG("Jumping to main entry: 0x"+HEX(main_addr));
+    if (gp_val) LOG("GP initialized to 0x" + HEX(gp_val));
     // Set program counter to entry point
-    cpu.set_pc(0x101c4);  // jump straight to main
+    cpu.set_pc(main_addr);  // jump straight to main
     cpu.reg[2]=0x20000;
+    cpu.reg[3] = gp_val;  // gp (Global Pointer) - will be 0 if not found
+
     // Run the program (execute instructions)
     cpu.run(30);  
     // Dump registers after execution

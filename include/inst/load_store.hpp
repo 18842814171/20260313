@@ -13,20 +13,17 @@
 // lw   rd, imm(rs1)     OP_LOAD  funct3=010
 // ───────────────────────────────────────────────
 void inst_lw(CPU& cpu,  Pipe& p) {
-    LOG(cpu.get_inst_name(p.inst_id));
+    LOG("*************");
     p.alu_result = p.val_rs1 + p.imm;
     p.mem_read = true;
     p.reg_write = true;
-    // Optional: nice logging
-    
 }
 
 // ───────────────────────────────────────────────
 // sw   rs2, imm(rs1)    OP_STORE funct3=010
 // ───────────────────────────────────────────────
 void inst_sw(CPU& cpu, Pipe& p) {
-  
-    LOG(cpu.get_inst_name(p.inst_id));
+    LOG("*************");
     // Address calculation
     p.alu_result = p.val_rs1 + p.imm;
 

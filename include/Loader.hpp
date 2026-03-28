@@ -28,6 +28,31 @@ struct Elf32_Phdr {
     uint32_t p_align;
 };
 
+struct Elf32_Shdr {
+    uint32_t sh_name;
+    uint32_t sh_type;
+    uint32_t sh_flags;
+    uint32_t sh_addr;
+    uint32_t sh_offset;
+    uint32_t sh_size;
+    uint32_t sh_link;
+    uint32_t sh_info;
+    uint32_t sh_addralign;
+    uint32_t sh_entsize;
+};
+
+struct Elf32_Sym {
+    uint32_t st_name;
+    uint32_t st_value;
+    uint32_t st_size;
+    unsigned char st_info;
+    unsigned char st_other;
+    uint16_t st_shndx;
+};
+
+
+#define SHT_SYMTAB 2
 #define PT_LOAD 1
 #define EM_RISCV 243  // RISC-V machine type
 uint32_t load_elf(const std::string& filename, Device& mem);
+uint32_t get_symbol(const std::string& filename, const std::string& symbol_name);

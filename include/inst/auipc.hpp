@@ -8,8 +8,6 @@
 #define DEBUG 1
 
 inline void inst_auipc(CPU& cpu, Pipe& p) {
-    LOG(cpu.get_inst_name(p.inst_id));
-    PUSH;
     
     // AUIPC adds the 20-bit immediate shifted left by 12 to the PC
     // imm[31:12] is the immediate value, shifted left by 12
@@ -23,7 +21,7 @@ inline void inst_auipc(CPU& cpu, Pipe& p) {
     
     p.alu_result = result;
     p.reg_write = true;
-    POP;
+     
     LOG("p address = " + HEX((uint64_t)&p));
 }
 

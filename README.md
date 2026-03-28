@@ -1,21 +1,31 @@
-RISC-V GNU Toolchain 通用编译/验证
-$riscv64-unknown-elf-gcc -march=rv32i -mabi=ilp32 hello.c -o hello32
-$file hello32
-hello32: ELF 32-bit LSB executable, UCB RISC-V, version 1 (SYSV), 
-statically linked, with debug_info, not stripped
-$riscv64-unknown-elf-gcc hello.c -o hello64
-$file hello64
-hello64: ELF 64-bit LSB executable, UCB RISC-V, version 1 (SYSV), 
-statically linked, not stripped
+# 1. Compile test source file
+Test source file is named as: tests/*.c
 
-front:elf_loader---
-cpu
-||bus
-memory
+Output file is: out/*.
+* Assembly as reference
+riscv64-unknown-elf-gcc -O0 -march=rv32i -mabi=ilp32 -S tests/simple.c -o out/simple.s
+* ELF file: actual input
+riscv64-unknown-elf-gcc -O0 -march=rv32i -mabi=ilp32 tests/simple.c -o out/simple32
+* Check ELF file structure
+riscv64-unknown-elf-objdump -d out/simple32
+# 2. Run test script
+Test scripts are in tests/.
+* Running mode:(make sure file path is correct in the script)
+```
+./tests/test1.sh > out/out1.txt
+```
+out1.txt records all loggings.
 
+* Debug mode:(make sure file path is correct in the script)
+```
+./tests/debug.sh > out/out2.txt
+```
+Debug tips
+```
+n: next
+s: step
+c: continue(step out of the current loop)
+cntl+Z: exit debug
+print xxx: inspect the value or an address of a variable in the scope
+```
 
-bus:queue---message
-# 20260313
-
-^^^^^^important^^^^^^^^^^
-run in the root dir

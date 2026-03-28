@@ -18,19 +18,23 @@ bool InstManager::has_instruction(uint32_t id) const {
     }
     
 void InstManager::execute_inst(CPU& cpu, Pipe& p) {
-        uint32_t id = p.inst_id;
-        if (id == 0) {
-        LOG("Skipping unsupported SYSTEM instruction");
-        return;
+    SCOPE;
+    uint32_t id = p.inst_id;
+    
+    if (id == 0) {
+    LOG("Skipping unsupported SYSTEM instruction");
+    return;
     }
-        auto it = table_.find(id);
-        if (it != table_.end()) {
-            const auto& entry = it->second;
-            LOG("Instruction ID "+entry.name+HEX(id));
-            entry.handler(cpu, p); 
-        } else {
-            LOG("Error: Unknown Instruction ID "+ HEX(id));
-            //cpu.halt = true;
-        }
+    auto it = table_.find(id);
+    if (it != table_.end()) {
+        const auto& entry = it->second;
+        LOG("Instruction ID " + entry.name + " " + HEX(id));
+        entry.handler(cpu, p); 
     }
+    else {
+        LOG("Error: Unknown Instruction ID " + HEX(id));
+        //cpu.halt = true;
+    }
+
+}
 

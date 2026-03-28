@@ -8,9 +8,6 @@
 
 // JAL - Jump and Link (U-type like, but with PC update)
 inline void inst_jal(CPU& cpu, Pipe& p) {
-    LOG(cpu.get_inst_name(p.inst_id));
-    PUSH;
-
     // JAL: rd = PC + 4
     //      PC = PC + sign-extended 20-bit immediate (shifted left by 1)
     //uint32_t next_pc = p.pc + 4;
@@ -28,13 +25,13 @@ inline void inst_jal(CPU& cpu, Pipe& p) {
 
     p.pc_modified = true;     // Important: tell pipeline we changed PC
     p.reg_write = true;
-    POP;
+     
 }
 
 // JALR - Jump and Link Register
 inline void inst_jalr(CPU& cpu, Pipe& p) {
     LOG(cpu.get_inst_name(p.inst_id));
-    PUSH;
+     
 
     // JALR: rd = PC + 4
     //       PC = (rs1 + sign-extended 12-bit immediate) & ~1  (clear LSB)
@@ -53,7 +50,7 @@ inline void inst_jalr(CPU& cpu, Pipe& p) {
 
     p.pc_modified = true;
     p.reg_write = true;
-    POP;
+     
 }
 
 #endif

@@ -8,25 +8,18 @@
 #define DEBUG 1
 
 inline void inst_ebreak(CPU& cpu, Pipe& p) {
-    LOG(cpu.get_inst_name(p.inst_id));
-    PUSH;
-
-    LOG("EBREAK - Breakpoint");
-
     // Simplest behavior: stop execution
     cpu.halt = true;
 
     // Optional: distinguish from normal exit
     cpu.exit_code = -1;
 
-    POP;
+     
 }
 
 
 inline void inst_ecall(CPU& cpu, Pipe& p) {
-    LOG(cpu.get_inst_name(p.inst_id));
-    PUSH;
-    
+
     // ECALL is used for system calls
     // In a simple emulator, we can handle it as a special case
     // For the program "return 0", we need to set the return value
@@ -50,7 +43,7 @@ inline void inst_ecall(CPU& cpu, Pipe& p) {
             break;
     }
     
-    POP;
+     
 }
 
 #endif

@@ -6,11 +6,7 @@
 #include "Decoder.hpp"
 #define DEBUG 1
 inline void inst_add(CPU& cpu,  Pipe& p) {
-    
-    //cpu.reg[inst.rd] = cpu.reg[inst.rs1] + cpu.reg[inst.rs2];
-    LOG(cpu.get_inst_name(p.inst_id));
-    PUSH;
-
+    LOG("*************");
     int a = p.val_rs1;
     int b = p.val_rs2;
     int result = a + b;
@@ -21,14 +17,12 @@ inline void inst_add(CPU& cpu,  Pipe& p) {
 
     p.alu_result = result;
     p.reg_write = true;
-    POP;
+     
 }
 
 inline void inst_addi(CPU& cpu, Pipe& p) {
+    LOG("*************");
     
-    LOG(cpu.get_inst_name(p.inst_id));
-    PUSH;
-
     int a = p.val_rs1;
     int imm = p.imm;  // Get immediate value from instruction
     int result = a + imm;
@@ -39,14 +33,11 @@ inline void inst_addi(CPU& cpu, Pipe& p) {
 
     p.alu_result = result;
     p.reg_write = true;
-    POP;
+     
 }
 
 inline void inst_sub(CPU& cpu, Pipe& p) {
-    LOG(cpu.get_inst_name(p.inst_id));  
-    //LOG("SUB");
-    PUSH;
-
+    LOG("*************");
     int a = p.val_rs1;
     int b = p.val_rs2;
     int result = a - b;  // Subtraction instead of addition
@@ -57,7 +48,7 @@ inline void inst_sub(CPU& cpu, Pipe& p) {
 
     p.alu_result = result;
     p.reg_write = true;
-    POP;
+     
 }
 
 #endif // INST_ARITHM_HPP
