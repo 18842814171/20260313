@@ -1,6 +1,7 @@
 #ifndef PIPE_HPP
 #define PIPE_HPP
 #include "Decoder.hpp"
+#include "ALU.hpp"
 struct Pipe {
     Inst inst;
 
@@ -14,18 +15,20 @@ struct Pipe {
 
     // register values
     uint32_t val_rs1, val_rs2;
-
+    // control signals
+    bool alu_src;     // 0=rs2, 1=imm
+    ALUOp alu_op;
     // execution result
     uint32_t alu_result;
-
-    // memory result
-    uint32_t mem_data;
 
     // control signals (important later)
     bool reg_write = false;
     bool mem_read  = false;
     bool mem_write = false;
     bool pc_modified = false;
+    bool branch = false;
+    
+    uint32_t next_pc;
 };
 
 #endif

@@ -2,7 +2,7 @@
 #define INST_LOAD_STORE_HPP
 #include "utils/utils.hpp"
 #include "CPU.hpp"     
-#include "Decoder.hpp"
+#include "ALU.hpp"
 #include "Pipe.hpp"
 #define DEBUG 1          // for Inst
 

@@ -3,7 +3,7 @@
 #define INST_ECALL_HPP
 #include "utils/utils.hpp"
 #include "CPU.hpp"     
-#include "Decoder.hpp"
+
 #include "Pipe.hpp"
 #define DEBUG 1
 

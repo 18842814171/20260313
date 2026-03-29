@@ -56,22 +56,20 @@ void CPU::memory_access(Pipe& p) {
 
 void CPU::writeback(Pipe& p) {
     SCOPE;
+    
     // 1. Check if the instruction format even supports writing to rd
     // 2. Ensure we aren't trying to write to the hardwired zero register (x0)
     if (p.reg_write && p.rd != 0) {
+        uint32_t wb_data = choice(p.mem_write, p.alu_result, p.mem_data);
         
-        // If it's a load, use memory data; otherwise, use the ALU result
-        if (p.mem_read) {
-            reg[p.rd] = p.mem_data;
-        } else {
-            reg[p.rd] = p.alu_result; 
-        }
+        reg[p.rd] = wb_data;
+        printf("WB: rd="+DEC(p.rd)+", data=" + HEX(wb_data));
     }
     
-    printf("WB: rd=%u, alu=0x%08x, mem=0x%08x, write=%d\n",
-       p.rd, p.alu_result, p.mem_data, p.reg_write);
-    if (!p.pc_modified)
-        pc += 4;
+    
+    uint32_t next_pc = choice(p.pc_modified, pc + 4, pc + p.imm);
+    LOG("Next PC:" + HEX(next_pc));
+    pc = next_pc;
 }
 
 void CPU::execute(Pipe& p) {
@@ -139,7 +137,7 @@ void CPU::dump_state(const std::string& prefix) const {
 }
 
 std::string CPU::get_inst_name(uint32_t opcode) const {
-        return "### " + inst_manager.get_name(opcode) + " ###";
+        return inst_manager.get_name(opcode);
     }
 
 
