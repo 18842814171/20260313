@@ -21,7 +21,7 @@ SOURCES_OBJS = $(addprefix $(BUILD_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
 
 DEP_FILES = $(SOURCES_OBJS:.o=.d) 
 # 主程式目標
-TARGET = simulator
+TARGET = $(BUILD_DIR)/simulator
 
 # 測試目標（可執行檔）
 #TEST_TARGETS = build/run 
@@ -48,7 +48,7 @@ $(BUILD_DIR)/%.o: %.cpp
 -include $(DEP_FILES)
 
 clean:
-	rm -rf $(SOURCES_OBJS) $(DEP_FILES) $(TARGET) 
+	rm -rf $(BUILD_DIR)
 
 .PHONY: all clean debug
 

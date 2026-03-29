@@ -2,7 +2,7 @@
 # debug_test1.sh - Debug the exact command you want
 
 
-gdb -q ./simulator \
+gdb -q ./build/simulator \
     -ex "break main" \
-    -ex "run /home/linda/3.8/my_sim/output/simple32" \
+    -ex "run /home/linda/3.8/my_sim/out/simple32" \
    

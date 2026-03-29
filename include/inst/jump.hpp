@@ -13,7 +13,7 @@ inline void inst_jal(CPU& cpu, Pipe& p) {
     //uint32_t next_pc = p.pc + 4;
     int32_t offset = p.imm; 
     uint32_t target = p.pc + offset;
-
+    p.next_pc = target;
     // 2. Use ALU-like logic to compute the Link Address (rd = PC + 4)
     p.alu_op = ALUOp::ADD;
     p.alu_src = true; 
@@ -45,12 +45,11 @@ inline void inst_jalr(CPU& cpu, Pipe& p) {
 
     // The ALU calculates the TARGET
     uint32_t target = alu_execute(p.alu_op, in1, in2) & ~1U;
-    
+    p.next_pc = target;
     // BUT: In JALR, the value saved to the register is PC + 4
     // To fit your template, we store PC + 4 in alu_result
-    p.alu_result = p.pc + 4; 
+    p.alu_result = alu_execute(p.alu_op, p.pc, 4);
     p.reg_write = true;
-
     p.pc_modified = true;
 
     LOG("Target (from ALU-style op) = " + std::to_string(target));

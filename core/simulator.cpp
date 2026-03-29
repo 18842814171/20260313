@@ -83,6 +83,7 @@ void simulator(std::string infile, std::string outfile){
     if (gp_val) LOG("GP initialized to 0x" + HEX(gp_val));
     // Set program counter to entry point
     cpu.set_pc(main_addr);  // jump straight to main
+    cpu.reg[1] = 0xFFFFFFFF;
     cpu.reg[2]=0x20000;
     cpu.reg[3] = gp_val;  // gp (Global Pointer) - will be 0 if not found
 

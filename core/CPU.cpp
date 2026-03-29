@@ -13,15 +13,23 @@ CPU::CPU(Memory& mem_ref, InstManager& im_ref)
     reg[0] = 0;
 }
 
+
 void CPU::fetch(Pipe& p) {
     SCOPE;
     p.pc = pc;
+    if (!memory.is_valid(pc)) {
+        halt = true;
+        exit_code = reg[10];  // Or whatever exit code logic you need
+        LOG("Invalid PC: " + HEX(p.pc));
+        return;
+    }
     LOG("pc: "+HEX(p.pc));
     p.inst = Inst(memory.read_word(pc));
 }
 
 void CPU::decode(Pipe& p) {
     SCOPE;
+    if (halt) return;
     LOG("decode p address = " + HEX((uint64_t)&p));
     p.inst_id = p.inst.inst_id();
     
@@ -43,6 +51,13 @@ void CPU::decode(Pipe& p) {
 
 void CPU::memory_access(Pipe& p) {
     SCOPE;
+    if (!memory.is_valid(pc)) {
+        halt = true;
+        exit_code = reg[10];  // Or whatever exit code logic you need
+        LOG("Invalid PC: " + HEX(p.pc));
+        return;
+    }
+    if (halt) return;
     if (p.mem_read) {
         LOG("LW addr = " + HEX(p.alu_result));
         p.mem_data = memory.read_word(p.alu_result);
@@ -56,24 +71,25 @@ void CPU::memory_access(Pipe& p) {
 
 void CPU::writeback(Pipe& p) {
     SCOPE;
-    
+    if (halt) return;
+    uint32_t wb_data = choice(p.mem_read, p.alu_result, p.mem_data);
+        
     // 1. Check if the instruction format even supports writing to rd
     // 2. Ensure we aren't trying to write to the hardwired zero register (x0)
     if (p.reg_write && p.rd != 0) {
-        uint32_t wb_data = choice(p.mem_write, p.alu_result, p.mem_data);
-        
         reg[p.rd] = wb_data;
-        printf("WB: rd="+DEC(p.rd)+", data=" + HEX(wb_data));
+        LOG("WB: rd=" + DEC(p.rd) + ", data=" + HEX(wb_data));
     }
     
     
-    uint32_t next_pc = choice(p.pc_modified, pc + 4, pc + p.imm);
+    uint32_t next_pc = p.pc_modified ? p.next_pc : pc + 4;
     LOG("Next PC:" + HEX(next_pc));
     pc = next_pc;
 }
 
 void CPU::execute(Pipe& p) {
     SCOPE;
+    if (halt) return;
     // We pass 'this' (the CPU), the memory reference, and the instruction
     // stored in the pipeline register to the manager.
     inst_manager.execute_inst(*this, p);
@@ -89,10 +105,11 @@ bool CPU::step()
 
     LOG("Fetch Phase:");
     fetch(p); // fetch() has its own SCOPE, so its logs will be indented further
-
+    if (halt) return false;
+      
     LOG("Decode Phase:");
     decode(p);
-
+    
     LOG("Execute Phase:");
     execute(p); // execute() -> execute_inst() -> inst_addi() all have SCOPEs
 
@@ -108,15 +125,18 @@ bool CPU::step()
 void CPU::run(size_t max_steps) {
     
     size_t steps = 0;
-
+    
     while (!halt) {
         if (max_steps && steps >= max_steps)
             break;
-
+        GAP;
+        LOG("Step: " + DEC(steps));
+        GAP;
         if (!step())
             break;
         dump_registers();
         steps++;
+        
     }
 
     LOG("Program exited with code: " + std::to_string(exit_code));

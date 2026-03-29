@@ -42,3 +42,7 @@ uint32_t Memory::read_word(uint32_t addr) {
 void Memory::write_word(uint32_t addr, uint32_t value) {
         Memory::write(addr, reinterpret_cast<uint8_t*>(&value), 4);
     }
+
+bool Memory::is_valid(uint32_t addr) const {
+    return (addr >= BASE && addr < BASE + MEM_SIZE);
+}

@@ -24,6 +24,6 @@ inline void inst_beq(CPU& cpu,  Pipe& p) {
     
     // 5. Logging
     LOG("Comparison: " + std::to_string(in1) + " == " + std::to_string(in2));
-    LOG("Branch Taken: " + std::string(p.branch_taken ? "YES" : "NO"));
+    LOG("Branch Taken: " + std::string(p.pc_modified ? "YES" : "NO"));
      
 }

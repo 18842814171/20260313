@@ -18,7 +18,7 @@ out1.txt records all loggings.
 
 * Debug mode:(make sure file path is correct in the script)
 ```
-./tests/debug.sh > out/out2.txt
+./tests/debug.sh 
 ```
 Debug tips
 ```

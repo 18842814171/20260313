@@ -1,5 +1,5 @@
-#ifndef MEMORY_HPP
-#define MEMORY_HPP
+#ifndef DEVICE_HPP
+#define DEVICE_HPP
 #include<cstdint>
 #include<vector>
 #include<cstddef>
@@ -21,6 +21,7 @@ class Memory:public Device{
 		void read(uint32_t addr, uint8_t* data, size_t size);
 		uint32_t read_word(uint32_t addr);
 		void write_word(uint32_t addr, uint32_t value);
+		bool is_valid(uint32_t addr) const;  // Add this declaration
 };
 
 

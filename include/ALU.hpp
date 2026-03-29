@@ -1,10 +1,15 @@
+#pragma once
+#ifndef ALU_HPP
+#define ALU_HPP
 #include <cstdint>
 #include "encoding.hpp"
 
-template<typename T>
-T choice(bool sel, T a, T b) {
-    return sel ? b : a;
+// Better choice function that handles different but compatible types
+template<typename T, typename U>
+T choice(bool sel, T a, U b) {
+    return sel ? static_cast<T>(b) : a;
 }
+
 enum class ALUOp {
     ADD,
     SUB,
@@ -17,17 +22,5 @@ enum class ALUOp {
     SRA,
     NONE
 };
-uint32_t alu_execute(ALUOp op, uint32_t a, uint32_t b) {
-    switch (op) {
-        case ALUOp::ADD: return a + b;
-        case ALUOp::SUB: return a - b;
-        //case ALUOp::AND: return a & b;
-        //case ALUOp::OR:  return a | b;
-        //case ALUOp::XOR: return a ^ b;
-        //case ALUOp::SLT: return (int32_t)a < (int32_t)b;
-        //case ALUOp::SLL: return a << (b & 0x1F);
-        //case ALUOp::SRL: return a >> (b & 0x1F);
-        //case ALUOp::SRA: return ((int32_t)a) >> (b & 0x1F);
-        default: return 0;
-    }
-}
+uint32_t alu_execute(ALUOp op, uint32_t a, uint32_t b) ;
+#endif

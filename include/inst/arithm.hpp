@@ -7,7 +7,7 @@
 #include "ALU.hpp"
 #define DEBUG 1
 inline void inst_add(CPU& cpu,  Pipe& p) {
-    LOG("*************");
+    
     p.alu_src = false;
     p.alu_op  = ALUOp::ADD;
     
@@ -17,7 +17,7 @@ inline void inst_add(CPU& cpu,  Pipe& p) {
     p.alu_result = alu_execute(p.alu_op, in1, in2); 
     p.reg_write = true;
 
-    LOG("ALUOp:" + ALUOp);
+    //LOG("ALUOp:" + to_string(p.alu_op));
     LOG("Input1 value = " + std::to_string(in1));
     LOG("Input2 source = " + std::string(p.alu_src ? "Immediate" : "Register (rs2)"));
     LOG("Selected Input2 value = " + std::to_string(in2));
@@ -28,7 +28,6 @@ inline void inst_add(CPU& cpu,  Pipe& p) {
 }
 
 inline void inst_addi(CPU& cpu, Pipe& p) {
-    LOG("*************");
     
     p.alu_src = true;
     p.alu_op  = ALUOp::ADD;
@@ -39,7 +38,7 @@ inline void inst_addi(CPU& cpu, Pipe& p) {
     p.alu_result = alu_execute(p.alu_op, in1, in2); 
     p.reg_write = true;
 
-    LOG("ALUOp:" + ALUOp);
+    //LOG("ALUOp:" + to_string(p.alu_op));
     LOG("Input1 value = " + std::to_string(in1));
     LOG("Input2 source = " + std::string(p.alu_src ? "Immediate" : "Register (rs2)"));
     LOG("Selected Input2 value = " + std::to_string(in2));
@@ -48,7 +47,7 @@ inline void inst_addi(CPU& cpu, Pipe& p) {
 }
 
 inline void inst_sub(CPU& cpu, Pipe& p) {
-    LOG("*************");
+
     p.alu_src = false;
     p.alu_op  = ALUOp::SUB;
     
@@ -58,7 +57,7 @@ inline void inst_sub(CPU& cpu, Pipe& p) {
     p.alu_result = alu_execute(p.alu_op, in1, in2); 
     p.reg_write = true;
 
-    LOG("ALUOp:" + ALUOp);
+    //LOG("ALUOp:" + to_string(p.alu_op));
     LOG("Input1 value = " + std::to_string(in1));
     LOG("Input2 source = " + std::string(p.alu_src ? "Immediate" : "Register (rs2)"));
     LOG("Selected Input2 value = " + std::to_string(in2));
