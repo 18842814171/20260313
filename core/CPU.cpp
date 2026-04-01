@@ -13,114 +13,141 @@ CPU::CPU(Memory& mem_ref, InstManager& im_ref)
     reg[0] = 0;
 }
 
-
-void CPU::fetch(Pipe& p) {
+void CPU::fetch(Pipe_IF_ID& out) {
+    if (halt) return;
     SCOPE;
-    p.pc = pc;
-    if (!memory.is_valid(pc)) {
-        halt = true;
-        exit_code = reg[10];  // Or whatever exit code logic you need
-        LOG("Invalid PC: " + HEX(p.pc));
-        return;
-    }
-    LOG("pc: "+HEX(p.pc));
-    p.inst = Inst(memory.read_word(pc));
+    out.valid = true;
+    out.pc = pc;
+
+    out.inst = Inst(memory.read_word(pc));
+    LOG("pc: "+HEX(out.pc));
+    pc += 4;  // simple sequential
 }
 
-void CPU::decode(Pipe& p) {
+void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
     SCOPE;
-    if (halt) return;
-    LOG("decode p address = " + HEX((uint64_t)&p));
-    p.inst_id = p.inst.inst_id();
-    
-    p.rs1 = p.inst.rs1();
-    p.rs2 = p.inst.rs2();
-    p.rd  = p.inst.rd();
-
-    p.val_rs1 = reg[p.rs1];
-    p.val_rs2 = reg[p.rs2];
-    LOG("p.rs1:" + DEC(p.rs1));
-    LOG("p.rs2:" + DEC(p.rs2));
-    LOG("p.rd:" + DEC(p.rd));
-    LOG("p.val_rs1:" + DEC(p.val_rs1));
-    LOG("p.val_rs2:" + DEC(p.val_rs2));
-    p.imm = p.inst.imm();
-    LOG("p.imm:" + DEC(p.imm));
-    
-}
-
-void CPU::memory_access(Pipe& p) {
-    SCOPE;
-    if (!memory.is_valid(pc)) {
-        halt = true;
-        exit_code = reg[10];  // Or whatever exit code logic you need
-        LOG("Invalid PC: " + HEX(p.pc));
-        return;
-    }
-    if (halt) return;
-    if (p.mem_read) {
-        LOG("LW addr = " + HEX(p.alu_result));
-        p.mem_data = memory.read_word(p.alu_result);
-    } 
-    else if (p.mem_write) {
-        LOG("SW addr = " + HEX(p.alu_result));
-        // p.val_rs2 contains the data to be stored (set during Decode)
-        memory.write_word(p.alu_result, p.val_rs2);
-    }
-}
-
-void CPU::writeback(Pipe& p) {
-    SCOPE;
-    if (halt) return;
-    uint32_t wb_data = choice(p.mem_read, p.alu_result, p.mem_data);
+    if (!in.valid) {
         
-    // 1. Check if the instruction format even supports writing to rd
-    // 2. Ensure we aren't trying to write to the hardwired zero register (x0)
-    if (p.reg_write && p.rd != 0) {
-        reg[p.rd] = wb_data;
-        LOG("WB: rd=" + DEC(p.rd) + ", data=" + HEX(wb_data));
+        LOG("Invalid PC at: " + HEX(in.pc));
+        out.valid = false;
+        return;
     }
+
+    out.valid = true;
+
+    out.pc = in.pc;
+    out.inst_id = in.inst.inst_id();
+
+    out.rs1 = in.inst.rs1();
+    out.rs2 = in.inst.rs2();
+    out.rd  = in.inst.rd();
+
+    out.val_rs1 = reg[out.rs1];
+    out.val_rs2 = reg[out.rs2];
+
+    out.imm = in.inst.imm();
+
+    out.reg_write = false;
+    out.mem_read  = false;
+    out.mem_write = false;
+
+    switch (out.inst_id) {
+        case INST_ADD:
+            out.reg_write = true;
+            out.alu_src = false;
+            out.alu_op = ALUOp::ADD;
+            break;
+
+        case INST_ADDI:
+            out.reg_write = true;
+            out.alu_src = true;
+            out.alu_op = ALUOp::ADD;
+            break;
+
+        case INST_LW:
+            out.reg_write = true;
+            out.mem_read = true;
+            out.alu_src = true;
+            break;
+
+        case INST_SW:
+            out.mem_write = true;
+            out.alu_src = true;
+            out.reg_write = false;
+            break;
+    }
+    LOG("decode instruction address = " + HEX(out.pc));
+    LOG("decoded inst = " + get_inst_name(out.inst_id));
     
+    LOG("rs1:" + DEC(out.rs1));
+    LOG("rs2:" + DEC(out.rs2));
+    LOG("rd:" + DEC(out.rd));
+    LOG("val_rs1:" + DEC(out.val_rs1));
+    LOG("val_rs2:" + DEC(out.val_rs2));
     
-    uint32_t next_pc = p.pc_modified ? p.next_pc : pc + 4;
-    LOG("Next PC:" + HEX(next_pc));
-    pc = next_pc;
+    LOG("imm:" + DEC(out.imm));
 }
 
-void CPU::execute(Pipe& p) {
+void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    if (!in.valid) {
+        out.valid = false;
+        return;
+    }
     SCOPE;
-    if (halt) return;
-    // We pass 'this' (the CPU), the memory reference, and the instruction
-    // stored in the pipeline register to the manager.
-    inst_manager.execute_inst(*this, p);
-    
+    inst_manager.execute_inst(*this, in, out);
 }
 
+void CPU::memory_access(Pipe_EX_MEM& in, Pipe_MEM_WB& out) {
+    SCOPE;
+    if (!in.valid) {
+        out.valid = false;
+        exit_code = reg[10];  // Or whatever exit code logic you need
+        LOG("Invalid PC: " + HEX(in.pc));
+        return;
+    }
+
+    out.valid = true;
+
+    out.rd = in.rd;
+    out.alu_result = in.alu_result;
+
+    out.reg_write = in.reg_write;
+    out.mem_read  = in.mem_read;
+
+    if (in.mem_read) {
+        LOG("LW addr = " + HEX(out.alu_result));
+        out.mem_data = memory.read_word(in.alu_result);
+    }
+    else if (in.mem_write) {
+        LOG("SW addr = " + HEX(out.alu_result));
+        memory.write_word(in.alu_result, in.val_rs2);
+    }
+}
+
+void CPU::writeback(Pipe_MEM_WB& in) {
+    SCOPE;
+    if (!in.valid) return;
+
+    if (in.reg_write && in.rd != 0) {
+        uint32_t data = in.mem_read ? in.mem_data : in.alu_result;
+        reg[in.rd] = data;
+        LOG("WB: rd=" + DEC(in.rd) + ", data=" + HEX(data));
+    }
+}
 
 bool CPU::step()
 {    
-    Pipe p{};
+   
     GAP;
-    SCOPE; // This stays alive until the VERY END of step()
-
-    LOG("Fetch Phase:");
-    fetch(p); // fetch() has its own SCOPE, so its logs will be indented further
+    SCOPE; 
     if (halt) return false;
-      
-    LOG("Decode Phase:");
-    decode(p);
-    
-    LOG("Execute Phase:");
-    execute(p); // execute() -> execute_inst() -> inst_addi() all have SCOPEs
-
-    LOG("Memory Access:");
-    memory_access(p);
-
-    LOG("Writeback:");
-    writeback(p);
-
+    writeback(mem_wb);
+    memory_access(ex_mem, mem_wb);
+    execute(id_ex, ex_mem);
+    decode(if_id, id_ex);
+    fetch(if_id);
     return true;
-} // Indentation finally POPS here
+} 
 
 void CPU::run(size_t max_steps) {
     
@@ -148,7 +175,7 @@ void CPU::dump_registers() const {
         printf("x%02d: 0x%08x   x%02d: 0x%08x   x%02d: 0x%08x   x%02d: 0x%08x\n",
                i, reg[i], i+1, reg[i+1], i+2, reg[i+2], i+3, reg[i+3]);
     }
-    printf(" pc: 0x%08x\n", pc);
+    printf("dump registers state pc: 0x%08x\n", pc);
 }
 
 void CPU::dump_state(const std::string& prefix) const {
@@ -165,16 +192,3 @@ CPU::~CPU() {
     
 }
 
-uint32_t CPU::calc_addr(const CPU& cpu, Inst inst) const{
-    uint32_t rs1 = inst.rs1();
-    int32_t  imm;
-
-    if (inst.opcode() == OP_LOAD) {
-        imm = inst.i_imm();           // I-type immediate
-    } else {
-        imm = inst.s_imm();           // S-type immediate
-    }
-
-    return cpu.reg[rs1] + static_cast<uint32_t>(imm);
-    }
-    

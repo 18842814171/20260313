@@ -111,21 +111,3 @@ uint32_t Inst::inst_id() const{ // Use internal 'raw'
     }
     return 0;
 }
-
-bool Inst::writes_rd() const {
-    uint32_t op = opcode();
-    switch (op) {
-        case OP_LUI:
-        case OP_AUIPC:
-        case OP_JAL:
-        case OP_JALR:
-        case OP_LOAD:
-        case OP_IMM:
-        case OP_OP:
-            return true;
-        case OP_SYSTEM: // SYSTEM (CSR instructions write to rd, ECALL/EBREAK do not)
-            return funct3() != 0; 
-        default:
-            return false;
-    }
-}

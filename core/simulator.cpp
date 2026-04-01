@@ -52,14 +52,14 @@ void register_all_instructions(InstManager *im) {
     im->register_inst(INST_JAL,  "JAL",  inst_jal);
     im->register_inst(INST_JALR, "JALR", inst_jalr);
     // System
-    im->register_inst(INST_EBREAK, "EBREAK", inst_ebreak);
-    im->register_inst(INST_ECALL, "ECALL", inst_ecall);
+    //im->register_inst(INST_EBREAK, "EBREAK", inst_ebreak);
+    //im->register_inst(INST_ECALL, "ECALL", inst_ecall);
     //im->register_inst(INST_ECALL, "ECALL", inst_ecall);
     LOG("Instruction table initialized with " + std::to_string(im->size()) + " entries");
 }
 
-void execute(CPU& cpu, Pipe& p, InstManager *im) {
-    im->execute_inst(cpu,p);
+void execute(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out, InstManager *im) {
+    im->execute_inst(cpu,in,out);
 }
 
 void simulator(std::string infile, std::string outfile){

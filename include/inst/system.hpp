@@ -6,27 +6,13 @@
 
 #include "Pipe.hpp"
 #define DEBUG 1
-
-inline void inst_ebreak(CPU& cpu, Pipe& p) {
-    // Simplest behavior: stop execution
+inline void inst_ebreak(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     cpu.halt = true;
-
-    // Optional: distinguish from normal exit
     cpu.exit_code = -1;
-
-     
+    LOG("EBREAK: Halting");
 }
 
-
-inline void inst_ecall(CPU& cpu, Pipe& p) {
-
-    // ECALL is used for system calls
-    // In a simple emulator, we can handle it as a special case
-    // For the program "return 0", we need to set the return value
-    // and signal termination
-    
-    LOG("ECALL - System call");
-    
+inline void inst_ecall(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     uint32_t syscall = cpu.reg[17]; // a7
     uint32_t arg0    = cpu.reg[10]; // a0
 
@@ -34,16 +20,13 @@ inline void inst_ecall(CPU& cpu, Pipe& p) {
         case 93: // exit
             cpu.halt = true;
             cpu.exit_code = arg0;
-            LOG("Exit syscall with code: " + std::to_string(arg0));
+            LOG("ECALL: Exit code " + std::to_string(arg0));
             break;
-
         default:
-            LOG("Unknown syscall: " + std::to_string(syscall));
+            LOG("ECALL: Unknown syscall " + std::to_string(syscall));
             cpu.halt = true;
             break;
     }
-    
-     
 }
 
 #endif

@@ -9,30 +9,33 @@
 #include <cstdint>
 #include <cstdio>
 
-// ───────────────────────────────────────────────
-// lw   rd, imm(rs1)     OP_LOAD  funct3=010
-// ───────────────────────────────────────────────
-void inst_lw(CPU& cpu,  Pipe& p) {
-    LOG("*************");
-    p.alu_result = p.val_rs1 + p.imm;
-    p.mem_read = true;
-    p.reg_write = true;
+void inst_lw(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    out.valid = in.valid;
+    out.rd = in.rd;
+
+    // Address calculation
+    out.alu_result = in.val_rs1 + in.imm;
+
+    // Pass control signals
+    out.mem_read = in.mem_read;
+    out.reg_write = in.reg_write;
+    
+    LOG("LW: Address=" + HEX(out.alu_result));
 }
 
-// ───────────────────────────────────────────────
-// sw   rs2, imm(rs1)    OP_STORE funct3=010
-// ───────────────────────────────────────────────
-void inst_sw(CPU& cpu, Pipe& p) {
-    LOG("*************");
+void inst_sw(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    out.valid = in.valid;
+    
     // Address calculation
-    p.alu_result = p.val_rs1 + p.imm;
+    out.alu_result = in.val_rs1 + in.imm;
 
-    // Store value
-    p.mem_data = p.val_rs2;
+    // Value to store (rs2)
+    out.val_rs2 = in.val_rs2; 
 
-    // Control signal
-    p.mem_write = true;
+    // Control signals
+    out.mem_write = in.mem_write;
+    out.reg_write = false; // Stores don't write to registers
 
-     
+    LOG("SW: Address=" + HEX(out.alu_result) + ", Data=" + HEX(out.val_rs2));
 }
 #endif

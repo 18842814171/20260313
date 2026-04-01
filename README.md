@@ -4,8 +4,10 @@ Test source file is named as: tests/*.c
 Output file is: out/*.
 * Assembly as reference
 riscv64-unknown-elf-gcc -O0 -march=rv32i -mabi=ilp32 -S tests/simple.c -o out/simple.s
+riscv64-unknown-elf-gcc -march=rv32i -mabi=ilp32 -S tests/simple.c -o out/simple.s
 * ELF file: actual input
 riscv64-unknown-elf-gcc -O0 -march=rv32i -mabi=ilp32 tests/simple.c -o out/simple32
+riscv64-unknown-elf-gcc -march=rv32i -mabi=ilp32 tests/simple.c -o out/simple32
 * Check ELF file structure
 riscv64-unknown-elf-objdump -d out/simple32
 # 2. Run test script

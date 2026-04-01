@@ -7,22 +7,22 @@
 #include "Pipe.hpp"
 #define DEBUG 1
 #include "ALU.hpp"
-inline void inst_auipc(CPU& cpu, Pipe& p) {
-    
-    // AUIPC adds the 20-bit immediate shifted left by 12 to the PC
-    // imm[31:12] is the immediate value, shifted left by 12
-    // The immediate is sign-extended to 32 bits
-    p.alu_src = true;
-    p.alu_op  = ALUOp::ADD;
-    
-    uint32_t in1 = p.pc;
-    uint32_t in2 = choice(p.alu_src, p.val_rs2, p.imm);
-    p.alu_result = alu_execute(p.alu_op, in1, in2);
-    p.reg_write = true;
+inline void inst_auipc(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    out.valid = in.valid;
+    out.rd = in.rd;
 
-    //LOG("AUIPC - ALUOp: " + to_string(p.alu_op));
-    LOG("Input1 (PC)   = " + std::to_string(in1));
-    LOG("Input2 (imm)  = " + std::to_string(in2));
-    LOG("Result (rd)   = " + std::to_string(p.alu_result));
+    // AUIPC adds the immediate to the PC
+    uint32_t in1 = in.pc;
+    uint32_t in2 = in.imm;
+
+    out.alu_result = alu_execute(in.alu_op, in1, in2);
+
+    // Pass control signals forward
+    out.val_rs2 = in.val_rs2;
+    out.reg_write = in.reg_write;
+    out.mem_read  = in.mem_read;
+    out.mem_write = in.mem_write;
+
+    LOG("AUIPC: PC(" + HEX(in1) + ") + IMM(" + HEX(in2) + ") = " + HEX(out.alu_result));
 }
 #endif

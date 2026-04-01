@@ -13,7 +13,7 @@ class Inst;
 #include "inst/opcode.hpp"
 #include "Decoder.hpp"
 
-using InstFunc = void(*)(CPU&, Pipe&);
+using InstFunc = void(*)(CPU&, Pipe_ID_EX&, Pipe_EX_MEM&);
 
 struct InstEntry {
     InstFunc handler;
@@ -24,17 +24,17 @@ class InstManager{
 
 public:
     
-    void register_inst(int opcode, const std::string& name, InstFunc fn);
+    void register_inst(uint32_t inst_id, const std::string& name, InstFunc fn);
     
-    std::string get_name(int opcode) const;
+    std::string get_name(uint32_t inst_id) const;
     size_t size() const;
 
     bool has_instruction(uint32_t id) const;
     
-    void execute_inst(CPU& cpu, Pipe& p);
-    
+    void execute_inst(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out);
+    const InstEntry* lookup(uint32_t inst_id) const;
 private:
-    std::unordered_map<int, InstEntry> table_;
+    std::unordered_map<uint32_t, InstEntry> table_;
 };
 
 

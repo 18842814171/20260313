@@ -2,33 +2,62 @@
 #define PIPE_HPP
 #include "Decoder.hpp"
 #include "ALU.hpp"
-struct Pipe {
-    Inst inst;
+//Pipe if_id{}, id_ex{}, ex_mem{}, mem_wb{};
+struct Pipe_ID_EX{
+    bool valid = false;
 
     uint32_t pc;
-
     uint32_t inst_id;
-
     // decoded fields
     uint32_t rs1, rs2, rd;
     int32_t imm;
-    int32_t mem_data;
-    // register values
+
     uint32_t val_rs1, val_rs2;
-    // control signals
-    bool alu_src;     // 0=rs2, 1=imm
+
+    // control
+    bool alu_src;
     ALUOp alu_op;
-    // execution result
-    uint32_t alu_result;
-    
-    // control signals (important later)
-    bool reg_write = false;
-    bool mem_read  = false;
-    bool mem_write = false;
-    bool pc_modified = false;
-    
-    
-    uint32_t next_pc;
+
+    bool reg_write;
+    bool mem_read;
+    bool mem_write;
 };
+
+struct Pipe_EX_MEM{
+    bool valid = false;
+
+    uint32_t pc;
+    uint32_t rd;
+
+    uint32_t alu_result;
+    uint32_t val_rs2;   // needed for SW
+    uint32_t target_pc;
+    // control
+    bool pc_modified;
+    bool reg_write;
+    bool mem_read;
+    bool mem_write;
+};
+
+struct Pipe_MEM_WB{
+    bool valid = false;
+
+    uint32_t rd;
+
+    uint32_t alu_result;
+    uint32_t mem_data;
+
+    // control
+    bool reg_write;
+    bool mem_read;
+};
+
+struct Pipe_IF_ID {
+    bool valid = false;
+    Inst inst;
+
+    uint32_t pc;
+};
+
 
 #endif
