@@ -4,6 +4,7 @@
 #include "Instmngr.hpp"   
 #include "Device.hpp"
 #include "utils/utils.hpp"
+#include "inst/encoding.hpp"
 #define DEBUG 1
 #include <cstring>
 
@@ -14,126 +15,168 @@ CPU::CPU(Memory& mem_ref, InstManager& im_ref)
 }
 
 void CPU::fetch(Pipe_IF_ID& out) {
-    if (halt) return;
     SCOPE;
+    if (halt) return;
+
+    if (stall) {
+        LOG("Fetch stalled");
+        return;
+    }
+
     out.valid = true;
     out.pc = pc;
-
     out.inst = Inst(memory.read_word(pc));
-    LOG("pc: "+HEX(out.pc));
-    pc += 4;  // simple sequential
-}
+
+    LOG("IF pc: " + HEX(out.pc));
+
+    pc += 4;
+    }
+
 
 void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
     SCOPE;
-    if (!in.valid) {
-        
-        LOG("Invalid PC at: " + HEX(in.pc));
-        out.valid = false;
-        return;
+        if (!in.valid) {
+            out.valid = false;
+            return;
+        }
+
+        stall = false;
+
+        // LOAD-USE hazard detection
+        if (id_ex.valid && id_ex.mem_read) {
+            if (id_ex.rd != 0 &&
+               (id_ex.rd == in.inst.rs1() ||
+                id_ex.rd == in.inst.rs2())) {
+                stall = true;
+            }
+        }
+
+        if (stall) {
+            LOG("STALL inserted");
+            out.valid = false;
+            return;
+        }
+
+        out.valid = true;
+        out.pc = in.pc;
+
+        out.inst_id = in.inst.inst_id();
+        out.rs1 = in.inst.rs1();
+        out.rs2 = in.inst.rs2();
+        out.rd  = in.inst.rd();
+
+        out.val_rs1 = reg[out.rs1];
+        out.val_rs2 = reg[out.rs2];
+
+        out.imm = in.inst.imm();
+
+        out.reg_write = false;
+        out.mem_read  = false;
+        out.mem_write = false;
+
+        switch (out.inst_id) {
+            case INST_ADD: // ADD
+                out.reg_write = true;
+                out.alu_src = false;
+                out.alu_op = ALUOp::ADD;
+                break;
+            case INST_ADDI: // ADDI
+                out.reg_write = true;
+                out.alu_src = true;
+                out.alu_op = ALUOp::ADD;
+                break;
+            case INST_LW: // LW
+                out.reg_write = true;
+                out.mem_read = true;
+                out.alu_src = true;
+                out.alu_op = ALUOp::ADD;
+                break;
+            case INST_SW: // SW
+                out.mem_write = true;
+                out.alu_src = true;
+                out.alu_op = ALUOp::ADD;
+                break;
+        }
+
+        LOG("ID pc: " + HEX(out.pc));
     }
 
-    out.valid = true;
 
-    out.pc = in.pc;
-    out.inst_id = in.inst.inst_id();
-
-    out.rs1 = in.inst.rs1();
-    out.rs2 = in.inst.rs2();
-    out.rd  = in.inst.rd();
-
-    out.val_rs1 = reg[out.rs1];
-    out.val_rs2 = reg[out.rs2];
-
-    out.imm = in.inst.imm();
-
-    out.reg_write = false;
-    out.mem_read  = false;
-    out.mem_write = false;
-
-    switch (out.inst_id) {
-        case INST_ADD:
-            out.reg_write = true;
-            out.alu_src = false;
-            out.alu_op = ALUOp::ADD;
-            break;
-
-        case INST_ADDI:
-            out.reg_write = true;
-            out.alu_src = true;
-            out.alu_op = ALUOp::ADD;
-            break;
-
-        case INST_LW:
-            out.reg_write = true;
-            out.mem_read = true;
-            out.alu_src = true;
-            break;
-
-        case INST_SW:
-            out.mem_write = true;
-            out.alu_src = true;
-            out.reg_write = false;
-            break;
-    }
-    LOG("decode instruction address = " + HEX(out.pc));
-    LOG("decoded inst = " + get_inst_name(out.inst_id));
-    
-    LOG("rs1:" + DEC(out.rs1));
-    LOG("rs2:" + DEC(out.rs2));
-    LOG("rd:" + DEC(out.rd));
-    LOG("val_rs1:" + DEC(out.val_rs1));
-    LOG("val_rs2:" + DEC(out.val_rs2));
-    
-    LOG("imm:" + DEC(out.imm));
-}
 
 void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    SCOPE;
     if (!in.valid) {
         out.valid = false;
         return;
     }
-    SCOPE;
-    inst_manager.execute_inst(*this, in, out);
+
+    // Use architectural regs after writeback() ran this cycle; id_ex.val_rs*
+    // is stale for values that completed WB between decode and execute.
+    uint32_t rs1_val = reg[in.rs1];
+    uint32_t rs2_val = reg[in.rs2];
+
+    // Forwarding: MEM/WB first, then EX/MEM overwrites (younger result wins)
+    if (mem_wb.valid && mem_wb.reg_write && mem_wb.rd != 0) {
+        uint32_t wb_val = mem_wb.mem_read ? mem_wb.mem_data : mem_wb.alu_result;
+        if (mem_wb.rd == in.rs1) rs1_val = wb_val;
+        if (mem_wb.rd == in.rs2) rs2_val = wb_val;
+    }
+    if (ex_mem.valid && ex_mem.reg_write && ex_mem.rd != 0) {
+        if (ex_mem.rd == in.rs1) rs1_val = ex_mem.alu_result;
+        if (ex_mem.rd == in.rs2) rs2_val = ex_mem.alu_result;
+    }
+
+    uint32_t op1 = rs1_val;
+    uint32_t op2 = in.alu_src ? in.imm : rs2_val;
+
+    out.alu_result = alu_execute(in.alu_op, op1, op2);
+
+    out.valid = true;
+    out.rd = in.rd;
+    out.val_rs2 = rs2_val;
+
+    out.reg_write = in.reg_write;
+    out.mem_read  = in.mem_read;
+    out.mem_write = in.mem_write;
+
+    LOG("EX result: " + HEX(out.alu_result));
 }
 
 void CPU::memory_access(Pipe_EX_MEM& in, Pipe_MEM_WB& out) {
     SCOPE;
-    if (!in.valid) {
-        out.valid = false;
-        exit_code = reg[10];  // Or whatever exit code logic you need
-        LOG("Invalid PC: " + HEX(in.pc));
-        return;
+        if (!in.valid) {
+            out.valid = false;
+            return;
+        }
+
+        out.valid = true;
+        out.rd = in.rd;
+        out.alu_result = in.alu_result;
+
+        out.reg_write = in.reg_write;
+        out.mem_read  = in.mem_read;
+
+        if (in.mem_read) {
+            out.mem_data = memory.read_word(in.alu_result);
+            LOG("LW addr: " + HEX(in.alu_result));
+        }
+        else if (in.mem_write) {
+            memory.write_word(in.alu_result, in.val_rs2);
+            LOG("SW addr: " + HEX(in.alu_result));
+        }
     }
-
-    out.valid = true;
-
-    out.rd = in.rd;
-    out.alu_result = in.alu_result;
-
-    out.reg_write = in.reg_write;
-    out.mem_read  = in.mem_read;
-
-    if (in.mem_read) {
-        LOG("LW addr = " + HEX(out.alu_result));
-        out.mem_data = memory.read_word(in.alu_result);
-    }
-    else if (in.mem_write) {
-        LOG("SW addr = " + HEX(out.alu_result));
-        memory.write_word(in.alu_result, in.val_rs2);
-    }
-}
 
 void CPU::writeback(Pipe_MEM_WB& in) {
-    SCOPE;
+    SCOPE;    
     if (!in.valid) return;
 
     if (in.reg_write && in.rd != 0) {
-        uint32_t data = in.mem_read ? in.mem_data : in.alu_result;
-        reg[in.rd] = data;
-        LOG("WB: rd=" + DEC(in.rd) + ", data=" + HEX(data));
+            uint32_t data = in.mem_read ? in.mem_data : in.alu_result;
+            reg[in.rd] = data;
+            LOG("WB: r" + DEC(in.rd) + " = " + HEX(data));
+        }
     }
-}
+
 
 bool CPU::step()
 {    
@@ -148,6 +191,7 @@ bool CPU::step()
     fetch(if_id);
     return true;
 } 
+
 
 void CPU::run(size_t max_steps) {
     

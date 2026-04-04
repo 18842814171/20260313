@@ -12,7 +12,7 @@ Memory::Memory() {
 void Memory::write(uint32_t addr, uint8_t* data, size_t size) {
     uint64_t offset = addr - BASE;
     
-    if (offset + size > MEM_SIZE) {
+    if (offset + size > MEM_SIZE*4) {
         throw out_of_range("Memory write out of bounds");
     }
     
@@ -24,7 +24,7 @@ void Memory::write(uint32_t addr, uint8_t* data, size_t size) {
 void Memory::read(uint32_t addr, uint8_t* data, size_t size) {
     uint64_t offset = addr - BASE;
     
-    if (offset + size > MEM_SIZE) {
+    if (offset + size > MEM_SIZE*4) {
         throw out_of_range("Memory read out of bounds");
     }
     
@@ -34,15 +34,22 @@ void Memory::read(uint32_t addr, uint8_t* data, size_t size) {
 }
 
 uint32_t Memory::read_word(uint32_t addr) {
-        uint32_t value = 0;
-        read(addr, reinterpret_cast<uint8_t*>(&value), sizeof(value));
-        return value;
+    if (!is_valid(addr)) {
+        throw std::out_of_range("Memory read out of bound");
     }
 
+    uint32_t index = (addr - BASE) / 4;
+    return mem[index];
+}
 void Memory::write_word(uint32_t addr, uint32_t value) {
-        Memory::write(addr, reinterpret_cast<uint8_t*>(&value), 4);
+    if (!is_valid(addr)) {
+        throw std::out_of_range("Memory write out of bound");
     }
+
+    uint32_t index = (addr - BASE) / 4;
+    mem[index] = value;
+}
 
 bool Memory::is_valid(uint32_t addr) const {
-    return (addr >= BASE && addr < BASE + MEM_SIZE);
+    return (addr >= BASE && addr < BASE + MEM_SIZE*4);
 }

@@ -12,7 +12,7 @@ public:
 
 class Memory:public Device{
 	private:
-		static const uint32_t MEM_SIZE = 1024*256;
+		static const uint32_t MEM_SIZE = 1024*256*4;
 		static const uint32_t BASE = 0x10000;
 		uint32_t mem[MEM_SIZE];
 	public:

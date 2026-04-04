@@ -25,7 +25,7 @@ public:
     //for ecall
     bool halt = false;        
     int exit_code = 0; 
-
+    bool stall=false;
     CPU(Memory& mem_ref, InstManager& im_ref); 
     ~CPU();
 
