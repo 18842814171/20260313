@@ -3,6 +3,15 @@
 #include "Decoder.hpp"
 #include "ALU.hpp"
 //Pipe if_id{}, id_ex{}, ex_mem{}, mem_wb{};
+
+enum class PipeStage {
+    IF,
+    ID,
+    EX,
+    MEM,
+    WB
+};
+
 struct Pipe_ID_EX{
     bool valid = false;
 
@@ -21,6 +30,10 @@ struct Pipe_ID_EX{
     bool reg_write;
     bool mem_read;
     bool mem_write;
+    
+    // interrupt/exception related
+    bool is_trap;
+    uint32_t trap_cause;
 };
 
 struct Pipe_EX_MEM{
@@ -37,6 +50,10 @@ struct Pipe_EX_MEM{
     bool reg_write;
     bool mem_read;
     bool mem_write;
+    
+    // interrupt/exception related
+    bool is_trap;
+    uint32_t trap_cause;
 };
 
 struct Pipe_MEM_WB{
@@ -50,6 +67,10 @@ struct Pipe_MEM_WB{
     // control
     bool reg_write;
     bool mem_read;
+    
+    // interrupt/exception related
+    bool is_trap;
+    uint32_t trap_cause;
 };
 
 struct Pipe_IF_ID {
@@ -57,6 +78,10 @@ struct Pipe_IF_ID {
     Inst inst;
 
     uint32_t pc;
+    
+    // for interrupt handling
+    bool interrupt_taken;
+    uint32_t interrupt_pc;
 };
 
 

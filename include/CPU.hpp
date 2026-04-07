@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <string>
 #include "Pipe.hpp"
+#include "Interrupt.hpp"
 class Memory;      
 class InstManager;
 
@@ -22,10 +23,11 @@ public:
     uint32_t reg[32]{};
     uint32_t pc = 0x10000;
     bool pc_modified = false;
-    //for ecall
-    bool halt = false;        
-    int exit_code = 0; 
+    // for ECALL/syscall; not the same as main's return (that is reg[10] / a0)
+    bool halt = false;
+    int exit_code = 0;
     bool stall=false;
+    
     CPU(Memory& mem_ref, InstManager& im_ref); 
     ~CPU();
 
@@ -44,9 +46,55 @@ public:
     void dump_state(const std::string& prefix = "") const; 
     std::string get_inst_name(uint32_t opcode) const;
     uint32_t calc_addr(const CPU& cpu, Inst inst) const;
-  
+    
+    // Interrupt and Syscall support
+    Memory& get_memory() { return memory; }
+    
+    void enable_interrupts() { 
+        interrupt_enabled = true; 
+        LOG("Interrupts enabled");
+    }
+    void disable_interrupts() { 
+        interrupt_enabled = false; 
+        LOG("Interrupts disabled");
+    }
+    bool interrupts_enabled() const { return interrupt_enabled; }
+    
+    bool is_trapping() const { return trap_handler && trap_handler->is_trapping(); }
+    void enter_trap(bool is_interrupt, uint32_t cause) {
+        if (trap_handler) {
+            trap_handler->enter_trap(is_interrupt, cause, pc - 4);
+            // Clear pipeline for interrupt/trap
+            if_id.valid = false;
+            id_ex.valid = false;
+            ex_mem.valid = false;
+        }
+    }
+    void exit_trap() {
+        if (trap_handler) {
+            trap_handler->exit_trap();
+            pc = trap_handler->get_epc();
+        }
+    }
+    
+    void request_interrupt(InterruptType type, uint32_t source = 0) {
+        if (int_ctrl) {
+            int_ctrl->request_interrupt(type, source);
+        }
+    }
+    
+    void set_trap_handler(TrapHandler* handler) { trap_handler = handler; }
+    void set_interrupt_controller(InterruptController* ctrl) { int_ctrl = ctrl; }
+    InterruptController* get_interrupt_controller() { return int_ctrl; }
+
 private:
     Memory& memory;
-    InstManager& inst_manager;   
+    InstManager& inst_manager;
+    /** a0/a7 for ECALL: same forwarding as EX stage, not raw reg[] */
+    uint32_t read_reg_forwarded(unsigned r) const;
+    
+    bool interrupt_enabled = false;
+    InterruptController* int_ctrl = nullptr;
+    TrapHandler* trap_handler = nullptr;
 };
 #endif

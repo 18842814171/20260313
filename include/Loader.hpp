@@ -54,5 +54,40 @@ struct Elf32_Sym {
 #define SHT_SYMTAB 2
 #define PT_LOAD 1
 #define EM_RISCV 243  // RISC-V machine type
+
 uint32_t load_elf(const std::string& filename, Device& mem);
 uint32_t get_symbol(const std::string& filename, const std::string& symbol_name);
+
+// Get argc and argv from command line, store them on stack and return argc
+// This is called before starting CPU to set up proper environment
+struct ArgvInfo {
+    uint32_t argc;
+    uint32_t argv_addr;
+    uint32_t sp;
+};
+
+inline ArgvInfo setup_args_for_elf(const std::string& filename, 
+                                     uint32_t stack_base, 
+                                     Device& mem) {
+    // For now, we run with argc=0 (no command line args)
+    // Store argc and a null argv pointer on stack
+    ArgvInfo info;
+    info.argc = 0;
+    info.argv_addr = stack_base;  // argv points to argc
+    
+    // Write argc at stack_base
+    uint8_t data[4];
+    for (int i = 0; i < 4; i++) {
+        data[i] = (0 >> (i * 8)) & 0xFF;
+    }
+    mem.write(stack_base, data, 4);
+    
+    // Write null argv[0] (end of argv array)
+    for (int i = 0; i < 4; i++) {
+        data[i] = 0;
+    }
+    mem.write(stack_base + 4, data, 4);
+    
+    info.sp = stack_base + 8;  // sp after argc and argv[0]
+    return info;
+}

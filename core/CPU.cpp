@@ -5,13 +5,29 @@
 #include "Device.hpp"
 #include "utils/utils.hpp"
 #include "inst/encoding.hpp"
+#include "inst/system.hpp"
+#include "Interrupt.hpp"
 #define DEBUG 1
 #include <cstring>
+#include <string>
 
 CPU::CPU(Memory& mem_ref, InstManager& im_ref)
     : memory(mem_ref), inst_manager(im_ref)
 {
     reg[0] = 0;
+}
+
+uint32_t CPU::read_reg_forwarded(unsigned r) const {
+    if (r == 0 || r >= 32)
+        return 0;
+    uint32_t v = reg[r];
+    if (mem_wb.valid && mem_wb.reg_write && mem_wb.rd != 0 && mem_wb.rd == r) {
+        v = mem_wb.mem_read ? mem_wb.mem_data : mem_wb.alu_result;
+    }
+    if (ex_mem.valid && ex_mem.reg_write && ex_mem.rd != 0 && ex_mem.rd == r) {
+        v = ex_mem.alu_result;
+    }
+    return v;
 }
 
 void CPU::fetch(Pipe_IF_ID& out) {
@@ -30,7 +46,7 @@ void CPU::fetch(Pipe_IF_ID& out) {
     LOG("IF pc: " + HEX(out.pc));
 
     pc += 4;
-    }
+}
 
 
 void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
@@ -96,6 +112,9 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
                 out.alu_src = true;
                 out.alu_op = ALUOp::ADD;
                 break;
+            case INST_ECALL:
+            case INST_EBREAK:
+                break;
         }
 
         LOG("ID pc: " + HEX(out.pc));
@@ -107,6 +126,40 @@ void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     SCOPE;
     if (!in.valid) {
         out.valid = false;
+        return;
+    }
+
+    if (in.inst_id == INST_ECALL) {
+        uint32_t syscall = read_reg_forwarded(17);
+        uint32_t arg0    = read_reg_forwarded(10);
+        uint32_t arg1    = read_reg_forwarded(11);
+        uint32_t arg2    = read_reg_forwarded(12);
+        
+        // Use enhanced syscall handler
+        handle_syscall(*this);
+        
+        out.valid = true;
+        out.rd = in.rd;
+        out.alu_result = 0;
+        out.val_rs2 = 0;
+        out.reg_write = false;
+        out.mem_read = false;
+        out.mem_write = false;
+        LOG("EX result: " + HEX(out.alu_result));
+        return;
+    }
+    if (in.inst_id == INST_EBREAK) {
+        halt = true;
+        exit_code = -1;
+        LOG("EBREAK");
+        out.valid = true;
+        out.rd = in.rd;
+        out.alu_result = 0;
+        out.val_rs2 = 0;
+        out.reg_write = false;
+        out.mem_read = false;
+        out.mem_write = false;
+        LOG("EX result: " + HEX(out.alu_result));
         return;
     }
 
@@ -183,12 +236,34 @@ bool CPU::step()
    
     GAP;
     SCOPE; 
+    
+    // Check for pending interrupts before fetching
+    if (interrupt_enabled && int_ctrl && int_ctrl->has_pending_interrupt()) {
+        LOG("Taking pending interrupt");
+        auto irq = int_ctrl->get_pending_interrupt();
+        enter_trap(true, static_cast<uint32_t>(irq.type));
+        // Clear pipeline for interrupt
+        if_id.valid = false;
+        id_ex.valid = false;
+        ex_mem.valid = false;
+    }
+    
     if (halt) return false;
     writeback(mem_wb);
     memory_access(ex_mem, mem_wb);
     execute(id_ex, ex_mem);
+    // ECALL/EBREAK set halt in execute; do not decode/fetch this cycle or we may
+    // fault on a bogus PC or pull more instructions after syscall.
+    if (halt)
+        return true;
     decode(if_id, id_ex);
     fetch(if_id);
+    
+    // Tick interrupt controller
+    if (int_ctrl) {
+        int_ctrl->tick();
+    }
+    
     return true;
 } 
 
@@ -205,12 +280,20 @@ void CPU::run(size_t max_steps) {
         GAP;
         if (!step())
             break;
-        dump_registers();
+        //dump_registers();
         steps++;
         
     }
 
-    LOG("Program exited with code: " + std::to_string(exit_code));
+    if (halt)
+        LOG("Halted (ECALL/EBREAK).");
+    else if (max_steps)
+        LOG("Stopped: step limit (" + std::to_string(max_steps) + ") reached before halt.");
+
+    // exit_code is set by ECALL exit syscall; else main's return is typically in a0 (x10).
+    LOG("Ran " + std::to_string(steps) + " step(s). "
+        "a0 (x10) = " + std::to_string(reg[10]) + ". "
+        "exit_code = " + std::to_string(exit_code));
 }
 
 
@@ -235,4 +318,3 @@ std::string CPU::get_inst_name(uint32_t opcode) const {
 CPU::~CPU() {
     
 }
-
