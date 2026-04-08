@@ -1,21 +1,29 @@
-// test.cpp - Test interface for simulator
+/**
+ * @file test.cpp - 模拟器测试入口
+ *
+ * 本文件是 RISC-V 模拟器的测试入口程序。
+ * 用户可通过命令行参数选择不同的测试模式。
+ *
+ * 使用方式:
+ *   ./build/test [OPTIONS]
+ */
+
 #include "SimulatorAPI.hpp"
 #include <iostream>
 #include <cstring>
 
 void print_usage(const char* program) {
-    std::cout << "Usage: " << program << " [OPTIONS]\n\n";
-    std::cout << "Test options:\n";
-    std::cout << "  --e0 [file]    Execute simple assembly program (default: tests/simple_asm.s)\n";
-    std::cout << "  --e1 <file>    Run compiled full program\n";
-    std::cout << "  --e2           Test interrupt functionality\n";
-    std::cout << "  --e3 <file>    Run tests with external device\n";
-    std::cout << "\nExamples:\n";
-    std::cout << "  " << program << " --e0\n";
-    std::cout << "  " << program << " --e0 tests/simple_asm.s\n";
-    std::cout << "  " << program << " --e1 out/simple32\n";
-    std::cout << "  " << program << " --e2\n";
-    std::cout << "  " << program << " --e3 out/simple32\n";
+    std::cout << "RISC-V 模拟器测试程序\n\n";
+    std::cout << "用法: " << program << " [OPTIONS] <file>\n\n";
+    std::cout << "选项:\n";
+    std::cout << "  --e0 <file>    运行 ELF 程序\n";
+    std::cout << "  --e1 <file>    运行完整程序（含设备）\n";
+    std::cout << "  --e2 <file>    测试外部设备\n";
+    std::cout << "  --help, -h     显示帮助信息\n\n";
+    std::cout << "示例:\n";
+    std::cout << "  " << program << " --e0 program.elf\n";
+    std::cout << "  " << program << " --e1 program.elf\n";
+    std::cout << "  " << program << " --e2 device_test.elf\n";
 }
 
 int main(int argc, char* argv[]) {
@@ -31,31 +39,28 @@ int main(int argc, char* argv[]) {
         return 0;
     }
     else if (option == "--e0") {
-        std::string asm_file = "tests/simple_asm.s";
-        if (argc >= 3) {
-            asm_file = argv[2];
+        if (argc < 3) {
+            std::cerr << "错误: --e0 需要指定文件\n";
+            return 1;
         }
-        test_simple_asm(asm_file);
+        test_simple_asm(argv[2]);
     }
     else if (option == "--e1") {
         if (argc < 3) {
-            std::cerr << "Error: --e1 requires a file argument\n";
+            std::cerr << "错误: --e1 需要指定文件\n";
             return 1;
         }
         test_full_program(argv[2]);
     }
     else if (option == "--e2") {
-        test_interrupt();
-    }
-    else if (option == "--e3") {
         if (argc < 3) {
-            std::cerr << "Error: --e3 requires a file argument\n";
+            std::cerr << "错误: --e2 需要指定文件\n";
             return 1;
         }
         test_ext_device(argv[2]);
     }
     else {
-        std::cerr << "Unknown option: " << option << "\n";
+        std::cerr << "未知选项: " << option << "\n";
         print_usage(argv[0]);
         return 1;
     }

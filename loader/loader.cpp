@@ -63,7 +63,7 @@ uint32_t load_elf(const std::string& filename, Device& mem) {
         }
     }
 
-    // Fallback: load .text section from section headers (for REL files)
+    // Fallback: load .text section from section headers (for REL files or EXEC without PHDR)
     if (ehdr.e_shoff > 0 && ehdr.e_shnum > 0) {
         std::vector<Elf32_Shdr> shdrs(ehdr.e_shnum);
         file.seekg(ehdr.e_shoff, std::ios::beg);
@@ -82,7 +82,7 @@ uint32_t load_elf(const std::string& filename, Device& mem) {
                 file.read(reinterpret_cast<char*>(section.data()), shdr.sh_size);
                 mem.write(vaddr, section.data(), shdr.sh_size);
 
-                if (entry == 0)
+                if (entry == 0 || entry < 0x10000)
                     entry = vaddr;
             }
         }

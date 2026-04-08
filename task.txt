@@ -1,4 +1,14 @@
+=================Important notes=======================
+compile program without ".o" or ".elf"
+clarify argument functions
+=====================
 1. simple asm test automatically exit:complete
 
 2. timer & simple interruption test program
 3. device & test program
+
+4. extension template: devices and instructions
+
+5. enable single step inspect: run each step at keyboard strike
+
+6. virtual clock/timing function in test.cpp: for efficiency evaluation

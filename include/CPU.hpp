@@ -7,11 +7,12 @@
 #include <string>
 #include "Pipe.hpp"
 #include "Interrupt.hpp"
-class Memory;      
+class Memory;
 class InstManager;
+class Bus;
 
 class Inst;
-#include "utils/utils.hpp"   
+#include "utils/utils.hpp"
 
 class CPU {
 public:
@@ -23,7 +24,6 @@ public:
     uint32_t reg[32]{};
     uint32_t pc = 0x10000;
     bool pc_modified = false;
-    // for ECALL/syscall; not the same as main's return (that is reg[10] / a0)
     bool halt = false;
     int exit_code = 0;
     bool stall=false;
@@ -50,6 +50,8 @@ public:
     
     // Interrupt and Syscall support
     Memory& get_memory() { return memory; }
+    void attach_bus(Bus* b) { bus = b; }
+    Bus* get_bus() { return bus; }
     
     void enable_interrupts() { 
         interrupt_enabled = true; 
@@ -65,7 +67,6 @@ public:
     void enter_trap(bool is_interrupt, uint32_t cause) {
         if (trap_handler) {
             trap_handler->enter_trap(is_interrupt, cause, pc - 4);
-            // Clear pipeline for interrupt/trap
             if_id.valid = false;
             id_ex.valid = false;
             ex_mem.valid = false;
@@ -91,7 +92,7 @@ public:
 private:
     Memory& memory;
     InstManager& inst_manager;
-    /** a0/a7 for ECALL: same forwarding as EX stage, not raw reg[] */
+    Bus* bus = nullptr;
     uint32_t read_reg_forwarded(unsigned r) const;
     
     bool interrupt_enabled = false;

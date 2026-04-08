@@ -21,24 +21,16 @@ SOURCES_OBJS = $(addprefix $(BUILD_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
 
 DEP_FILES = $(SOURCES_OBJS:.o=.d) 
 # 主程式目標
-TARGET = $(BUILD_DIR)/simulator
+TARGET = $(BUILD_DIR)/test
 
-# 測試目標（可執行檔）
-TEST_TARGET = $(BUILD_DIR)/test
-
-# 預設目標：產生主程式 
-all: $(TARGET) $(TEST_TARGET)
-
-# 主模擬器
-$(TARGET): $(SOURCES_OBJS)
-	@echo "Linking $@ ..."
-	$(CXX) $(SOURCES_OBJS) $(LDFLAGS) -o $@
+# 預設目標：編譯測試程式
+all: $(TARGET)
 
 # 測試程式
-$(TEST_TARGET): $(SOURCES_OBJS) test.cpp
+$(TARGET): $(SOURCES_OBJS) test.cpp
 	@echo "Compiling test.cpp ..."
 	$(CXX) $(CXXFLAGS) test.cpp \
-		build/Bus.o build/Memory.o build/Uart.o build/ALU.o build/CPU.o \
+		build/Bus.o build/Memory.o build/Timer.o build/Uart.o build/ALU.o build/CPU.o \
 		build/Decoder.o build/Instmngr.o build/Interrupt.o \
 		build/simulator.o build/simulator_api.o build/loader.o \
 		$(LDFLAGS) -o $@

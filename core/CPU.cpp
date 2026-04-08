@@ -3,6 +3,8 @@
 #include "Pipe.hpp"
 #include "Instmngr.hpp"   
 #include "Device.hpp"
+#include "Bus.hpp"
+#include "Timer.hpp"
 #include "utils/utils.hpp"
 #include "inst/encoding.hpp"
 #include "inst/system.hpp"
@@ -260,6 +262,17 @@ bool CPU::step()
         return true;
     decode(if_id, id_ex);
     fetch(if_id);
+    
+    // Tick devices via bus
+    if (bus) {
+        Timer* timer = dynamic_cast<Timer*>(bus->find_device(0x02004000));
+        if (timer) {
+            timer->tick();
+            if (timer->check_interrupt()) {
+                int_ctrl->request_interrupt(InterruptType::TIMER, 0);
+            }
+        }
+    }
     
     // Tick interrupt controller
     if (int_ctrl) {

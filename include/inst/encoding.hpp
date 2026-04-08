@@ -38,3 +38,4 @@ constexpr uint32_t INST_JALR  = make_inst_id(0X67, 0, 0);
 // imm12 encoded in "funct7 slot" (decoder key only)
 constexpr uint32_t INST_ECALL  = make_inst_id(0x73, 0b000, 0);   // imm12 = 0
 constexpr uint32_t INST_EBREAK = make_inst_id(0x73, 0b000, 1);   // imm12 = 1
+constexpr uint32_t INST_WFI    = make_inst_id(0x73, 0b000, 5);   // imm12 = 5

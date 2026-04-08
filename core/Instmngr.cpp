@@ -31,6 +31,7 @@ void InstManager::execute_inst(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     SCOPE;
     if (!in.valid) return;
     uint32_t id = in.inst_id;
+    LOG("execute_inst: id=" + HEX(id) + " (" + get_name(id) + ")");
     auto it = table_.find(id);
     if (it != table_.end()) {
         const auto name = it->second.name;

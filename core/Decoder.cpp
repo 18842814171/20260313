@@ -105,6 +105,7 @@ uint32_t Inst::inst_id() const{ // Use internal 'raw'
                 uint32_t imm12 = raw >> 20;
                 if (imm12 == 0) return INST_ECALL;
                 if (imm12 == 1) return INST_EBREAK;
+                if (imm12 == 5) return INST_WFI;  // WFI
             }
             
             return 0; // CSR instructions ignored

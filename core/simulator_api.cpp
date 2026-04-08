@@ -2,6 +2,8 @@
 #include "Instmngr.hpp"
 #include "CPU.hpp"
 #include "Device.hpp"
+#include "Bus.hpp"
+#include "Timer.hpp"
 #include "Decoder.hpp"
 #include "Loader.hpp"
 #include "Interrupt.hpp"
@@ -36,6 +38,7 @@ void register_all_instructions(InstManager *im) {
     im->register_inst(INST_JALR, "JALR", inst_jalr);
     im->register_inst(INST_EBREAK, "EBREAK", inst_ebreak);
     im->register_inst(INST_ECALL, "ECALL", inst_ecall);
+    im->register_inst(INST_WFI, "WFI", inst_wfi);
     LOG("Instruction table initialized with " + std::to_string(im->size()) + " entries");
 }
 
@@ -91,7 +94,7 @@ std::string compile_asm_to_elf(const std::string& asm_file) {
     if (elf_name.find(".s") == elf_name.length() - 2) {
         elf_name = elf_name.substr(0, elf_name.length() - 2);
     }
-    elf_name += ".elf";
+    
 
     std::string as_cmd = "/opt/riscv/bin/riscv64-unknown-elf-as -march=rv32i " + asm_file + " -o " + elf_name;
     int as_result = system(as_cmd.c_str());
@@ -189,8 +192,17 @@ void test_full_program(const std::string& infile) {
     CPU* cpu = nullptr;
     Memory* mem = nullptr;
     InstManager* im = nullptr;
+    Bus* bus = nullptr;
     
     init_cpu(cpu, mem, im, infile, 0);
+    
+    // 默认挂载所有设备
+    bus = new Bus();
+    bus->attach_memory(mem);
+    static Timer timer;
+    bus->attach_device(0x02004000, &timer);
+    cpu->attach_bus(bus);
+    
     cpu->run(0);
     
     std::cout << "\nResult: ";
@@ -254,6 +266,71 @@ void test_ext_device(const std::string& infile) {
     }
     
     LOG("\n=== External Device Test Complete ===");
+    cpu->dump_registers();
+    cleanup_cpu(cpu, mem, im);
+}
+
+void test_timer_interrupt(const std::string& infile, bool compile) {
+    std::cout << "\n========== TEST E2: Timer Interrupt ==========\n";
+    LOG("Starting timer interrupt test - " + infile);
+
+    std::string elf_file = infile;
+    if (compile) {
+        try {
+            elf_file = compile_asm_to_elf(infile);
+            LOG("Compile finished: " + infile + " -> " + elf_file);
+        } catch (const std::exception& e) {
+            LOG("Compile failed: " + std::string(e.what()));
+            return;
+        }
+    }
+
+    InstManager* im = new InstManager();
+    register_all_instructions(im);
+
+    Memory* mem = new Memory();
+    Bus* bus = new Bus();
+    bus->attach_memory(mem);
+
+    static Timer timer;
+    bus->attach_device(0x02004000, &timer);
+
+    CPU* cpu = new CPU(*mem, *im);
+    cpu->attach_bus(bus);
+
+    static InterruptController int_ctrl;
+    static TrapHandler trap;
+    cpu->set_interrupt_controller(&int_ctrl);
+    cpu->set_trap_handler(&trap);
+    cpu->enable_interrupts();
+
+    uint32_t entry_point;
+    try {
+        entry_point = load_elf(elf_file, *mem);
+        LOG("ELF entry: 0x" + HEX(entry_point));
+    } catch (const std::exception& e) {
+        LOG("Failed to load ELF: " + std::string(e.what()));
+        cleanup_cpu(cpu, mem, im);
+        return;
+    }
+
+    cpu->set_pc(entry_point);
+    cpu->reg[0] = 0;
+    cpu->reg[2] = 0x20000;
+    cpu->reg[10] = 0;
+    cpu->reg[17] = 0;
+
+    LOG("Starting timer interrupt test...");
+    cpu->run(200);
+
+    std::cout << "\nResult: ";
+    if (cpu->halt) {
+        LOG("PASS - Halted after " + DEC(cpu->step_count) + " steps");
+    } else {
+        LOG("Running (step " + DEC(cpu->step_count) + ")");
+    }
+
+    LOG("\n=== Timer Interrupt Test Complete ===");
     cpu->dump_registers();
     cleanup_cpu(cpu, mem, im);
 }

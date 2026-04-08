@@ -21,6 +21,20 @@ inline void inst_ebreak(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     LOG("EBREAK: Halting");
 }
 
+inline void inst_wfi(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    (void)in;
+    (void)out;
+    // WFI - Wait for Interrupt. In simulation:
+    // If there's a pending interrupt, return immediately.
+    // Otherwise, we just continue (no actual waiting in simulation).
+    if (cpu.interrupts_enabled() && cpu.get_interrupt_controller() &&
+        cpu.get_interrupt_controller()->has_pending_interrupt()) {
+        LOG("WFI: interrupt already pending, returning immediately");
+        return;
+    }
+    LOG("WFI: no pending interrupt, continuing");
+}
+
 // Enhanced syscall handling function
 inline int handle_syscall(CPU& cpu) {
     uint32_t syscall_num = cpu.reg[17];
