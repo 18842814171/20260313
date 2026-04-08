@@ -28,7 +28,7 @@ uint32_t load_elf(const std::string& filename, Device& mem) {
     }
 
     // Check if it's a 32-bit ELF
-    if (ehdr.e_ident[4] != 1) {  // EI_CLASS = ELFCLASS32 (1)
+    if (ehdr.e_ident[4] != 1) {
         throw std::runtime_error("Not a 32-bit ELF file");
     }
 
@@ -37,38 +37,61 @@ uint32_t load_elf(const std::string& filename, Device& mem) {
         throw std::runtime_error("Not a RISC-V ELF file");
     }
 
-    // Go to program headers
-    file.seekg(ehdr.e_phoff, std::ios::beg);
+    uint32_t entry = ehdr.e_entry;
 
-    for (int i = 0; i < ehdr.e_phnum; i++) {
-        Elf32_Phdr phdr;
-        file.read(reinterpret_cast<char*>(&phdr), sizeof(phdr));
+    // Try program headers first (EXEC/ET_DYN)
+    if (ehdr.e_phoff > 0 && ehdr.e_phnum > 0) {
+        file.seekg(ehdr.e_phoff, std::ios::beg);
 
-        if (phdr.p_type != PT_LOAD)
-            continue;
+        for (int i = 0; i < ehdr.e_phnum; i++) {
+            Elf32_Phdr phdr;
+            file.read(reinterpret_cast<char*>(&phdr), sizeof(phdr));
 
-        // Read segment data
-        std::vector<uint8_t> segment(phdr.p_filesz);
+            if (phdr.p_type != PT_LOAD || phdr.p_filesz == 0)
+                continue;
 
-        std::streampos current = file.tellg();
-        file.seekg(phdr.p_offset, std::ios::beg);
-        file.read(reinterpret_cast<char*>(segment.data()), phdr.p_filesz);
+            std::vector<uint8_t> segment(phdr.p_filesz);
+            file.seekg(phdr.p_offset, std::ios::beg);
+            file.read(reinterpret_cast<char*>(segment.data()), phdr.p_filesz);
+            mem.write(phdr.p_vaddr, segment.data(), phdr.p_filesz);
 
-        // Write to memory
-        mem.write(phdr.p_vaddr, segment.data(), phdr.p_filesz);
-
-        // Zero-fill (BSS section)
-        if (phdr.p_memsz > phdr.p_filesz) {
-            size_t zero_size = phdr.p_memsz - phdr.p_filesz;
-            std::vector<uint8_t> zeros(zero_size, 0);
-            mem.write(phdr.p_vaddr + phdr.p_filesz, zeros.data(), zero_size);
+            if (phdr.p_memsz > phdr.p_filesz) {
+                size_t zero_size = phdr.p_memsz - phdr.p_filesz;
+                std::vector<uint8_t> zeros(zero_size, 0);
+                mem.write(phdr.p_vaddr + phdr.p_filesz, zeros.data(), zero_size);
+            }
         }
-
-        // Restore file pointer
-        file.seekg(current, std::ios::beg);
     }
 
-    return ehdr.e_entry;  // Returns 32-bit entry point
+    // Fallback: load .text section from section headers (for REL files)
+    if (ehdr.e_shoff > 0 && ehdr.e_shnum > 0) {
+        std::vector<Elf32_Shdr> shdrs(ehdr.e_shnum);
+        file.seekg(ehdr.e_shoff, std::ios::beg);
+        file.read(reinterpret_cast<char*>(shdrs.data()), ehdr.e_shnum * sizeof(Elf32_Shdr));
+
+        for (const auto& shdr : shdrs) {
+            if (shdr.sh_type == SHT_PROGBITS && (shdr.sh_flags & SHF_ALLOC) && shdr.sh_size > 0) {
+                uint32_t vaddr = shdr.sh_addr;
+                // For REL files (.text section has sh_addr=0), map to 0x10000
+                if (vaddr == 0) {
+                    vaddr = 0x10000;
+                }
+
+                std::vector<uint8_t> section(shdr.sh_size);
+                file.seekg(shdr.sh_offset, std::ios::beg);
+                file.read(reinterpret_cast<char*>(section.data()), shdr.sh_size);
+                mem.write(vaddr, section.data(), shdr.sh_size);
+
+                if (entry == 0)
+                    entry = vaddr;
+            }
+        }
+    }
+
+    if (entry == 0)
+        entry = 0x10000;
+
+    return entry;
 }
 
 uint32_t get_symbol(const std::string& filename, const std::string& symbol_name) {

@@ -116,7 +116,7 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
             case INST_EBREAK:
                 break;
         }
-
+        LOG("Decoded Instruction:" + get_inst_name(out.inst_id));
         LOG("ID pc: " + HEX(out.pc));
     }
 
@@ -219,6 +219,7 @@ void CPU::memory_access(Pipe_EX_MEM& in, Pipe_MEM_WB& out) {
         }
     }
 
+
 void CPU::writeback(Pipe_MEM_WB& in) {
     SCOPE;    
     if (!in.valid) return;
@@ -231,10 +232,11 @@ void CPU::writeback(Pipe_MEM_WB& in) {
     }
 
 
+
 bool CPU::step()
 {    
    
-    GAP;
+    
     SCOPE; 
     
     // Check for pending interrupts before fetching
@@ -270,18 +272,18 @@ bool CPU::step()
 
 void CPU::run(size_t max_steps) {
     
-    size_t steps = 0;
+    step_count = 0;
     
     while (!halt) {
-        if (max_steps && steps >= max_steps)
+        if (max_steps && step_count >= max_steps)
             break;
         GAP;
-        LOG("Step: " + DEC(steps));
+        LOG("Step: " + DEC(step_count));
         GAP;
         if (!step())
             break;
         //dump_registers();
-        steps++;
+        step_count++;
         
     }
 
@@ -291,7 +293,7 @@ void CPU::run(size_t max_steps) {
         LOG("Stopped: step limit (" + std::to_string(max_steps) + ") reached before halt.");
 
     // exit_code is set by ECALL exit syscall; else main's return is typically in a0 (x10).
-    LOG("Ran " + std::to_string(steps) + " step(s). "
+    LOG("Ran " + std::to_string(step_count) + " step(s). "
         "a0 (x10) = " + std::to_string(reg[10]) + ". "
         "exit_code = " + std::to_string(exit_code));
 }

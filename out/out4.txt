@@ -1,3 +1,0 @@
-Entry point: 0x100f8
-Main address: 0x101c4
-Exit code: 0

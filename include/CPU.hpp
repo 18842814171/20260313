@@ -27,6 +27,7 @@ public:
     bool halt = false;
     int exit_code = 0;
     bool stall=false;
+    size_t step_count = 0;
     
     CPU(Memory& mem_ref, InstManager& im_ref); 
     ~CPU();

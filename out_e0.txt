@@ -1,0 +1,91 @@
+
+========== TEST E0: Simple ASM Program ==========
+Starting simple ASM test - tests/simple_asm.s
+Compile finished: tests/simple_asm.s -> tests/out_simple_asm.elf
+Instruction table initialized with 12 entries
+Interrupts enabled
+ELF entry: 0x0x10000
+Simple asm test: default entry = 0x10000
+==============================
+Step: 0
+==============================
+  IF pc: 0x10000
+==============================
+Step: 1
+==============================
+  Decoded Instruction:LUI
+  ID pc: 0x10000
+  IF pc: 0x10004
+==============================
+Step: 2
+==============================
+  EX result: 0x0
+  Decoded Instruction:SW
+  ID pc: 0x10004
+  IF pc: 0x10008
+==============================
+Step: 3
+==============================
+  EX result: 0xfffffffc
+  Decoded Instruction:ADDI
+  ID pc: 0x10008
+  IF pc: 0x1000c
+==============================
+Step: 4
+==============================
+  SW addr: 0xfffffffc
+  EX result: 0x0
+  Decoded Instruction:ADDI
+  ID pc: 0x1000c
+  IF pc: 0x10010
+==============================
+Step: 5
+==============================
+  EX result: 0xffffffd0
+  Decoded Instruction:ADDI
+  ID pc: 0x10010
+  IF pc: 0x10014
+==============================
+Step: 6
+==============================
+  WB: r8 = 0x0
+  EX result: 0xa
+  Decoded Instruction:ADDI
+  ID pc: 0x10014
+  IF pc: 0x10018
+==============================
+Step: 7
+==============================
+  WB: r2 = 0xffffffd0
+  EX result: 0x5d
+  Decoded Instruction:ADDI
+  ID pc: 0x10018
+  IF pc: 0x1001c
+==============================
+Step: 8
+==============================
+  WB: r15 = 0xa
+  EX result: 0x0
+  Decoded Instruction:ECALL
+  ID pc: 0x1001c
+  IF pc: 0x10020
+==============================
+Step: 9
+==============================
+  WB: r17 = 0x5d
+  SYSCALL: exit(0)
+  EX result: 0x0
+Halted (ECALL/EBREAK).
+Ran 10 step(s). a0 (x10) = 0. exit_code = 0
+
+Result: PASS - Halted after 10 steps
+=== Simple ASM Test Complete ===
+x00: 0x00000000   x01: 0x00000000   x02: 0xffffffd0   x03: 0x00000000
+x04: 0x00000000   x05: 0x00000000   x06: 0x00000000   x07: 0x00000000
+x08: 0x00000000   x09: 0x00000000   x10: 0x00000000   x11: 0x00000000
+x12: 0x00000000   x13: 0x00000000   x14: 0x00000000   x15: 0x0000000a
+x16: 0x00000000   x17: 0x0000005d   x18: 0x00000000   x19: 0x00000000
+x20: 0x00000000   x21: 0x00000000   x22: 0x00000000   x23: 0x00000000
+x24: 0x00000000   x25: 0x00000000   x26: 0x00000000   x27: 0x00000000
+x28: 0x00000000   x29: 0x00000000   x30: 0x00000000   x31: 0x00000000
+dump registers state pc: 0x00010024

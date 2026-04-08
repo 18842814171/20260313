@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <cstdio>
 
-void inst_lw(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+inline void inst_lw(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     out.valid = in.valid;
     out.rd = in.rd;
 
@@ -23,7 +23,7 @@ void inst_lw(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     LOG("LW: Address=" + HEX(out.alu_result));
 }
 
-void inst_sw(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+inline void inst_sw(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     out.valid = in.valid;
     int32_t imm = static_cast<int32_t>(in.imm);
     // Address calculation

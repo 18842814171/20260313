@@ -13,7 +13,7 @@ SOURCES = \
     $(wildcard device/*.cpp) \
 	$(wildcard core/*.cpp) \
 	loader/loader.cpp 
-	
+
 
 
 # Result: build/cpu.o build/memory.o build/loader.o
@@ -24,15 +24,29 @@ DEP_FILES = $(SOURCES_OBJS:.o=.d)
 TARGET = $(BUILD_DIR)/simulator
 
 # 測試目標（可執行檔）
-#TEST_TARGETS = build/run 
+TEST_TARGET = $(BUILD_DIR)/test
 
 # 預設目標：產生主程式 
-all: $(TARGET) 
+all: $(TARGET) $(TEST_TARGET)
 
 # 主模擬器
 $(TARGET): $(SOURCES_OBJS)
 	@echo "Linking $@ ..."
 	$(CXX) $(SOURCES_OBJS) $(LDFLAGS) -o $@
+
+# 測試程式
+$(TEST_TARGET): $(SOURCES_OBJS) test.cpp
+	@echo "Compiling test.cpp ..."
+	$(CXX) $(CXXFLAGS) test.cpp \
+		build/Bus.o build/Memory.o build/Uart.o build/ALU.o build/CPU.o \
+		build/Decoder.o build/Instmngr.o build/Interrupt.o \
+		build/simulator.o build/simulator_api.o build/loader.o \
+		$(LDFLAGS) -o $@
+
+# Clean only object files, keep simulator.o for main build
+clean_objs:
+	rm -f build/*.o
+	touch build/.keep
 
 # 通用編譯規則
 # VPATH tells Make where to look for source files if they aren't in the current dir
@@ -50,5 +64,5 @@ $(BUILD_DIR)/%.o: %.cpp
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all clean debug
+.PHONY: all clean debug test
 

@@ -52,8 +52,10 @@ struct Elf32_Sym {
 
 
 #define SHT_SYMTAB 2
+#define SHT_PROGBITS 1
+#define SHF_ALLOC 0x2
 #define PT_LOAD 1
-#define EM_RISCV 243  // RISC-V machine type
+#define EM_RISCV 243
 
 uint32_t load_elf(const std::string& filename, Device& mem);
 uint32_t get_symbol(const std::string& filename, const std::string& symbol_name);

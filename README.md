@@ -31,3 +31,24 @@ cntl+Z: exit debug
 print xxx: inspect the value or an address of a variable in the scope
 ```
 
+# 1. 汇编：.s → .o（目标文件）
+riscv64-unknown-elf-as -march=rv32i program.s -o program.o
+
+# 2. 转二进制：.o → .bin（纯机器码）
+riscv64-unknown-elf-objcopy -O binary program.o program.bin
+riscv64-unknown-elf-objdump -d program.o
+
+Usage: ./build/test [OPTIONS]
+
+Test options:
+  --e0 [file]    Execute simple assembly program (default: tests/simple_asm.s)
+  --e1 <file>    Run compiled full program
+  --e2           Test interrupt functionality
+  --e3 <file>    Run tests with external device
+
+Examples:
+  ./build/test --e0
+  ./build/test --e0 tests/simple_asm.s
+  ./build/test --e1 out/simple32
+  ./build/test --e2
+  ./build/test --e3 out/simple32
