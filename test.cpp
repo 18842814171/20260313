@@ -16,14 +16,11 @@ void print_usage(const char* program) {
     std::cout << "RISC-V 模拟器测试程序\n\n";
     std::cout << "用法: " << program << " [OPTIONS] <file>\n\n";
     std::cout << "选项:\n";
-    std::cout << "  --e0 <file>    运行 ELF 程序\n";
-    std::cout << "  --e1 <file>    运行完整程序（含设备）\n";
-    std::cout << "  --e2 <file>    测试外部设备\n";
+    std::cout << "  --e0 <file>    运行 ELF 程序：输入二进制程序\n";
+    std::cout << "  --e1 <file>    运行完整程序（含设备）：输入c程序\n";
+    std::cout << "  --e2 <file>    测试外部设备：输入测试c程序\n";
     std::cout << "  --help, -h     显示帮助信息\n\n";
-    std::cout << "示例:\n";
-    std::cout << "  " << program << " --e0 program.elf\n";
-    std::cout << "  " << program << " --e1 program.elf\n";
-    std::cout << "  " << program << " --e2 device_test.elf\n";
+    
 }
 
 int main(int argc, char* argv[]) {

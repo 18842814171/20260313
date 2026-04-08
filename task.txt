@@ -2,9 +2,7 @@
 compile program without ".o" or ".elf"
 clarify argument functions
 =====================
-1. simple asm test automatically exit:complete
-
-2. timer & simple interruption test program
+uart
 3. device & test program
 
 4. extension template: devices and instructions
