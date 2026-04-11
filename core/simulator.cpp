@@ -3,7 +3,8 @@
 #include "utils/utils.hpp"
 #include "Instmngr.hpp"
 #include "CPU.hpp"
-#include "Device.hpp"
+#include "device/Device.hpp"
+#include "device/Bus.hpp"
 #include "Decoder.hpp"
 #include "Loader.hpp"
 #include "Interrupt.hpp"
@@ -70,6 +71,11 @@ void simulator(std::string infile, size_t max_steps) {
     cpu.reg[11] = args.argv_addr;  // a1 = argv (points to argc on stack)
     cpu.reg[12] = 0;               // a2
     cpu.reg[17] = 0;               // a7 (for potential ecalls)
+    
+    // Attach Bus (devices are attached by test functions as needed)
+    Bus bus;
+    bus.attach_memory(&mem);
+    cpu.attach_bus(&bus);
 
     // Run the program (execute instructions)
     cpu.run(max_steps);  

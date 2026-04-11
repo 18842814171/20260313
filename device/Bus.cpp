@@ -1,5 +1,6 @@
-#include "Bus.hpp"
+#include "device/Bus.hpp"
 #include <cstring>
+#include <iostream>
 
 Bus::Bus() : memory(nullptr) {
 }
@@ -25,19 +26,31 @@ Device* Bus::find_device(uint32_t addr) {
 }
 
 void Bus::write(uint32_t addr, uint8_t* data, size_t size) {
-    Device* dev = find_device(addr);
-    if (dev) {
-        dev->write(addr, data, size);
-    } else if (memory) {
+    for (auto& pair : devices) {
+        uint32_t base = pair.first;
+        Device* dev = pair.second;
+        if (addr >= base && addr < base + 0x1000) {
+            uint32_t offset = addr - base;
+            dev->write(offset, data, size);
+            return;
+        }
+    }
+    if (memory) {
         memory->write(addr, data, size);
     }
 }
 
 void Bus::read(uint32_t addr, uint8_t* data, size_t size) {
-    Device* dev = find_device(addr);
-    if (dev) {
-        dev->read(addr, data, size);
-    } else if (memory) {
+    for (auto& pair : devices) {
+        uint32_t base = pair.first;
+        Device* dev = pair.second;
+        if (addr >= base && addr < base + 0x1000) {
+            uint32_t offset = addr - base;
+            dev->read(offset, data, size);
+            return;
+        }
+    }
+    if (memory) {
         memory->read(addr, data, size);
     } else {
         memset(data, 0, size);

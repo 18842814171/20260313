@@ -2,6 +2,7 @@
 #define BUS_HPP
 
 #include "Device.hpp"
+#include "Memory.hpp"
 #include <cstdint>
 #include <cstddef>
 #include <map>

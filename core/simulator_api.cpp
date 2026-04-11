@@ -1,9 +1,10 @@
 #include "SimulatorAPI.hpp"
 #include "Instmngr.hpp"
 #include "CPU.hpp"
-#include "Device.hpp"
-#include "Bus.hpp"
-#include "Timer.hpp"
+#include "device/Device.hpp"
+#include "device/Bus.hpp"
+#include "device/Timer.hpp"
+#include "device/UART.hpp"
 #include "Decoder.hpp"
 #include "Loader.hpp"
 #include "Interrupt.hpp"
@@ -19,8 +20,6 @@
 #include <iostream>
 #include <stdexcept>
 #include <fstream>
-#include <cstdlib>
-#include <sys/stat.h>
 
 // Forward declaration - defined in simulator.cpp
 extern void simulator(std::string infile, size_t max_steps);
@@ -80,49 +79,11 @@ void cleanup_cpu(CPU* cpu, Memory* mem, InstManager* im) {
     delete im;
 }
 
-// 编译汇编文件为 ELF
-// 返回生成的 ELF 文件路径，编译失败则抛出异常
-std::string compile_asm_to_elf(const std::string& asm_file) {
-    struct stat buffer;
-    if (stat(asm_file.c_str(), &buffer) != 0) {
-        throw std::runtime_error("File doesn't exist: " + asm_file);
-    }
-
-    std::string base_path = asm_file.substr(0, asm_file.find_last_of('/') + 1);
-    std::string asm_basename = asm_file.substr(asm_file.find_last_of('/') + 1);
-    std::string elf_name = base_path + "out_" + asm_basename;
-    if (elf_name.find(".s") == elf_name.length() - 2) {
-        elf_name = elf_name.substr(0, elf_name.length() - 2);
-    }
-    
-
-    std::string as_cmd = "/opt/riscv/bin/riscv64-unknown-elf-as -march=rv32i " + asm_file + " -o " + elf_name;
-    int as_result = system(as_cmd.c_str());
-    if (as_result != 0) {
-        throw std::runtime_error("Assembly failed: " + as_cmd);
-    }
-
-    std::string fix_cmd = "/opt/riscv/bin/riscv64-unknown-elf-objcopy -O elf32-littleriscv --set-start 0x10000 " + elf_name;
-    system(fix_cmd.c_str());
-
-    return elf_name;
-}
-
-void test_simple_asm(const std::string& asm_file) {
+void test_simple_asm(const std::string& elf_file) {
     std::cout << "\n========== TEST E0: Simple ASM Program ==========\n";
-    LOG("Starting simple ASM test - " + asm_file);
+    LOG("Loading ELF: " + elf_file);
 
-    // 1. 编译汇编文件为 ELF
-    std::string elf_file;
-    try {
-        elf_file = compile_asm_to_elf(asm_file);
-        LOG("Compile finished: " + asm_file + " -> " + elf_file);
-    } catch (const std::exception& e) {
-        LOG("Compile failed: " + std::string(e.what()));
-        return;
-    }
-
-    // 2. 初始化 CPU 和内存
+    // 初始化 CPU 和内存
     InstManager* im = new InstManager();
     register_all_instructions(im);
 
@@ -135,44 +96,35 @@ void test_simple_asm(const std::string& asm_file) {
     cpu->set_trap_handler(&trap);
     cpu->enable_interrupts();
 
-    // 3. 加载 ELF 到内存
+    // 加载 ELF 到内存
     uint32_t entry_point;
     try {
         entry_point = load_elf(elf_file, *mem);
         LOG("ELF entry: 0x" + HEX(entry_point));
     } catch (const std::exception& e) {
-        LOG("Failed to load ELF " );
+        LOG("Failed to load ELF");
         cleanup_cpu(cpu, mem, im);
         return;
     }
 
-    // 4. 设置 CPU 初始状态
-    // 如果入口点是默认的 0x10000（简单的原始代码），跳过 sp 设置让代码自己处理
-    // 否则使用标准程序入口，需要设置栈
+    // 设置 CPU 初始状态
     if (entry_point == 0x10000) {
-        // 简单汇编代码：直接执行，假设 sp 已在代码/链接脚本中设置
         cpu->set_pc(entry_point);
-        cpu->reg[0] = 0;           // x0 = 0 (constant zero)
-        // 不设置 sp，让汇编代码自己处理或链接脚本设置
-        cpu->reg[10] = 0;          // a0 = 0
-        cpu->reg[17] = 0;          // a7 = 0
+        cpu->reg[0] = 0;
+        cpu->reg[10] = 0;
+        cpu->reg[17] = 0;
         LOG("Simple asm test: default entry = 0x10000");
     } else {
-        // 标准程序入口：需要设置栈
         cpu->set_pc(entry_point);
-        cpu->reg[0] = 0;           // x0 = 0 (constant zero)
-        cpu->reg[2] = 0x20000;     // sp (stack pointer)
-        cpu->reg[10] = 0;          // a0 = 0 (return value)
-        cpu->reg[17] = 0;          // a7 = 0 (syscall number)
+        cpu->reg[0] = 0;
+        cpu->reg[2] = 0x20000;
+        cpu->reg[10] = 0;
+        cpu->reg[17] = 0;
         LOG("Entry 0x" + HEX(entry_point));
     }
 
-    // 5. 运行程序（最多 10000 条指令）
-    
     cpu->run(2000);
 
-    // 6. 输出结果
-    
     std::cout << "\nResult: ";
     if (cpu->halt) {
         LOG("PASS - Halted after " + DEC(cpu->step_count) + " steps");
@@ -196,7 +148,7 @@ void test_full_program(const std::string& infile) {
     
     init_cpu(cpu, mem, im, infile, 0);
     
-    // 默认挂载所有设备
+    // 默认只挂载 Timer 和内存
     bus = new Bus();
     bus->attach_memory(mem);
     static Timer timer;
@@ -238,29 +190,45 @@ void test_interrupt() {
     cpu.dump_registers();
 }
 
-void test_ext_device(const std::string& infile) {
-    LOG("========== TEST E3: External Device ==========");
-    LOG("Testing with external device: " + infile);
+// test_ext_device: 根据设备类型挂载指定设备
+// device_type: "timer", "uart", "all"
+void test_ext_device(const std::string& infile, const std::string& device_type) {
+    LOG("========== TEST E2: External Device ==========");
+    LOG("Testing with device: " + device_type);
+    LOG("ELF file: " + infile);
     
     CPU* cpu = nullptr;
     Memory* mem = nullptr;
     InstManager* im = nullptr;
+    Bus* bus = nullptr;
     
     init_cpu(cpu, mem, im, infile, 0);
     
-    // Check if program uses UART or other devices
-    LOG("Looking for device access in program...");
-    LOG("Memory base: 0x10000, MMIO range: 0x10000000");
+    bus = new Bus();
+    bus->attach_memory(mem);
     
-    // Note: The actual device testing would require instrumenting
-    // memory reads/writes to detect device access
-    LOG("Device test requires specific ELF with device I/O");
+    // 根据设备类型挂载
+    if (device_type == "timer" || device_type == "all") {
+        static Timer timer;
+        bus->attach_device(0x02004000, &timer);
+        LOG("Timer device attached at 0x02004000");
+    }
     
-    cpu->run(500);  // Run limited steps
+    if (device_type == "uart" || device_type == "all") {
+        static UART uart;
+        bus->attach_device(0x10000000, &uart);
+        LOG("UART device attached at 0x10000000");
+    }
     
-   LOG("Result after 500 steps: ");
+    cpu->attach_bus(bus);
+    
+    LOG("MMIO range: 0x10000000+");
+    
+    cpu->run(1000);  // Run limited steps
+    
+    LOG("Result after 1000 steps: ");
     if (cpu->halt) {
-        LOG("Halted");
+        LOG("Halted with exit_code=" + DEC(cpu->exit_code));
     } else {
         LOG("Running (step " + DEC(cpu->step_count) + ")");
     }
@@ -270,20 +238,9 @@ void test_ext_device(const std::string& infile) {
     cleanup_cpu(cpu, mem, im);
 }
 
-void test_timer_interrupt(const std::string& infile, bool compile) {
-    std::cout << "\n========== TEST E2: Timer Interrupt ==========\n";
-    LOG("Starting timer interrupt test - " + infile);
-
-    std::string elf_file = infile;
-    if (compile) {
-        try {
-            elf_file = compile_asm_to_elf(infile);
-            LOG("Compile finished: " + infile + " -> " + elf_file);
-        } catch (const std::exception& e) {
-            LOG("Compile failed: " + std::string(e.what()));
-            return;
-        }
-    }
+void test_timer_interrupt(const std::string& elf_file) {
+    std::cout << "\n========== TEST: Timer Interrupt ==========\n";
+    LOG("Starting timer interrupt test - " + elf_file);
 
     InstManager* im = new InstManager();
     register_all_instructions(im);

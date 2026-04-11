@@ -2,9 +2,9 @@
 #include "CPU.hpp"
 #include "Pipe.hpp"
 #include "Instmngr.hpp"   
-#include "Device.hpp"
-#include "Bus.hpp"
-#include "Timer.hpp"
+#include "device/Device.hpp"
+#include "device/Bus.hpp"
+#include "device/Timer.hpp"
 #include "utils/utils.hpp"
 #include "inst/encoding.hpp"
 #include "inst/system.hpp"
@@ -43,7 +43,13 @@ void CPU::fetch(Pipe_IF_ID& out) {
 
     out.valid = true;
     out.pc = pc;
-    out.inst = Inst(memory.read_word(pc));
+    
+    // Use bus if available for MMIO support, otherwise use memory directly
+    if (bus) {
+        out.inst = Inst(bus->read_word(pc));
+    } else {
+        out.inst = Inst(memory.read_word(pc));
+    }
 
     LOG("IF pc: " + HEX(out.pc));
 
@@ -212,11 +218,19 @@ void CPU::memory_access(Pipe_EX_MEM& in, Pipe_MEM_WB& out) {
         out.mem_read  = in.mem_read;
 
         if (in.mem_read) {
-            out.mem_data = memory.read_word(in.alu_result);
+            if (bus) {
+                out.mem_data = bus->read_word(in.alu_result);
+            } else {
+                out.mem_data = memory.read_word(in.alu_result);
+            }
             LOG("LW addr: " + HEX(in.alu_result));
         }
         else if (in.mem_write) {
-            memory.write_word(in.alu_result, in.val_rs2);
+            if (bus) {
+                bus->write_word(in.alu_result, in.val_rs2);
+            } else {
+                memory.write_word(in.alu_result, in.val_rs2);
+            }
             LOG("SW addr: " + HEX(in.alu_result));
         }
     }

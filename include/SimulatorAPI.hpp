@@ -8,7 +8,7 @@ class CPU;
 class Memory;
 class InstManager;
 class Bus;
-
+class UART;
 // Register all instructions (defined in simulator.cpp)
 void register_all_instructions(InstManager *im);
 
@@ -19,19 +19,23 @@ void init_cpu(CPU*& cpu, Memory*& mem, InstManager*& im,
 // Clean up resources
 void cleanup_cpu(CPU* cpu, Memory* mem, InstManager* im);
 
-// Run simple assembly program (direct exit)
-void test_simple_asm(const std::string& asm_file);
+// Run simple assembly program (expects ELF file)
+void test_simple_asm(const std::string& elf_file);
 
-// Run compiled full program (devices attached by default)
+// Run compiled full program (expects ELF file)
 void test_full_program(const std::string& infile);
 
 // Test interrupt functionality
 void test_interrupt();
 
-// Test timer interrupt
-void test_timer_interrupt(const std::string& elf_file, bool compile = true);
+// Test timer interrupt (expects ELF file)
+void test_timer_interrupt(const std::string& elf_file);
 
-// Test with external device
-void test_ext_device(const std::string& infile);
+// Test with external device (specify device type: timer, uart, all)
+void test_ext_device(const std::string& infile, const std::string& device_type = "all");
+
+// Interactive device testing
+void test_interactive();
+void test_interactive_with_elf(const std::string& elf_file);
 
 #endif // SIMULATOR_API_HPP

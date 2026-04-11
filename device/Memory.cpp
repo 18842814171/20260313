@@ -1,4 +1,5 @@
-#include "Device.hpp"
+#include "device/Device.hpp"
+#include "device/Memory.hpp"
 #include<iostream>
 #include <cstring>
 #include <stdexcept>

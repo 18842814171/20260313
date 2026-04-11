@@ -27,6 +27,7 @@ public:
 
     uint64_t get_mtime() const { return mtime; }
     uint64_t get_mtimecmp() const { return mtimecmp; }
+    void set_mtimecmp(uint64_t val) { mtimecmp = val; }
 };
 
 #endif
