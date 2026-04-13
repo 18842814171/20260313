@@ -7,10 +7,11 @@
  */
 
 #include "SimulatorAPI.hpp"
+#include "CPU.hpp"
 #include "device/Timer.hpp"
 #include "device/UART.hpp"
 #include "device/Bus.hpp"
-#include "CPU.hpp"
+
 #include "Instmngr.hpp"
 #include "Loader.hpp"
 #include "utils/utils.hpp"
@@ -18,12 +19,14 @@
 #include <iomanip>
 #include <sstream>
 #include <string>
+#include <fstream>
 #include <thread>
 #include <chrono>
 #include <atomic>
 #include <termios.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <dirent.h>
 
 // 交互式测试类
 class InteractiveDeviceTest {
@@ -174,8 +177,10 @@ public:
 
     // 启动 UART 输入监听
     void start_uart_input() {
-        input_thread_running = true;
-        uart_input_thread = std::thread(&InteractiveDeviceTest::uart_input_loop, this);
+        if (!input_thread_running) {
+            input_thread_running = true;
+            uart_input_thread = std::thread(&InteractiveDeviceTest::uart_input_loop, this);
+        }
     }
 
     // 停止 UART 输入监听
@@ -183,6 +188,19 @@ public:
         input_thread_running = false;
         if (uart_input_thread.joinable()) {
             uart_input_thread.join();
+        }
+    }
+
+    // 处理 UART 输入（从键盘到 UART RX）
+    void process_uart_input() {
+        while (has_pending_char()) {
+            uint8_t c = get_pending_char();
+            if (c == 3) {  // Ctrl+C
+                std::cout << "\n中断程序执行...\n";
+                cpu->halt = true;
+                break;
+            }
+            uart->put_char(c);
         }
     }
 
@@ -197,22 +215,29 @@ public:
         return pending_char.load();
     }
 
-    // 打印帮助信息
-    void print_help() {
+    // 打印帮助信息（主界面 - 3个选项）
+    void print_main_menu() {
         std::cout << "\n";
-        std::cout << "========== 交互式设备测试 ==========\n";
-        std::cout << "  1. 运行模拟器 (n steps)    - 运行 n 步模拟\n";
-        std::cout << "  2. 显示状态               - 显示 CPU 和设备状态\n";
-        std::cout << "  3. Timer 测试             - 测试 Timer 设备\n";
-        std::cout << "  4. UART 测试              - 测试 UART 设备\n";
-        std::cout << "  5. 发送字符到 UART        - 向 UART 发送字符\n";
-        std::cout << "  6. 读取键盘输入           - 从键盘读取输入到 UART RX FIFO\n";
-        std::cout << "  7. 内存测试               - 测试 MMIO 读写\n";
-        std::cout << "  8. 中断测试               - 测试中断功能\n";
-        std::cout << "  9. 加载 ELF               - 加载新的 ELF 文件\n";
-        std::cout << "  0. 帮助                   - 显示帮助信息\n";
-        std::cout << "  q. 退出                   - 退出程序\n";
-        std::cout << "====================================\n";
+        std::cout << "================================\n";
+        std::cout << "  主菜单\n";
+        std::cout << "  1. 运行程序\n";
+        std::cout << "  2. 增加指令\n";
+        std::cout << "  3. 增加外设\n";
+        std::cout << "  q. 退出\n";
+        std::cout << "================================\n";
+        std::cout << "\n选择操作: ";
+    }
+
+    // 打印帮助信息（用于单步/自动运行模式）
+    void print_run_help() {
+        std::cout << "\n";
+        std::cout << "========== 运行模式 ==========\n";
+        std::cout << "  输入 n     - 执行下一步\n";
+        std::cout << "  输入数字   - 自动运行指定步数\n";
+        std::cout << "  直接回车   - 自动运行至程序完成\n";
+        std::cout << "  h/?       - 显示此帮助\n";
+        std::cout << "  q         - 返回主菜单\n";
+        std::cout << "============================\n";
         std::cout << "\n选择操作: ";
     }
 
@@ -478,25 +503,46 @@ public:
     }
 
     // 运行模拟器 n 步 (用于自动运行模式)
-    void run_steps(int steps) {
-        if (steps <= 0) steps = 100;
+    void run_steps(int steps, bool interactive = false) {
+        if (steps < 0) steps = 0;
 
         std::cout << "\n========== 运行模拟器 ==========\n";
-        std::cout << "Running " << steps << " steps...\n\n";
+        if (steps == 0) {
+            std::cout << "Running until halt...\n\n";
+        } else {
+            std::cout << "Running " << steps << " steps...\n\n";
+        }
 
         cpu->halt = false;
         running = true;
 
+        if (interactive) {
+            start_uart_input();
+            std::cout << "按 Ctrl+C 停止程序运行\n\n";
+        }
+
         int count = 0;
-        while (!cpu->halt && count < steps) {
+        while (!cpu->halt) {
             cpu->step();
             count++;
+
+            if (interactive) {
+                process_uart_input();
+            }
+
+            if (steps > 0 && count >= steps) {
+                break;
+            }
 
             // 每 1000 步打印一次进度
             if (count % 1000 == 0) {
                 std::cout << "Progress: " << count << " steps, PC=0x" 
                           << std::hex << std::setfill('0') << std::setw(8) << cpu->pc << "\n";
             }
+        }
+
+        if (interactive) {
+            stop_uart_input();
         }
 
         std::cout << "\nRan " << count << " steps.\n";
@@ -561,16 +607,445 @@ public:
         return cpu ? cpu->step_count : 0;
     }
 
+    // 显示tests文件夹下的所有文件
+    void list_test_files() {
+        std::cout << "\n========== 可用测试文件 ==========\n";
+        std::system("ls -lh tests/ 2>/dev/null | grep -E '\\.(c|s)$' || echo 'tests/ 目录不存在或无文件'");
+        std::cout << "================================\n";
+    }
+
+    // 运行程序模式（单步或自动）
+    void run_program_mode() {
+        std::string elf_file = "";
+        bool loaded = false;
+
+        while (true) {
+            if (!loaded) {
+                std::cout << "\n请选择测试文件（输入文件名，例如: tests/timer_uart_test.c）\n";
+                list_test_files();
+                std::cout << "输入文件路径（直接回车返回主菜单）: ";
+
+                std::string path;
+                std::getline(std::cin, path);
+
+                // 清理输入（去除尾随空白字符）
+                while (!path.empty() && (path.back() == '\r' || path.back() == '\n' || path.back() == ' ' || path.back() == '\t')) {
+                    path.pop_back();
+                }
+
+                if (path.empty()) {
+                    return; // 返回主菜单
+                }
+
+                // 检查文件是否存在
+                std::ifstream file_check(path);
+                if (!file_check.good()) {
+                    std::cerr << "错误: 文件不存在或无法访问: " << path << "\n";
+                    std::cout << "请重新输入。\n";
+                    continue;
+                }
+
+                // 提示用户编译
+                std::cout << "\n请按照 compile.sh 方法编译所需二进制文件:\n";
+                std::cout << "  汇编文件 (.s): ./compile.sh asm <file.s>\n";
+                std::cout << "  C 文件 (.c):   ./compile.sh c <file.c>\n";
+                std::cout << "\n请确保已编译出 ELF 文件后再继续。\n";
+                std::cout << "是否已编译? (y/n): ";
+
+                std::string confirm;
+                std::getline(std::cin, confirm);
+                if (confirm != "y" && confirm != "Y") {
+                    std::cout << "请先编译文件，然后重新运行程序。\n";
+                    continue;
+                }
+
+                // 尝试加载 ELF 文件（假设源文件和 ELF 文件同名但无扩展名或在 out/ 目录）
+                std::string elf_path = path;
+                // 如果输入的是 tests/ 下的 .c 或 .s 文件，尝试在 out/ 目录找对应的 ELF
+                if (elf_path.find("tests/") == 0) {
+                    std::string base = elf_path.substr(6); // 去掉 "tests/"
+                    size_t dot_pos = base.rfind('.');
+                    if (dot_pos != std::string::npos) {
+                        base = base.substr(0, dot_pos);
+                    }
+                    elf_path = "out/" + base;
+                }
+
+                std::cout << "尝试加载 ELF: " << elf_path << "\n";
+                cleanup();
+                if (init(elf_path)) {
+                    std::cout << "成功加载: " << elf_path << "\n";
+                    loaded = true;
+                } else {
+                    std::cerr << "无法加载 ELF: " << elf_path << "\n";
+                    std::cout << "请确认是否已正确编译。\n";
+                }
+                continue;
+            }
+
+            // 已加载，显示运行选项
+            std::cout << "\n请选择运行方式:\n";
+            std::cout << "  1. 单步执行（每次输入 n 执行一步）\n";
+            std::cout << "  2. 自动运行（输入步数或回车运行至完成）\n";
+            std::cout << "  q. 返回主菜单\n";
+            std::cout << "选择: ";
+
+            std::string mode_input;
+            std::getline(std::cin, mode_input);
+
+            if (mode_input.empty()) continue;
+
+            if (mode_input == "q" || mode_input == "Q") {
+                loaded = false;
+                continue;
+            }
+
+            if (mode_input == "1") {
+                // 单步执行模式
+                std::cout << "\n=== 单步执行模式 ===\n";
+                std::cout << "输入 n 执行下一步，输入 q 返回\n";
+                while (true) {
+                    std::cout << "\n[单步] 输入 n (next) 或 q (quit): ";
+                    std::string step_input;
+                    std::getline(std::cin, step_input);
+
+                    if (step_input.empty()) continue;
+
+                    if (step_input == "n" || step_input == "N") {
+                        if (cpu->halt) {
+                            std::cout << "程序已停��。退���码: " << cpu->exit_code << "\n";
+                            break;
+                        }
+                        cpu->step();
+                        std::cout << "PC=0x" << std::hex << std::setfill('0') << std::setw(8) << cpu->pc
+                                  << std::dec << "  Steps: " << cpu->step_count << "\n";
+                    } else if (step_input == "q" || step_input == "Q") {
+                        break;
+                    } else {
+                        std::cout << "无效输入，请输入 n 或 q\n";
+                    }
+                }
+            } else if (mode_input == "2") {
+                // 自动运行模式
+                std::cout << "\n=== 自动运行模式 ===\n";
+                std::cout << "输入步数（整数）直接回车则运行至程序完成: ";
+                std::string steps_input;
+                std::getline(std::cin, steps_input);
+
+                if (steps_input.empty()) {
+                    // 运行至完成
+                    std::cout << "\n运行至程序完成...\n\n";
+                    run_steps(0); // 0 表示无限制运行
+                } else {
+                    // 运行指定步数
+                    try {
+                        int steps = std::stoi(steps_input);
+                        if (steps <= 0) steps = 100;
+                        std::cout << "\n运行 " << steps << " 步...\n\n";
+                        run_steps(steps);
+                    } catch (...) {
+                        std::cerr << "无效的步数，运行 100 步...\n\n";
+                        run_steps(100);
+                    }
+                }
+            } else {
+                std::cout << "无效选择，请重新选择。\n";
+            }
+        }
+    }
+
+    // 增加指令菜单（原有功能的映射）
+    void add_instruction_menu() {
+        while (true) {
+            std::cout << "\n========== 增加指令/测试 ==========\n";
+            std::cout << "请参考模板文件 tests/instruction_test.c 设计您的测试程序。\n";
+            
+    
+            std::cout << "编辑完成后，请参考 compile.sh 进行编译：\n";
+            std::cout << "  C 程序: ./compile.sh c <your_file.c>\n";
+            std::cout << "  汇编程序: ./compile.sh asm <your_file.s>\n";
+            std::cout << "  反汇编: ./compile.sh dump <elf_file>\n\n";
+    
+            std::cout << "按 Enter 键返回主菜单，然后选择 \"1. 运行程序\" 来运行您的程序。\n";
+
+            std::string input;
+            std::getline(std::cin, input);
+
+            
+        }
+    }
+
+    // 建立新的外设测试文件
+    void create_new_device_test() {
+        std::cout << "\n========== 建立新的外设测试 ==========\n";
+        std::cout << "输入新文件名（不含路径，例如: my_device_test.c）: ";
+        
+        std::string filename;
+        std::getline(std::cin, filename);
+        
+        // 清理输入
+        while (!filename.empty() && (filename.back() == '\r' || filename.back() == '\n')) {
+            filename.pop_back();
+        }
+        
+        if (filename.empty()) {
+            std::cout << "取消创建。\n";
+            return;
+        }
+        
+        // 添加 .c 扩展名（如果没有）
+        if (filename.find(".c") == std::string::npos) {
+            filename += ".c";
+        }
+        
+        std::string filepath = "tests/" + filename;
+        
+        // 检查文件是否已存在
+        std::ifstream file_check(filepath);
+        if (file_check.good()) {
+            std::cout << "文件已存在: " << filepath << "\n";
+            std::cout << "是否覆盖? (y/n): ";
+            std::string confirm;
+            std::getline(std::cin, confirm);
+            if (confirm != "y" && confirm != "Y") {
+                std::cout << "取消创建。\n";
+                return;
+            }
+        }
+        
+        // 复制模板文件
+        std::ifstream src("tests/program_test_device.c", std::ios::binary);
+        if (!src.is_open()) {
+            std::cerr << "无法打开模板文件: tests/program_test_device.c\n";
+            return;
+        }
+        
+        std::ofstream dst(filepath, std::ios::binary);
+        if (!dst.is_open()) {
+            std::cerr << "无法创建文件: " << filepath << "\n";
+            return;
+        }
+        
+        dst << src.rdbuf();
+        src.close();
+        dst.close();
+        
+        std::cout << "已创建文件: " << filepath << "\n";
+        
+        // 询问是否打开编辑器
+        std::cout << "\n是否打开编辑器编辑该文件? (y/n): ";
+        std::string edit_confirm;
+        std::getline(std::cin, edit_confirm);
+        
+        if (edit_confirm == "y" || edit_confirm == "Y") {
+            // 使用系统默认编辑器打开文件
+            const char* editor = std::getenv("EDITOR");
+            if (!editor) editor = "nano";
+            
+            std::string cmd = std::string(editor) + " " + filepath;
+            std::cout << "正在打开编辑器...\n";
+            int ret = std::system(cmd.c_str());
+            
+            if (ret == 0) {
+                std::cout << "编辑完成。\n";
+                
+                // 询问是否编译
+                std::cout << "\n是否编译该文件? (y/n): ";
+                std::string compile_confirm;
+                std::getline(std::cin, compile_confirm);
+                
+                if (compile_confirm == "y" || compile_confirm == "Y") {
+                    compile_c_file(filepath);
+                }
+            } else {
+                std::cout << "编辑器退出失败。\n";
+            }
+        }
+        
+        std::cout << "\n====================================\n";
+    }
+
+    // 列出并选择要编译的文件
+    void list_and_compile_files() {
+        std::cout << "\n========== 编译已有代码 ==========\n";
+        std::cout << "tests/ 目录下的 .c 文件:\n\n";
+        
+        // 获取 tests/ 目录下的 .c 文件列表
+        std::vector<std::string> c_files;
+        DIR* dir = opendir("tests/");
+        if (dir) {
+            struct dirent* entry;
+            while ((entry = readdir(dir)) != nullptr) {
+                std::string name = entry->d_name;
+                if (name.length() > 2 && name.substr(name.length() - 2) == ".c") {
+                    c_files.push_back(name);
+                }
+            }
+            closedir(dir);
+        }
+        
+        if (c_files.empty()) {
+            std::cout << "没有找到 .c 文件。\n";
+            std::cout << "================================\n";
+            return;
+        }
+        
+        // 按字母排序
+        std::sort(c_files.begin(), c_files.end());
+        
+        // 显示文件列表
+        for (size_t i = 0; i < c_files.size(); i++) {
+            std::cout << "  " << (i + 1) << ". " << c_files[i] << "\n";
+        }
+        std::cout << "\n  0. 返回\n";
+        std::cout << "\n================================\n";
+        
+        std::cout << "选择要编译的文件（输入编号）: ";
+        std::string choice_input;
+        std::getline(std::cin, choice_input);
+        
+        if (choice_input.empty() || choice_input == "0") {
+            std::cout << "取消编译。\n";
+            return;
+        }
+        
+        // 解析选择
+        try {
+            int choice = std::stoi(choice_input);
+            if (choice < 1 || choice > static_cast<int>(c_files.size())) {
+                std::cout << "无效选择。\n";
+                return;
+            }
+            
+            std::string selected_file = "tests/" + c_files[choice - 1];
+            std::cout << "\n已选择: " << selected_file << "\n";
+            
+            // 询问编译选项
+            std::cout << "\n========== 编译选项 ==========\n";
+            std::cout << "  1. 直接编译\n";
+            std::cout << "  2. 编译并运行（交互模式）\n";
+            std::cout << "  3. 编译并运行（自动模式）\n";
+            std::cout << "  q. 返回\n";
+            std::cout << "\n选择操作: ";
+            
+            std::string compile_choice;
+            std::getline(std::cin, compile_choice);
+            
+            if (compile_choice == "q" || compile_choice == "Q") {
+                return;
+            }
+            
+            // 执行编译
+            if (compile_choice == "1" || compile_choice == "2" || compile_choice == "3") {
+                compile_c_file(selected_file);
+                
+                if (compile_choice == "2" || compile_choice == "3") {
+                    // 编译成功后运行
+                    // 获取 ELF 文件路径
+                    std::string elf_path = selected_file;
+                    size_t dot_pos = elf_path.rfind('.');
+                    if (dot_pos != std::string::npos) {
+                        elf_path = elf_path.substr(0, dot_pos);
+                    }
+                    elf_path = "out/" + elf_path;
+                    
+                    // 替换 tests/ 前缀
+                    size_t tests_pos = elf_path.find("tests/");
+                    if (tests_pos != std::string::npos) {
+                        elf_path = elf_path.substr(0, tests_pos) + elf_path.substr(tests_pos + 6);
+                    }
+                    
+                    std::cout << "\n正在加载 ELF: " << elf_path << "\n";
+                    cleanup();
+                    if (init(elf_path)) {
+                        std::cout << "成功加载，准备运行...\n";
+                        if (compile_choice == "2") {
+                            // 交互模式
+                            run_steps(0, true);
+                        } else {
+                            // 自动模式
+                            run_steps(10000, false);
+                        }
+                    } else {
+                        std::cerr << "无法加载 ELF: " << elf_path << "\n";
+                    }
+                }
+            } else {
+                std::cout << "无效选择。\n";
+            }
+            
+        } catch (...) {
+            std::cout << "无效输入。\n";
+        }
+        
+        std::cout << "\n================================\n";
+    }
+
+    // 编译指定的 C 文件
+    void compile_c_file(const std::string& filepath) {
+        std::cout << "\n========== 编译文件 ==========\n";
+        std::cout << "正在编译: " << filepath << "\n\n";
+        
+        // 调用 compile.sh 进行编译
+        std::string cmd = "./compile.sh c " + filepath;
+        int ret = std::system(cmd.c_str());
+        
+        if (ret == 0) {
+            std::cout << "\n编译成功！\n";
+            
+            // 显示生成的 ELF 文件
+            std::string elf_path = filepath;
+            size_t dot_pos = elf_path.rfind('.');
+            if (dot_pos != std::string::npos) {
+                elf_path = elf_path.substr(0, dot_pos);
+            }
+            // 替换 tests/ 为 out/
+            size_t tests_pos = elf_path.find("tests/");
+            if (tests_pos != std::string::npos) {
+                elf_path = elf_path.substr(0, tests_pos) + "out/" + elf_path.substr(tests_pos + 6);
+            }
+            
+            std::cout << "ELF 文件: " << elf_path << "\n";
+        } else {
+            std::cout << "\n编译失败！退出码: " << ret << "\n";
+        }
+        
+        std::cout << "=============================\n";
+    }
+
+    // 增加外设（新版简化流程）
+    void add_device() {
+        while (true) {
+            std::cout << "\n========== 增加外设 ==========\n";
+            std::cout << "  1. 建立新的外设测试代码\n";
+            std::cout << "  2. 编译已有代码\n";
+            std::cout << "  q. 返回主菜单\n";
+            std::cout << "================================\n";
+            std::cout << "\n选择操作: ";
+            
+            std::string choice;
+            std::getline(std::cin, choice);
+            
+            if (choice == "1") {
+                create_new_device_test();
+            } else if (choice == "2") {
+                list_and_compile_files();
+            } else if (choice == "q" || choice == "Q") {
+                std::cout << "返回主菜单。\n";
+                return;
+            } else {
+                std::cout << "无效选择，请重新输入。\n";
+            }
+        }
+    }
+
     // 主菜单循环
     void menu_loop() {
         std::cout << "\n";
-        std::cout << "**********************************\n";
-        std::cout << "*  RISC-V 模拟器 - 交互式测试    *\n";
-        std::cout << "**********************************\n";
-        std::cout << "\n";
-        std::cout << "欢迎使用交互式设备测试程序!\n";
-        std::cout << "此程序允许您直接测试 Timer 和 UART 设备。\n";
-        std::cout << "\n";
+        std::cout << "================================\n";
+        std::cout << "  RISC-V 模拟器 - 交互式测试\n";
+        std::cout << "================================\n";
+        std::cout << "\n欢迎使用!\n\n";
 
         if (!cpu) {
             std::cout << "初始化裸机测试环境...\n";
@@ -580,63 +1055,24 @@ public:
         show_status();
 
         while (true) {
-            print_help();
+            print_main_menu();
 
             std::string input;
             std::getline(std::cin, input);
 
             if (input.empty()) continue;
 
-            char cmd = input[0];
-
-            switch (cmd) {
-                case '1': {
-                    // 运行模拟器
-                    int steps = 100;
-                    std::istringstream iss(input.substr(1));
-                    iss >> steps;
-                    if (steps <= 0) steps = 100;
-                    run_steps(steps);
-                    break;
-                }
-                case '2':
-                    show_status();
-                    break;
-                case '3':
-                    test_timer();
-                    break;
-                case '4':
-                    test_uart();
-                    break;
-                case '5':
-                    send_char_to_uart();
-                    break;
-                case '6':
-                    read_keyboard_to_uart();
-                    break;
-                case '7':
-                    test_memory();
-                    break;
-                case '8':
-                    test_interrupt();
-                    break;
-                case '9':
-                    load_elf_file();
-                    break;
-                case '0':
-                case 'h':
-                case 'H':
-                case '?':
-                    print_help();
-                    break;
-                case 'q':
-                case 'Q':
-                    std::cout << "退出程序.\n";
-                    return;
-                default:
-                    std::cout << "未知命令: " << cmd << "\n";
-                    print_help();
-                    break;
+            if (input == "1") {
+                run_program_mode();
+            } else if (input == "2") {
+                add_instruction_menu();
+            } else if (input == "3") {
+                add_device();
+            } else if (input == "q" || input == "Q") {
+                std::cout << "退出程序.\n";
+                return;
+            } else {
+                std::cout << "未知命令: " << input << "\n";
             }
         }
     }
@@ -661,6 +1097,7 @@ void test_interactive_with_elf(const std::string& elf_file) {
 int main(int argc, char* argv[]) {
     InteractiveDeviceTest test;
     bool auto_run = false;
+    bool interactive_mode = false;  // 交互模式：键盘输入传递给 UART
     int run_steps = 10000;
     std::string elf_file;
 
@@ -672,7 +1109,7 @@ int main(int argc, char* argv[]) {
             // 尝试解析步数
             if (i + 1 < argc) {
                 std::string next = argv[i + 1];
-                if (next[0] >= '0' && next[0] <= '9') {
+                if (!next.empty() && next[0] >= '0' && next[0] <= '9') {
                     try {
                         run_steps = std::stoi(next);
                         i++;  // 跳过已解析的步数
@@ -681,15 +1118,22 @@ int main(int argc, char* argv[]) {
                     }
                 }
             }
+        } else if (arg == "--interactive" || arg == "-i") {
+            // 交互模式：键盘输入传递给 UART RX
+            interactive_mode = true;
+            auto_run = true;
+            run_steps = 0;  // 运行到结束
         } else if (arg == "--help" || arg == "-h") {
             std::cout << "用法: " << argv[0] << " [OPTIONS] [ELF_FILE]\n";
             std::cout << "选项:\n";
-            std::cout << "  --run, -r [N]    加载 ELF 后自动运行 N 步 (默认 10000)\n";
-            std::cout << "  --help, -h      显示帮助信息\n";
+            std::cout << "  --run, -r [N]       加载 ELF 后自动运行 N 步 (默认 10000)\n";
+            std::cout << "  --interactive, -i  交互模式: 键盘输入传递给 UART RX\n";
+            std::cout << "  --help, -h         显示帮助信息\n";
             std::cout << "\n示例:\n";
             std::cout << "  " << argv[0] << "                           # 交互模式\n";
             std::cout << "  " << argv[0] << " out/timer_uart_test        # 加载后交互\n";
             std::cout << "  " << argv[0] << " --run out/timer_uart_test  # 加载后自动运行\n";
+            std::cout << "  " << argv[0] << " -i out/timer_uart_test    # 交互模式运行\n";
             return 0;
         } else {
             // 假设是 ELF 文件
@@ -704,13 +1148,11 @@ int main(int argc, char* argv[]) {
             std::cerr << "无法加载 ELF: " << elf_file << "\n";
             return 1;
         }
-        std::cout << "ELF 加载成功，入口点 PC=0x" << std::hex << std::setfill('0') << std::setw(8) << test.get_entry_pc() << "\n";
-    }
-
-    if (auto_run) {
-        std::cout << "\n========== 自动运行模式 ==========\n";
-        std::cout << "运行 " << run_steps << " 步...\n\n";
-        test.run_steps(run_steps);
+        std::cout << "入口 PC=0x" << std::hex << std::setfill('0') << std::setw(8) << test.get_entry_pc() << "\n";
+        
+        // 加载了 ELF 就直接运行，不进入交互菜单
+        std::cout << "\n========== 运行 " << run_steps << " 步 ==========\n\n";
+        test.run_steps(run_steps, interactive_mode);
         std::cout << "\n========== 运行结束 ==========\n";
         test.show_status();
     } else {

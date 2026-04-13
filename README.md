@@ -13,13 +13,7 @@ make
 ./compile.sh c tests/hello.c     # C -> ELF
 ```
 
-## 运行测试
 
-```bash
-./build/test --e0 out/hello      # 运行汇编程序
-./build/test --e1 out/hello      # 运行完整程序 (Timer)
-./build/test --e2 timer out/timer_uart_test # 测试设备 (timer/uart/all)
-```
 
 ## 设备地址
 
@@ -29,21 +23,21 @@ make
 | UART  | 0x10000000 |
 
 
+# 非交互式
+
+```bash
+./build/test --e0 out/hello      # 运行汇编程序
+./build/test --e1 out/hello      # 运行完整程序 (Timer)
+./build/test --e2 timer out/timer_uart_test # 测试设备 (timer/uart/all)
+```
+
 # 交互
-# 编译
+## 编译
 make test-interactive
 
-# 交互模式
+## 交互模式运行
 ./build/test_interactive
 
-# 加载 ELF 后交互
-./build/test_interactive out/timer_uart_test
 
-# 加载 ELF 后自动运行 (默认 10000 步)
-./build/test_interactive --run out/timer_uart_test
-
-# 加载 ELF 后自动运行指定步数
-./build/test_interactive --run 5000 out/timer_uart_test
-
-# 帮助
+## 交互模式帮助
 ./build/test_interactive --help
