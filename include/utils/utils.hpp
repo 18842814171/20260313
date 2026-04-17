@@ -77,6 +77,12 @@ struct LogScope {
     LogScope() { PUSH; }
     ~LogScope() { POP; }
 };
+
+// Add these macros to your debug system
+#define LOG_INST(a) debug::_0__log_func("[INST] " + std::string(a))
+#define LOG_MEM(a) debug::_0__log_func("[MEM] " + std::string(a))
+#define LOG_WB(a) debug::_0__log_func("[WB] " + std::string(a))
+#define LOG_REG(a,b) debug::_0__log_func("[REG] x" + std::to_string(a) + " = " + HEX(b))
 #endif
 #if DEBUG != 1
 #define LOG(a)

@@ -165,10 +165,10 @@ inline int handle_syscall(CPU& cpu) {
 inline void inst_ecall(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     (void)in;
     (void)out;
-    
+
     // Handle syscall using the enhanced handler
     handle_syscall(cpu);
-    
+
     // If the syscall was exit, halt will be set by the handler
     // Otherwise, we continue execution
     if (cpu.halt) {
@@ -176,6 +176,181 @@ inline void inst_ecall(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     } else {
         LOG("ECALL: syscall handled, a0 = " + std::to_string(cpu.reg[10]));
     }
+}
+
+// CSR Register addresses
+enum {
+    CSR_JVT     = 0x007,  // Jump Vector Table
+    CSR_MSTATUS = 0x300,
+    CSR_MISA    = 0x301,
+    CSR_MIE     = 0x304,
+    CSR_MTVEC   = 0x305,
+    CSR_MEPC    = 0x341,
+    CSR_MCAUSE  = 0x342,
+    CSR_MTVAL   = 0x343,
+    CSR_MIP     = 0x344,
+};
+
+// CSR state in CPU
+struct CSRState {
+    uint32_t jvt = 0;
+    uint32_t mstatus = 0;
+    uint32_t mie = 0;
+    uint32_t mtvec = 0x100;
+    uint32_t mepc = 0;
+    uint32_t mcause = 0;
+    uint32_t mtval = 0;
+    uint32_t mip = 0;
+};
+
+// Global CSR state (simplified - one set of CSRs)
+inline CSRState& get_csr_state(CPU& cpu) {
+    static CSRState csr_state;
+    return csr_state;
+}
+
+inline uint32_t read_csr(CPU& cpu, uint32_t csr_addr) {
+    auto& csr = get_csr_state(cpu);
+    switch (csr_addr) {
+        case CSR_JVT:     return csr.jvt;
+        case CSR_MSTATUS: return csr.mstatus;
+        case CSR_MIE:     return csr.mie;
+        case CSR_MTVEC:   return csr.mtvec;
+        case CSR_MEPC:     return csr.mepc;
+        case CSR_MCAUSE:   return csr.mcause;
+        case CSR_MTVAL:   return csr.mtval;
+        case CSR_MIP:     return csr.mip;
+        default:
+            LOG("CSR read: unsupported addr 0x" + std::to_string(csr_addr));
+            return 0;
+    }
+}
+
+inline void write_csr(CPU& cpu, uint32_t csr_addr, uint32_t value) {
+    auto& csr = get_csr_state(cpu);
+    switch (csr_addr) {
+        case CSR_JVT:     csr.jvt = value; break;
+        case CSR_MSTATUS: csr.mstatus = value; break;
+        case CSR_MIE:     csr.mie = value; break;
+        case CSR_MTVEC:   csr.mtvec = value; break;
+        case CSR_MEPC:    csr.mepc = value; break;
+        case CSR_MCAUSE:  csr.mcause = value; break;
+        case CSR_MTVAL:   csr.mtval = value; break;
+        case CSR_MIP:     csr.mip = value; break;
+        default:
+            LOG("CSR write: unsupported addr 0x" + std::to_string(csr_addr));
+            break;
+    }
+}
+
+// CSRRW - Atomic Read-Write CSR
+inline void inst_csrrw(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    uint32_t csr_addr = in.imm;  // imm12 field
+    uint32_t rs1_val = cpu.reg[in.rs1];
+
+    // Read old CSR value
+    uint32_t old_csr = read_csr(cpu, csr_addr);
+
+    // Write new value from rs1
+    write_csr(cpu, csr_addr, rs1_val);
+
+    // Write old value to rd
+    if (in.rd != 0) {
+        cpu.reg[in.rd] = old_csr;
+    }
+
+    out.reg_write = (in.rd != 0);
+    out.alu_result = old_csr;
+    out.valid = true;
+}
+
+// CSRRS - Atomic Read and Set Bit in CSR
+inline void inst_csrrs(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    uint32_t csr_addr = in.imm;
+    uint32_t rs1_val = cpu.reg[in.rs1];
+
+    uint32_t old_csr = read_csr(cpu, csr_addr);
+    uint32_t new_csr = old_csr | rs1_val;
+    write_csr(cpu, csr_addr, new_csr);
+
+    if (in.rd != 0) {
+        cpu.reg[in.rd] = old_csr;
+    }
+
+    out.reg_write = (in.rd != 0);
+    out.alu_result = old_csr;
+    out.valid = true;
+}
+
+// CSRRC - Atomic Read and Clear Bit in CSR
+inline void inst_csrrc(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    uint32_t csr_addr = in.imm;
+    uint32_t rs1_val = cpu.reg[in.rs1];
+
+    uint32_t old_csr = read_csr(cpu, csr_addr);
+    uint32_t new_csr = old_csr & ~rs1_val;
+    write_csr(cpu, csr_addr, new_csr);
+
+    if (in.rd != 0) {
+        cpu.reg[in.rd] = old_csr;
+    }
+
+    out.reg_write = (in.rd != 0);
+    out.alu_result = old_csr;
+    out.valid = true;
+}
+
+// CSRRWI - Read-Write Immediate
+inline void inst_csrrwi(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    uint32_t csr_addr = in.imm;
+    uint32_t zimm = in.rs1;  // rs1 is actually zimm[4:0] for CSRRWI
+
+    uint32_t old_csr = read_csr(cpu, csr_addr);
+    write_csr(cpu, csr_addr, zimm);
+
+    if (in.rd != 0) {
+        cpu.reg[in.rd] = old_csr;
+    }
+
+    out.reg_write = (in.rd != 0);
+    out.alu_result = old_csr;
+    out.valid = true;
+}
+
+// CSRRSI - Read-Set Immediate
+inline void inst_csrrsi(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    uint32_t csr_addr = in.imm;
+    uint32_t zimm = in.rs1;
+
+    uint32_t old_csr = read_csr(cpu, csr_addr);
+    uint32_t new_csr = old_csr | zimm;
+    write_csr(cpu, csr_addr, new_csr);
+
+    if (in.rd != 0) {
+        cpu.reg[in.rd] = old_csr;
+    }
+
+    out.reg_write = (in.rd != 0);
+    out.alu_result = old_csr;
+    out.valid = true;
+}
+
+// CSRRCI - Read-Clear Immediate
+inline void inst_csrrmi(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    uint32_t csr_addr = in.imm;
+    uint32_t zimm = in.rs1;
+
+    uint32_t old_csr = read_csr(cpu, csr_addr);
+    uint32_t new_csr = old_csr & ~zimm;
+    write_csr(cpu, csr_addr, new_csr);
+
+    if (in.rd != 0) {
+        cpu.reg[in.rd] = old_csr;
+    }
+
+    out.reg_write = (in.rd != 0);
+    out.alu_result = old_csr;
+    out.valid = true;
 }
 
 enum {

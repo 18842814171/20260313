@@ -39,3 +39,13 @@ constexpr uint32_t INST_JALR  = make_inst_id(0X67, 0, 0);
 constexpr uint32_t INST_ECALL  = make_inst_id(0x73, 0b000, 0);   // imm12 = 0
 constexpr uint32_t INST_EBREAK = make_inst_id(0x73, 0b000, 1);   // imm12 = 1
 constexpr uint32_t INST_WFI    = make_inst_id(0x73, 0b000, 5);   // imm12 = 5
+
+// ====================== CSR Instructions ======================
+// For CSRRW/CSRRS/CSRRCI: funct3 tells us the instruction type
+// imm12 is stored in the funct7 bits
+constexpr uint32_t INST_CSRRW = make_inst_id(0x73, 0b001, 0);  // CSR Read-Write
+constexpr uint32_t INST_CSRRS = make_inst_id(0x73, 0b010, 0);  // CSR Read-Set
+constexpr uint32_t INST_CSRRC = make_inst_id(0x73, 0b011, 0);  // CSR Read-Clear
+constexpr uint32_t INST_CSRRWI = make_inst_id(0x73, 0b101, 0); // CSR Read-Write Imm
+constexpr uint32_t INST_CSRRSI = make_inst_id(0x73, 0b110, 0); // CSR Read-Set Imm
+constexpr uint32_t INST_CSRRCI = make_inst_id(0x73, 0b111, 0); // CSR Read-Clear Imm

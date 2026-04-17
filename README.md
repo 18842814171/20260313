@@ -41,3 +41,9 @@ make test-interactive
 
 ## 交互模式帮助
 ./build/test_interactive --help
+
+## 直接运行模式
+
+./compile.sh runi out/program
+
+./build/test_interactive -i out/program

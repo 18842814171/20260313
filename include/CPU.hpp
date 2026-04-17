@@ -10,6 +10,7 @@
 class Memory;
 class InstManager;
 class Bus;
+class UART;
 
 class Inst;
 #include "utils/utils.hpp"
@@ -44,10 +45,10 @@ public:
 
     void set_pc(uint32_t new_pc) { pc = new_pc; }
     void dump_registers() const; 
-    void dump_state(const std::string& prefix = "") const; 
+    //void dump_state(const std::string& prefix = "") const; 
     std::string get_inst_name(uint32_t opcode) const;
-    uint32_t calc_addr(const CPU& cpu, Inst inst) const;
-    
+    //uint32_t calc_addr(const CPU& cpu, Inst inst) const;
+    void dump_pipeline_state() const;
     // Interrupt and Syscall support
     Memory& get_memory() { return memory; }
     void attach_bus(Bus* b) { bus = b; }
@@ -89,12 +90,17 @@ public:
     void set_interrupt_controller(InterruptController* ctrl) { int_ctrl = ctrl; }
     InterruptController* get_interrupt_controller() { return int_ctrl; }
 
+    // UART for stdin simulation
+    void attach_uart(UART* u) { uart = u; }
+    UART* get_uart() const { return uart; }
+
 private:
     Memory& memory;
     InstManager& inst_manager;
     Bus* bus = nullptr;
+    UART* uart = nullptr;
     uint32_t read_reg_forwarded(unsigned r) const;
-    
+
     bool interrupt_enabled = false;
     InterruptController* int_ctrl = nullptr;
     TrapHandler* trap_handler = nullptr;

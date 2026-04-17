@@ -43,9 +43,9 @@ run_elf() {
         echo "交互模式: 键盘输入会传递给程序的 UART"
         echo "按 Ctrl+C 可中断程序"
         echo ""
-        ./build/test_interactive -i "$elf" 1
+        ./build/test_interactive -i "$elf"
     else
-        ./build/test_interactive "$elf" 0
+        ./build/test_interactive "$elf"
     fi
 }
 

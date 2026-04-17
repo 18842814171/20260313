@@ -52,7 +52,7 @@ void CPU::fetch(Pipe_IF_ID& out) {
     }
 
     LOG("IF pc: " + HEX(out.pc));
-
+    LOG("  raw_inst: " + HEX(out.inst.raw));
     pc += 4;
 }
 
@@ -72,6 +72,7 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
                (id_ex.rd == in.inst.rs1() ||
                 id_ex.rd == in.inst.rs2())) {
                 stall = true;
+                LOG("LOAD-USE hazard detected: waiting for x" + DEC(id_ex.rd));
             }
         }
 
@@ -98,6 +99,18 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
         out.mem_read  = false;
         out.mem_write = false;
 
+        // Log decode info
+    std::string inst_name = get_inst_name(out.inst_id);
+    LOG("Decoded Instruction: " + inst_name);
+    LOG("ID pc: " + HEX(out.pc));
+    
+    if (out.inst_id != INST_ECALL && out.inst_id != INST_EBREAK) {
+        LOG("  rs1=x" + DEC(out.rs1) + " rs2=x" + DEC(out.rs2) + " rd=x" + DEC(out.rd));
+        if (out.imm != 0) {
+            LOG("  imm=" + HEX(out.imm));
+        }
+        LOG("  rs1_val=" + HEX(out.val_rs1) + " rs2_val=" + HEX(out.val_rs2));
+    }
         switch (out.inst_id) {
             case INST_ADD: // ADD
                 out.reg_write = true;
@@ -122,6 +135,12 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
                 break;
             case INST_ECALL:
             case INST_EBREAK:
+            case INST_CSRRW:
+            case INST_CSRRS:
+            case INST_CSRRC:
+            case INST_CSRRWI:
+            case INST_CSRRSI:
+            case INST_CSRRCI:
                 break;
         }
         LOG("Decoded Instruction:" + get_inst_name(out.inst_id));
@@ -136,7 +155,24 @@ void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
         out.valid = false;
         return;
     }
-
+    std::string inst_name = get_inst_name(in.inst_id);
+        // Log instruction execution with details
+        if (DEBUG) {
+            std::stringstream ss;
+            ss << "EXEC: " << inst_name;
+            if (in.inst_id != INST_ECALL && in.inst_id != INST_EBREAK) {
+                ss << " rd=x" << in.rd << " rs1=x" << in.rs1 << " rs2=x" << in.rs2;
+                if (in.imm != 0) {
+                    ss << " imm=" << HEX(in.imm);
+                }
+                // Show register values
+                uint32_t rs1_val = reg[in.rs1];
+                uint32_t rs2_val = reg[in.rs2];
+                ss << " | vals: x" << in.rs1 << "=" << HEX(rs1_val) 
+                   << " x" << in.rs2 << "=" << HEX(rs2_val);
+            }
+            LOG(ss.str());
+        }
     if (in.inst_id == INST_ECALL) {
         uint32_t syscall = read_reg_forwarded(17);
         uint32_t arg0    = read_reg_forwarded(10);
@@ -145,6 +181,9 @@ void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
         
         // Use enhanced syscall handler
         handle_syscall(*this);
+        // Log syscall details
+        LOG("SYSCALL: a7=" + DEC(syscall) + " a0=" + DEC(arg0) + 
+            " a1=" + DEC(arg1) + " a2=" + DEC(arg2));
         
         out.valid = true;
         out.rd = in.rd;
@@ -171,6 +210,19 @@ void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
         return;
     }
 
+    // CSR instructions - handled by inst_* functions in system.hpp via execute_inst
+    if (in.inst_id == INST_CSRRW || in.inst_id == INST_CSRRS ||
+        in.inst_id == INST_CSRRC || in.inst_id == INST_CSRRWI ||
+        in.inst_id == INST_CSRRSI || in.inst_id == INST_CSRRCI) {
+        out.valid = true;
+        out.reg_write = true;  // CSR instructions write to rd
+        out.mem_read = false;
+        out.mem_write = false;
+        out.alu_result = 0;
+        out.val_rs2 = 0;
+        return;
+    }
+
     // Use architectural regs after writeback() ran this cycle; id_ex.val_rs*
     // is stale for values that completed WB between decode and execute.
     uint32_t rs1_val = reg[in.rs1];
@@ -179,12 +231,19 @@ void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     // Forwarding: MEM/WB first, then EX/MEM overwrites (younger result wins)
     if (mem_wb.valid && mem_wb.reg_write && mem_wb.rd != 0) {
         uint32_t wb_val = mem_wb.mem_read ? mem_wb.mem_data : mem_wb.alu_result;
-        if (mem_wb.rd == in.rs1) rs1_val = wb_val;
-        if (mem_wb.rd == in.rs2) rs2_val = wb_val;
+        if (mem_wb.rd == in.rs1) 
+        {rs1_val = wb_val;
+        LOGIF("Forwarding: x" + std::to_string(in.rs1) + " from MEM/WB", DEBUG);}
+        if (mem_wb.rd == in.rs2) {rs2_val = wb_val;
+        LOGIF("Forwarding: x" + std::to_string(in.rs2) + " from MEM/WB", DEBUG);}
     }
     if (ex_mem.valid && ex_mem.reg_write && ex_mem.rd != 0) {
-        if (ex_mem.rd == in.rs1) rs1_val = ex_mem.alu_result;
-        if (ex_mem.rd == in.rs2) rs2_val = ex_mem.alu_result;
+        if (ex_mem.rd == in.rs1) 
+        {rs1_val = ex_mem.alu_result;
+        LOGIF("Forwarding: x" + std::to_string(in.rs1) + " from EX/MEM", DEBUG);}
+        if (ex_mem.rd == in.rs2) 
+        {rs2_val = ex_mem.alu_result;
+        LOGIF("Forwarding: x" + std::to_string(in.rs2) + " from EX/MEM", DEBUG);}
     }
 
     uint32_t op1 = rs1_val;
@@ -243,8 +302,10 @@ void CPU::writeback(Pipe_MEM_WB& in) {
     if (in.reg_write && in.rd != 0) {
             uint32_t data = in.mem_read ? in.mem_data : in.alu_result;
             reg[in.rd] = data;
-            LOG("WB: r" + DEC(in.rd) + " = " + HEX(data));
+            std::string source = in.mem_read ? "MEM" : "ALU";
+            LOG("WB: r" + DEC(in.rd) + " = "  + HEX(data) + " (from " + source + ")"); 
         }
+                
     }
 
 
@@ -292,7 +353,8 @@ bool CPU::step()
     if (int_ctrl) {
         int_ctrl->tick();
     }
-    
+    dump_registers();
+    dump_pipeline_state();
     return true;
 } 
 
@@ -334,16 +396,38 @@ void CPU::dump_registers() const {
     printf("dump registers state pc: 0x%08x\n", pc);
 }
 
-void CPU::dump_state(const std::string& prefix) const {
-    LOG(prefix + "  PC = " + HEX(pc));
-    
-}
 
 std::string CPU::get_inst_name(uint32_t opcode) const {
         return inst_manager.get_name(opcode);
     }
 
 
+    void CPU::dump_pipeline_state() const {
+        if (!DEBUG) return;
+        
+        GAP;
+        LOG("=== Pipeline State ===");
+        LOG("IF/ID: " + std::string(if_id.valid ? "valid" : "invalid"));
+        if (if_id.valid) {
+            LOG("  PC=" + HEX(if_id.pc) + " inst=" + HEX(if_id.inst.raw));
+        }
+        
+        LOG("ID/EX: " + std::string(id_ex.valid ? "valid" : "invalid"));
+        if (id_ex.valid) {
+            LOG("  inst=" + get_inst_name(id_ex.inst_id) + " rd=x" + DEC(id_ex.rd));
+        }
+        
+        LOG("EX/MEM: " + std::string(ex_mem.valid ? "valid" : "invalid"));
+        if (ex_mem.valid) {
+            LOG("  rd=x" + DEC(ex_mem.rd) + " result=" + HEX(ex_mem.alu_result));
+        }
+        
+        LOG("MEM/WB: " + std::string(mem_wb.valid ? "valid" : "invalid"));
+        if (mem_wb.valid) {
+            LOG("  rd=x" + DEC(mem_wb.rd) + " data=" + HEX(mem_wb.mem_data));
+        }
+        GAP;
+    }
 CPU::~CPU() {
     
 }

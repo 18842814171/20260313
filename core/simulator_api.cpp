@@ -38,6 +38,13 @@ void register_all_instructions(InstManager *im) {
     im->register_inst(INST_EBREAK, "EBREAK", inst_ebreak);
     im->register_inst(INST_ECALL, "ECALL", inst_ecall);
     im->register_inst(INST_WFI, "WFI", inst_wfi);
+    // CSR instructions
+    im->register_inst(INST_CSRRW, "CSRRW", inst_csrrw);
+    im->register_inst(INST_CSRRS, "CSRRS", inst_csrrs);
+    im->register_inst(INST_CSRRC, "CSRRC", inst_csrrc);
+    im->register_inst(INST_CSRRWI, "CSRRWI", inst_csrrwi);
+    im->register_inst(INST_CSRRSI, "CSRRSI", inst_csrrsi);
+    im->register_inst(INST_CSRRCI, "CSRRCI", inst_csrrmi);
     LOG("Instruction table initialized with " + std::to_string(im->size()) + " entries");
 }
 

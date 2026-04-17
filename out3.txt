@@ -1,0 +1,1322 @@
+加载 ELF: out/timer_uart_test
+交互模式: 键盘输入会传递给程序的 UART
+按 Ctrl+C 可中断程序
+
+加载 ELF 文件: out/timer_uart_test
+Instruction table initialized with 13 entries
+Interrupts enabled
+入口 PC=0x000100f8
+
+========== 运行 0 步 ==========
+
+
+========== 运行模拟器 ==========
+Running until halt...
+
+按 Ctrl+C 停止程序运行
+
+  IF pc: 0x100f8
+  Decoded Instruction:AUIPC
+  ID pc: 0x100f8
+  IF pc: 0x100fc
+  EX result: 0x0
+  Decoded Instruction:ADDI
+  ID pc: 0x100fc
+  IF pc: 0x10100
+  EX result: 0xfffffbc8
+  Decoded Instruction:ADDI
+  ID pc: 0x10100
+  IF pc: 0x10104
+  EX result: 0x0
+  Decoded Instruction:BEQ
+  ID pc: 0x10104
+  IF pc: 0x10108
+  WB: r3 = 0xfffffbc8
+  EX result: 0x8
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x10108
+  IF pc: 0x1010c
+  WB: r10 = 0x0
+  EX result: 0x0
+  Decoded Instruction:AUIPC
+  ID pc: 0x1010c
+  IF pc: 0x10110
+  EX result: 0x4000
+  Decoded Instruction:ADDI
+  ID pc: 0x10110
+  IF pc: 0x10114
+  EX result: 0xfffff91c
+  Decoded Instruction:AUIPC
+  ID pc: 0x10114
+  IF pc: 0x10118
+  EX result: 0x4000
+  Decoded Instruction:ADDI
+  ID pc: 0x10118
+  IF pc: 0x1011c
+  WB: r10 = 0xfffff91c
+  EX result: 0xfffffc3c
+  Decoded Instruction:SUB
+  ID pc: 0x1011c
+  IF pc: 0x10120
+  EX result: 0xfffffc3c
+  Decoded Instruction:ADDI
+  ID pc: 0x10120
+  IF pc: 0x10124
+  WB: r12 = 0xfffffc3c
+  EX result: 0x0
+  Decoded Instruction:JAL
+  ID pc: 0x10124
+  IF pc: 0x10128
+  EX result: 0xc84
+  Decoded Instruction:AUIPC
+  ID pc: 0x10128
+  IF pc: 0x1012c
+  WB: r11 = 0x0
+  EX result: 0x1000
+  Decoded Instruction:ADDI
+  ID pc: 0x1012c
+  IF pc: 0x10130
+  EX result: 0xfffff7c8
+  Decoded Instruction:BEQ
+  ID pc: 0x10130
+  IF pc: 0x10134
+  EX result: 0xfffff7d8
+  Decoded Instruction:AUIPC
+  ID pc: 0x10134
+  IF pc: 0x10138
+  WB: r10 = 0xfffff7c8
+  EX result: 0x2000
+  Decoded Instruction:ADDI
+  ID pc: 0x10138
+  IF pc: 0x1013c
+  EX result: 0xfffff7cc
+  Decoded Instruction:JAL
+  ID pc: 0x1013c
+  IF pc: 0x10140
+  EX result: 0xe98
+  Decoded Instruction:JAL
+  ID pc: 0x10140
+  IF pc: 0x10144
+  WB: r10 = 0xfffff7cc
+  EX result: 0xbd4
+  Decoded Instruction:LW
+  ID pc: 0x10144
+  IF pc: 0x10148
+  EX result: 0x20000
+  Decoded Instruction:ADDI
+  ID pc: 0x10148
+  IF pc: 0x1014c
+  LW addr: 0x20000
+  EX result: 0x20004
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x1014c
+  IF pc: 0x10150
+  WB: r10 = 0x0
+  EX result: 0x2
+  Decoded Instruction:ADDI
+  ID pc: 0x10150
+  IF pc: 0x10154
+  WB: r11 = 0x20004
+  EX result: 0xfffffc40
+  Decoded Instruction:ADD
+  ID pc: 0x10154
+  IF pc: 0x10158
+  EX result: 0x1fc44
+  Decoded Instruction:JAL
+  ID pc: 0x10158
+  IF pc: 0x1015c
+  WB: r12 = 0xfffffc40
+  EX result: 0x0
+  Decoded Instruction:JAL
+  ID pc: 0x1015c
+  IF pc: 0x10160
+  WB: r12 = 0x1fc44
+  EX result: 0x0
+  Decoded Instruction:ADDI
+  ID pc: 0x10160
+  IF pc: 0x10164
+  EX result: 0x1fff0
+  Decoded Instruction:SW
+  ID pc: 0x10164
+  IF pc: 0x10168
+  EX result: 0x1fff8
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x10168
+  IF pc: 0x1016c
+  WB: r2 = 0x1fff0
+  SW addr: 0x1fff8
+  EX result: 0xfffff94c
+  Decoded Instruction:SW
+  ID pc: 0x1016c
+  IF pc: 0x10170
+  EX result: 0x1fffc
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x10170
+  IF pc: 0x10174
+  SW addr: 0x1fffc
+  EX result: 0x24
+  Decoded Instruction:ADDI
+  ID pc: 0x10174
+  IF pc: 0x10178
+  EX result: 0x0
+  Decoded Instruction:BEQ
+  ID pc: 0x10178
+  IF pc: 0x1017c
+  EX result: 0x14
+  Decoded Instruction:LUI
+  ID pc: 0x1017c
+  IF pc: 0x10180
+  WB: r15 = 0x0
+  EX result: 0x31ff0
+  Decoded Instruction:ADDI
+  ID pc: 0x10180
+  IF pc: 0x10184
+  EX result: 0x4b0
+  Decoded Instruction:AUIPC
+  ID pc: 0x10184
+  IF pc: 0x10188
+  EX result: 0x0
+  Decoded Instruction:JALR
+  ID pc: 0x10188
+  IF pc: 0x1018c
+  WB: r10 = 0x4b0
+  EX result: 0x0
+  Decoded Instruction:ADDI
+  ID pc: 0x1018c
+  IF pc: 0x10190
+  EX result: 0x1
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x10190
+  IF pc: 0x10194
+  EX result: 0xfffff94c
+  Decoded Instruction:LW
+  ID pc: 0x10194
+  IF pc: 0x10198
+  WB: r15 = 0x1
+  EX result: 0x1fffc
+  Decoded Instruction:LW
+  ID pc: 0x10198
+  IF pc: 0x1019c
+  LW addr: 0x1fffc
+  EX result: 0x1fff8
+  Decoded Instruction:ADDI
+  ID pc: 0x1019c
+  IF pc: 0x101a0
+  WB: r1 = 0x0
+  LW addr: 0x1fff8
+  EX result: 0x20000
+  Decoded Instruction:JALR
+  ID pc: 0x101a0
+  IF pc: 0x101a4
+  WB: r8 = 0x0
+  EX result: 0x0
+  Decoded Instruction:ADDI
+  ID pc: 0x101a4
+  IF pc: 0x101a8
+  WB: r2 = 0x20000
+  EX result: 0x0
+  Decoded Instruction:BEQ
+  ID pc: 0x101a8
+  IF pc: 0x101ac
+  EX result: 0x18
+  Decoded Instruction:LUI
+  ID pc: 0x101ac
+  IF pc: 0x101b0
+  WB: r15 = 0x0
+  EX result: 0x32000
+  Decoded Instruction:ADDI
+  ID pc: 0x101b0
+  IF pc: 0x101b4
+  EX result: 0xfffff950
+  Decoded Instruction:ADDI
+  ID pc: 0x101b4
+  IF pc: 0x101b8
+  EX result: 0x960
+  Decoded Instruction:AUIPC
+  ID pc: 0x101b8
+  IF pc: 0x101bc
+  WB: r11 = 0xfffff950
+  EX result: 0x0
+  Decoded Instruction:JALR
+  ID pc: 0x101bc
+  IF pc: 0x101c0
+  WB: r10 = 0x960
+  EX result: 0x0
+  Decoded Instruction:JALR
+  ID pc: 0x101c0
+  IF pc: 0x101c4
+  EX result: 0x0
+  Decoded Instruction:ADDI
+  ID pc: 0x101c4
+  IF pc: 0x101c8
+  EX result: 0x1ffe0
+  Decoded Instruction:SW
+  ID pc: 0x101c8
+  IF pc: 0x101cc
+  EX result: 0x1fffc
+  Decoded Instruction:SW
+  ID pc: 0x101cc
+  IF pc: 0x101d0
+  WB: r2 = 0x1ffe0
+  SW addr: 0x1fffc
+  EX result: 0x1fff8
+  Decoded Instruction:ADDI
+  ID pc: 0x101d0
+  IF pc: 0x101d4
+  SW addr: 0x1fff8
+  EX result: 0x20000
+  Decoded Instruction:ADDI
+  ID pc: 0x101d4
+  IF pc: 0x101d8
+  EX result: 0x960
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x101d8
+  IF pc: 0x101dc
+  WB: r8 = 0x20000
+  EX result: 0x1ffef
+  Decoded Instruction:LUI
+  ID pc: 0x101dc
+  IF pc: 0x101e0
+  WB: r15 = 0x960
+  EX result: 0x10000000
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x101e0
+  IF pc: 0x101e4
+  EX result: 0x1ffef
+  Decoded Instruction:SW
+  ID pc: 0x101e4
+  IF pc: 0x101e8
+  EX result: 0x960
+  Decoded Instruction:ADDI
+  ID pc: 0x101e8
+  IF pc: 0x101ec
+  SW addr: 0x960
+  EX result: 0x0
+  Decoded Instruction:LW
+  ID pc: 0x101ec
+  IF pc: 0x101f0
+  EX result: 0x1fffc
+  Decoded Instruction:LW
+  ID pc: 0x101f0
+  IF pc: 0x101f4
+  LW addr: 0x1fffc
+  EX result: 0x1fff8
+  Decoded Instruction:ADDI
+  ID pc: 0x101f4
+  IF pc: 0x101f8
+  WB: r1 = 0x0
+  LW addr: 0x1fff8
+  EX result: 0x20000
+  Decoded Instruction:JALR
+  ID pc: 0x101f8
+  IF pc: 0x101fc
+  WB: r8 = 0x0
+  EX result: 0x0
+  Decoded Instruction:ADDI
+  ID pc: 0x101fc
+  IF pc: 0x10200
+  WB: r2 = 0x20000
+  EX result: 0x1ffe0
+  Decoded Instruction:SW
+  ID pc: 0x10200
+  IF pc: 0x10204
+  EX result: 0x1fffc
+  Decoded Instruction:SW
+  ID pc: 0x10204
+  IF pc: 0x10208
+  WB: r2 = 0x1ffe0
+  SW addr: 0x1fffc
+  EX result: 0x1fff8
+  Decoded Instruction:ADDI
+  ID pc: 0x10208
+  IF pc: 0x1020c
+  SW addr: 0x1fff8
+  EX result: 0x20000
+  Decoded Instruction:SW
+  ID pc: 0x1020c
+  IF pc: 0x10210
+  EX result: 0x1ffec
+  Decoded Instruction:JAL
+  ID pc: 0x10210
+  IF pc: 0x10214
+  WB: r8 = 0x20000
+  SW addr: 0x1ffec
+  EX result: 0x20
+  Decoded Instruction:LW
+  ID pc: 0x10214
+  IF pc: 0x10218
+  EX result: 0x1ffec
+  STALL inserted
+  Fetch stalled
+  LW addr: 0x1ffec
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x10218
+  IF pc: 0x1021c
+  WB: r15 = 0x960
+  EX result: 0x960
+  Decoded Instruction:ADDI
+  ID pc: 0x1021c
+  IF pc: 0x10220
+  EX result: 0x960
+  Decoded Instruction:JAL
+  ID pc: 0x10220
+  IF pc: 0x10224
+  EX result: 0xffffffa4
+  Decoded Instruction:LW
+  ID pc: 0x10224
+  IF pc: 0x10228
+  WB: r10 = 0x960
+  EX result: 0x1ffec
+  STALL inserted
+  Fetch stalled
+  LW addr: 0x1ffec
+  Decoded Instruction:ADDI
+  ID pc: 0x10228
+  IF pc: 0x1022c
+  WB: r15 = 0x960
+  EX result: 0x961
+  Decoded Instruction:SW
+  ID pc: 0x1022c
+  IF pc: 0x10230
+  EX result: 0x1ffec
+  Decoded Instruction:LW
+  ID pc: 0x10230
+  IF pc: 0x10234
+  WB: r15 = 0x961
+  SW addr: 0x1ffec
+  EX result: 0x1ffec
+  STALL inserted
+  Fetch stalled
+  LW addr: 0x1ffec
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x10234
+  IF pc: 0x10238
+  WB: r15 = 0x961
+  EX result: 0x961
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x10238
+  IF pc: 0x1023c
+  EX result: 0x93d
+  Decoded Instruction:ADDI
+  ID pc: 0x1023c
+  IF pc: 0x10240
+  EX result: 0x0
+  Decoded Instruction:ADDI
+  ID pc: 0x10240
+  IF pc: 0x10244
+  EX result: 0x0
+  Decoded Instruction:LW
+  ID pc: 0x10244
+  IF pc: 0x10248
+  EX result: 0x1fffc
+  Decoded Instruction:LW
+  ID pc: 0x10248
+  IF pc: 0x1024c
+  LW addr: 0x1fffc
+  EX result: 0x1fff8
+  Decoded Instruction:ADDI
+  ID pc: 0x1024c
+  IF pc: 0x10250
+  WB: r1 = 0x0
+  LW addr: 0x1fff8
+  EX result: 0x20000
+  Decoded Instruction:JALR
+  ID pc: 0x10250
+  IF pc: 0x10254
+  WB: r8 = 0x0
+  EX result: 0x0
+  Decoded Instruction:ADDI
+  ID pc: 0x10254
+  IF pc: 0x10258
+  WB: r2 = 0x20000
+  EX result: 0x1ffb0
+  Decoded Instruction:SW
+  ID pc: 0x10258
+  IF pc: 0x1025c
+  EX result: 0x1fffc
+  Decoded Instruction:SW
+  ID pc: 0x1025c
+  IF pc: 0x10260
+  WB: r2 = 0x1ffb0
+  SW addr: 0x1fffc
+  EX result: 0x1fff8
+  Decoded Instruction:ADDI
+  ID pc: 0x10260
+  IF pc: 0x10264
+  SW addr: 0x1fff8
+  EX result: 0x20000
+  Decoded Instruction:SW
+  ID pc: 0x10264
+  IF pc: 0x10268
+  EX result: 0x1ffbc
+  Decoded Instruction:LUI
+  ID pc: 0x10268
+  IF pc: 0x1026c
+  WB: r8 = 0x20000
+  SW addr: 0x1ffbc
+  EX result: 0x31fb0
+  Decoded Instruction:ADDI
+  ID pc: 0x1026c
+  IF pc: 0x10270
+  EX result: 0xd39
+  Decoded Instruction:LW
+  ID pc: 0x10270
+  IF pc: 0x10274
+  EX result: 0xd39
+  Decoded Instruction:LW
+  ID pc: 0x10274
+  IF pc: 0x10278
+  WB: r15 = 0xd39
+  LW addr: 0xd39
+  EX result: 0xd3d
+  Decoded Instruction:LW
+  ID pc: 0x10278
+  IF pc: 0x1027c
+  WB: r12 = 0x0
+  LW addr: 0xd3d
+  EX result: 0xd41
+  Decoded Instruction:SW
+  ID pc: 0x1027c
+  IF pc: 0x10280
+  WB: r13 = 0x0
+  LW addr: 0xd41
+  EX result: 0x1ffd8
+  Decoded Instruction:SW
+  ID pc: 0x10280
+  IF pc: 0x10284
+  WB: r14 = 0x0
+  SW addr: 0x1ffd8
+  EX result: 0x1ffdc
+  Decoded Instruction:SW
+  ID pc: 0x10284
+  IF pc: 0x10288
+  SW addr: 0x1ffdc
+  EX result: 0x1ffe0
+  Decoded Instruction:LW
+  ID pc: 0x10288
+  IF pc: 0x1028c
+  SW addr: 0x1ffe0
+  EX result: 0xd45
+  STALL inserted
+  Fetch stalled
+  LW addr: 0xd45
+  Decoded Instruction:SW
+  ID pc: 0x1028c
+  IF pc: 0x10290
+  WB: r14 = 0x0
+  EX result: 0x1ffe4
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x10290
+  IF pc: 0x10294
+  SW addr: 0x1ffe4
+  EX result: 0xd49
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x10294
+  IF pc: 0x10298
+  EX result: 0x1ffe8
+  Decoded Instruction:ADDI
+  ID pc: 0x10298
+  IF pc: 0x1029c
+  EX result: 0x30
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x1029c
+  IF pc: 0x102a0
+  EX result: 0x1ffcc
+  Decoded Instruction:ADDI
+  ID pc: 0x102a0
+  IF pc: 0x102a4
+  WB: r15 = 0x30
+  EX result: 0x78
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x102a4
+  IF pc: 0x102a8
+  EX result: 0x1ffcd
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x102a8
+  IF pc: 0x102ac
+  WB: r15 = 0x78
+  EX result: 0x1ffd6
+  Decoded Instruction:ADDI
+  ID pc: 0x102ac
+  IF pc: 0x102b0
+  EX result: 0x9
+  Decoded Instruction:SW
+  ID pc: 0x102b0
+  IF pc: 0x102b4
+  EX result: 0x1ffec
+  Decoded Instruction:JAL
+  ID pc: 0x102b4
+  IF pc: 0x102b8
+  WB: r15 = 0x9
+  SW addr: 0x1ffec
+  EX result: 0x40
+  Decoded Instruction:LW
+  ID pc: 0x102b8
+  IF pc: 0x102bc
+  EX result: 0x1ffbc
+  STALL inserted
+  Fetch stalled
+  LW addr: 0x1ffbc
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x102bc
+  IF pc: 0x102c0
+  WB: r15 = 0x960
+  EX result: 0x96f
+  Decoded Instruction:ADDI
+  ID pc: 0x102c0
+  IF pc: 0x102c4
+  EX result: 0x950
+  Decoded Instruction:ADD
+  ID pc: 0x102c4
+  IF pc: 0x102c8
+  EX result: 0x20950
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x102c8
+  IF pc: 0x102cc
+  WB: r15 = 0x950
+  EX result: 0x40950
+  Decoded Instruction:LW
+  ID pc: 0x102cc
+  IF pc: 0x102d0
+  WB: r15 = 0x20950
+  EX result: 0x1ffec
+  STALL inserted
+  Fetch stalled
+  LW addr: 0x1ffec
+  Decoded Instruction:ADDI
+  ID pc: 0x102d0
+  IF pc: 0x102d4
+  WB: r15 = 0x9
+  EX result: 0xfffffff9
+  Decoded Instruction:ADD
+  ID pc: 0x102d4
+  IF pc: 0x102d8
+  EX result: 0x1fff9
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x102d8
+  IF pc: 0x102dc
+  WB: r15 = 0xfffffff9
+  EX result: 0x1fff9
+  Decoded Instruction:LW
+  ID pc: 0x102dc
+  IF pc: 0x102e0
+  WB: r15 = 0x1fff9
+  EX result: 0x1ffbc
+  STALL inserted
+  Fetch stalled
+  LW addr: 0x1ffbc
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x102e0
+  IF pc: 0x102e4
+  WB: r15 = 0x960
+  EX result: 0x964
+  Decoded Instruction:SW
+  ID pc: 0x102e4
+  IF pc: 0x102e8
+  EX result: 0x1ffbc
+  Decoded Instruction:LW
+  ID pc: 0x102e8
+  IF pc: 0x102ec
+  SW addr: 0x1ffbc
+  EX result: 0x1ffec
+  STALL inserted
+  Fetch stalled
+  LW addr: 0x1ffec
+  Decoded Instruction:ADDI
+  ID pc: 0x102ec
+  IF pc: 0x102f0
+  WB: r15 = 0x9
+  EX result: 0x8
+  Decoded Instruction:SW
+  ID pc: 0x102f0
+  IF pc: 0x102f4
+  EX result: 0x1ffec
+  Decoded Instruction:LW
+  ID pc: 0x102f4
+  IF pc: 0x102f8
+  WB: r15 = 0x8
+  SW addr: 0x1ffec
+  EX result: 0x1ffec
+  Decoded Instruction:ADDI
+  ID pc: 0x102f8
+  IF pc: 0x102fc
+  LW addr: 0x1ffec
+  EX result: 0x1
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x102fc
+  IF pc: 0x10300
+  WB: r14 = 0x8
+  EX result: 0xffffffbd
+  Decoded Instruction:ADDI
+  ID pc: 0x10300
+  IF pc: 0x10304
+  WB: r15 = 0x1
+  EX result: 0x1ffcc
+  Decoded Instruction:ADDI
+  ID pc: 0x10304
+  IF pc: 0x10308
+  EX result: 0x1ffcc
+  Decoded Instruction:JAL
+  ID pc: 0x10308
+  IF pc: 0x1030c
+  WB: r15 = 0x1ffcc
+  EX result: 0xfffffef4
+  Decoded Instruction:ADDI
+  ID pc: 0x1030c
+  IF pc: 0x10310
+  WB: r10 = 0x1ffcc
+  EX result: 0x0
+  Decoded Instruction:LW
+  ID pc: 0x10310
+  IF pc: 0x10314
+  EX result: 0x1fffc
+  Decoded Instruction:LW
+  ID pc: 0x10314
+  IF pc: 0x10318
+  LW addr: 0x1fffc
+  EX result: 0x1fff8
+  Decoded Instruction:ADDI
+  ID pc: 0x10318
+  IF pc: 0x1031c
+  WB: r1 = 0x0
+  LW addr: 0x1fff8
+  EX result: 0x20000
+  Decoded Instruction:JALR
+  ID pc: 0x1031c
+  IF pc: 0x10320
+  WB: r8 = 0x0
+  EX result: 0x0
+  Decoded Instruction:ADDI
+  ID pc: 0x10320
+  IF pc: 0x10324
+  WB: r2 = 0x20000
+  EX result: 0x1fff0
+  Decoded Instruction:SW
+  ID pc: 0x10324
+  IF pc: 0x10328
+  EX result: 0x1fffc
+  Decoded Instruction:SW
+  ID pc: 0x10328
+  IF pc: 0x1032c
+  WB: r2 = 0x1fff0
+  SW addr: 0x1fffc
+  EX result: 0x1fff8
+  Decoded Instruction:ADDI
+  ID pc: 0x1032c
+  IF pc: 0x10330
+  SW addr: 0x1fff8
+  EX result: 0x20000
+  Decoded Instruction:ADDI
+  ID pc: 0x10330
+  IF pc: 0x10334
+  EX result: 0xa
+  Decoded Instruction:JAL
+  ID pc: 0x10334
+  IF pc: 0x10338
+  WB: r8 = 0x20000
+  EX result: 0xfffffe90
+  Decoded Instruction:ADDI
+  ID pc: 0x10338
+  IF pc: 0x1033c
+  WB: r10 = 0xa
+  EX result: 0x0
+  Decoded Instruction:LW
+  ID pc: 0x1033c
+  IF pc: 0x10340
+  EX result: 0x1fffc
+  Decoded Instruction:LW
+  ID pc: 0x10340
+  IF pc: 0x10344
+  LW addr: 0x1fffc
+  EX result: 0x1fff8
+  Decoded Instruction:ADDI
+  ID pc: 0x10344
+  IF pc: 0x10348
+  WB: r1 = 0x0
+  LW addr: 0x1fff8
+  EX result: 0x20000
+  Decoded Instruction:JALR
+  ID pc: 0x10348
+  IF pc: 0x1034c
+  WB: r8 = 0x0
+  EX result: 0x0
+  Decoded Instruction:ADDI
+  ID pc: 0x1034c
+  IF pc: 0x10350
+  WB: r2 = 0x20000
+  EX result: 0x1ffe0
+  Decoded Instruction:SW
+  ID pc: 0x10350
+  IF pc: 0x10354
+  EX result: 0x1fffc
+  Decoded Instruction:SW
+  ID pc: 0x10354
+  IF pc: 0x10358
+  WB: r2 = 0x1ffe0
+  SW addr: 0x1fffc
+  EX result: 0x1fff8
+  Decoded Instruction:SW
+  ID pc: 0x10358
+  IF pc: 0x1035c
+  SW addr: 0x1fff8
+  EX result: 0x1fff4
+  Decoded Instruction:SW
+  ID pc: 0x1035c
+  IF pc: 0x10360
+  SW addr: 0x1fff4
+  EX result: 0x1fff0
+  Decoded Instruction:ADDI
+  ID pc: 0x10360
+  IF pc: 0x10364
+  SW addr: 0x1fff0
+  EX result: 0x20000
+  Decoded Instruction:LUI
+  ID pc: 0x10364
+  IF pc: 0x10368
+  EX result: 0x10000000
+  Decoded Instruction:ADDI
+  ID pc: 0x10368
+  IF pc: 0x1036c
+  WB: r8 = 0x20000
+  EX result: 0x1ffd4
+  Decoded Instruction:ADDI
+  ID pc: 0x1036c
+  IF pc: 0x10370
+  EX result: 0x1
+  Decoded Instruction:SW
+  ID pc: 0x10370
+  IF pc: 0x10374
+  WB: r15 = 0x1ffd4
+  EX result: 0x1ffd4
+  Decoded Instruction:LUI
+  ID pc: 0x10374
+  IF pc: 0x10378
+  WB: r14 = 0x1
+  SW addr: 0x1ffd4
+  EX result: 0x10000000
+  Decoded Instruction:ADDI
+  ID pc: 0x10378
+  IF pc: 0x1037c
+  EX result: 0x1ffe0
+  Decoded Instruction:ADDI
+  ID pc: 0x1037c
+  IF pc: 0x10380
+  EX result: 0x1
+  Decoded Instruction:SW
+  ID pc: 0x10380
+  IF pc: 0x10384
+  WB: r15 = 0x1ffe0
+  EX result: 0x1ffe0
+  Decoded Instruction:LUI
+  ID pc: 0x10384
+  IF pc: 0x10388
+  WB: r14 = 0x1
+  SW addr: 0x1ffe0
+  EX result: 0x10000000
+  Decoded Instruction:ADDI
+  ID pc: 0x10388
+  IF pc: 0x1038c
+  EX result: 0x1fff8
+  Decoded Instruction:ADDI
+  ID pc: 0x1038c
+  IF pc: 0x10390
+  EX result: 0x10
+  Decoded Instruction:SW
+  ID pc: 0x10390
+  IF pc: 0x10394
+  WB: r15 = 0x1fff8
+  EX result: 0x1fff8
+  Decoded Instruction:LUI
+  ID pc: 0x10394
+  IF pc: 0x10398
+  WB: r14 = 0x10
+  SW addr: 0x1fff8
+  EX result: 0x31fe0
+  Decoded Instruction:ADDI
+  ID pc: 0x10398
+  IF pc: 0x1039c
+  EX result: 0x203e4
+  Decoded Instruction:JAL
+  ID pc: 0x1039c
+  IF pc: 0x103a0
+  EX result: 0xfffffe60
+  Decoded Instruction:JAL
+  ID pc: 0x103a0
+  IF pc: 0x103a4
+  WB: r10 = 0x203e4
+  EX result: 0xffffff80
+  Decoded Instruction:LUI
+  ID pc: 0x103a4
+  IF pc: 0x103a8
+  EX result: 0x31fe0
+  Decoded Instruction:ADDI
+  ID pc: 0x103a8
+  IF pc: 0x103ac
+  EX result: 0x20400
+  Decoded Instruction:JAL
+  ID pc: 0x103ac
+  IF pc: 0x103b0
+  EX result: 0xfffffe50
+  Decoded Instruction:LUI
+  ID pc: 0x103b0
+  IF pc: 0x103b4
+  WB: r10 = 0x20400
+  EX result: 0x2004000
+  Decoded Instruction:LW
+  ID pc: 0x103b4
+  IF pc: 0x103b8
+  EX result: 0x1fff8
+  Decoded Instruction:LW
+  ID pc: 0x103b8
+  IF pc: 0x103bc
+  LW addr: 0x1fff8
+  EX result: 0x1fffc
+  Decoded Instruction:SW
+  ID pc: 0x103bc
+  IF pc: 0x103c0
+  WB: r14 = 0x10
+  LW addr: 0x1fffc
+  EX result: 0x1ffe8
+  Decoded Instruction:SW
+  ID pc: 0x103c0
+  IF pc: 0x103c4
+  WB: r15 = 0x0
+  SW addr: 0x1ffe8
+  EX result: 0x1ffec
+  Decoded Instruction:LW
+  ID pc: 0x103c4
+  IF pc: 0x103c8
+  SW addr: 0x1ffec
+  EX result: 0x1ffec
+  STALL inserted
+  Fetch stalled
+  LW addr: 0x1ffec
+  Decoded Instruction:UNKNOWN
+  ID pc: 0x103c8
+  IF pc: 0x103cc
+  WB: r15 = 0x0
+  EX result: 0x0
+  Decoded Instruction:ADDI
+  ID pc: 0x103cc
+  IF pc: 0x103d0
+  EX result: 0x0
+  Decoded Instruction:ADDI
+  ID pc: 0x103d0
+  IF pc: 0x103d4
+  EX result: 0x0
+  Decoded Instruction:ADDI
+  ID pc: 0x103d4
+  IF pc: 0x103d8
+  WB: r19 = 0x0
+  EX result: 0x0
+  Decoded Instruction:JAL
+  ID pc: 0x103d8
+  IF pc: 0x103dc
+  WB: r15 = 0x0
+  EX result: 0xfffffe7c
+  Decoded Instruction:LW
+  ID pc: 0x103dc
+  IF pc: 0x103e0
+  WB: r10 = 0x0
+  EX result: 0x1ffe8
+  STALL inserted
+  Fetch stalled
+  LW addr: 0x1ffe8
+  Decoded Instruction:ADDI
+  ID pc: 0x103e0
+  IF pc: 0x103e4
+  WB: r15 = 0x10
+  EX result: 0x10
+  Decoded Instruction:JAL
+  ID pc: 0x103e4
+  IF pc: 0x103e8
+  EX result: 0xfffffe70
+  Decoded Instruction:JAL
+  ID pc: 0x103e8
+  IF pc: 0x103ec
+  WB: r10 = 0x10
+  EX result: 0xffffff38
+  Decoded Instruction:LUI
+  ID pc: 0x103ec
+  IF pc: 0x103f0
+  EX result: 0x31fe0
+  Decoded Instruction:ADDI
+  ID pc: 0x103f0
+  IF pc: 0x103f4
+  EX result: 0x428
+  Decoded Instruction:JAL
+  ID pc: 0x103f4
+  IF pc: 0x103f8
+  EX result: 0xfffffe08
+  Decoded Instruction:JAL
+  ID pc: 0x103f8
+  IF pc: 0x103fc
+  WB: r10 = 0x428
+  EX result: 0xffffff28
+  Decoded Instruction:ADDI
+  ID pc: 0x103fc
+  IF pc: 0x10400
+  EX result: 0x48
+  Decoded Instruction:JAL
+  ID pc: 0x10400
+  IF pc: 0x10404
+  EX result: 0xfffffdc4
+  Decoded Instruction:ADDI
+  ID pc: 0x10404
+  IF pc: 0x10408
+  WB: r10 = 0x48
+  EX result: 0x65
+  Decoded Instruction:JAL
+  ID pc: 0x10408
+  IF pc: 0x1040c
+  EX result: 0xfffffdbc
+  Decoded Instruction:ADDI
+  ID pc: 0x1040c
+  IF pc: 0x10410
+  WB: r10 = 0x65
+  EX result: 0x6c
+  Decoded Instruction:JAL
+  ID pc: 0x10410
+  IF pc: 0x10414
+  EX result: 0xfffffdb4
+  Decoded Instruction:ADDI
+  ID pc: 0x10414
+  IF pc: 0x10418
+  WB: r10 = 0x6c
+  EX result: 0x6c
+  Decoded Instruction:JAL
+  ID pc: 0x10418
+  IF pc: 0x1041c
+  EX result: 0xfffffdac
+  Decoded Instruction:ADDI
+  ID pc: 0x1041c
+  IF pc: 0x10420
+  WB: r10 = 0x6c
+  EX result: 0x6f
+  Decoded Instruction:JAL
+  ID pc: 0x10420
+  IF pc: 0x10424
+  EX result: 0xfffffda4
+  Decoded Instruction:ADDI
+  ID pc: 0x10424
+  IF pc: 0x10428
+  WB: r10 = 0x6f
+  EX result: 0x20
+  Decoded Instruction:JAL
+  ID pc: 0x10428
+  IF pc: 0x1042c
+  EX result: 0xfffffd9c
+  Decoded Instruction:ADDI
+  ID pc: 0x1042c
+  IF pc: 0x10430
+  WB: r10 = 0x20
+  EX result: 0x57
+  Decoded Instruction:JAL
+  ID pc: 0x10430
+  IF pc: 0x10434
+  EX result: 0xfffffd94
+  Decoded Instruction:ADDI
+  ID pc: 0x10434
+  IF pc: 0x10438
+  WB: r10 = 0x57
+  EX result: 0x6f
+  Decoded Instruction:JAL
+  ID pc: 0x10438
+  IF pc: 0x1043c
+  EX result: 0xfffffd8c
+  Decoded Instruction:ADDI
+  ID pc: 0x1043c
+  IF pc: 0x10440
+  WB: r10 = 0x6f
+  EX result: 0x72
+  Decoded Instruction:JAL
+  ID pc: 0x10440
+  IF pc: 0x10444
+  EX result: 0xfffffd84
+  Decoded Instruction:ADDI
+  ID pc: 0x10444
+  IF pc: 0x10448
+  WB: r10 = 0x72
+  EX result: 0x6c
+  Decoded Instruction:JAL
+  ID pc: 0x10448
+  IF pc: 0x1044c
+  EX result: 0xfffffd7c
+  Decoded Instruction:ADDI
+  ID pc: 0x1044c
+  IF pc: 0x10450
+  WB: r10 = 0x6c
+  EX result: 0x64
+  Decoded Instruction:JAL
+  ID pc: 0x10450
+  IF pc: 0x10454
+  EX result: 0xfffffd74
+  Decoded Instruction:ADDI
+  ID pc: 0x10454
+  IF pc: 0x10458
+  WB: r10 = 0x64
+  EX result: 0x21
+  Decoded Instruction:JAL
+  ID pc: 0x10458
+  IF pc: 0x1045c
+  EX result: 0xfffffd6c
+  Decoded Instruction:JAL
+  ID pc: 0x1045c
+  IF pc: 0x10460
+  WB: r10 = 0x21
+  EX result: 0xfffffec4
+  Decoded Instruction:LUI
+  ID pc: 0x10460
+  IF pc: 0x10464
+  EX result: 0x31fe0
+  Decoded Instruction:ADDI
+  ID pc: 0x10464
+  IF pc: 0x10468
+  EX result: 0x43c
+  Decoded Instruction:JAL
+  ID pc: 0x10468
+  IF pc: 0x1046c
+  EX result: 0xfffffd94
+  Decoded Instruction:LUI
+  ID pc: 0x1046c
+  IF pc: 0x10470
+  WB: r10 = 0x43c
+  EX result: 0x10000000
+  Decoded Instruction:ADDI
+  ID pc: 0x10470
+  IF pc: 0x10474
+  EX result: 0x14
+  Decoded Instruction:LW
+  ID pc: 0x10474
+  IF pc: 0x10478
+  EX result: 0x14
+  STALL inserted
+  Fetch stalled
+  WB: r15 = 0x14
+  LW addr: 0x14
+  Decoded Instruction:SW
+  ID pc: 0x10478
+  IF pc: 0x1047c
+  WB: r15 = 0x0
+  EX result: 0x1ffe4
+  Decoded Instruction:LW
+  ID pc: 0x1047c
+  IF pc: 0x10480
+  SW addr: 0x1ffe4
+  EX result: 0x1ffe4
+  Decoded Instruction:JAL
+  ID pc: 0x10480
+  IF pc: 0x10484
+  LW addr: 0x1ffe4
+  EX result: 0xfffffdd4
+  Decoded Instruction:JAL
+  ID pc: 0x10484
+  IF pc: 0x10488
+  WB: r10 = 0x0
+  EX result: 0xfffffe9c
+  Decoded Instruction:LUI
+  ID pc: 0x10488
+  IF pc: 0x1048c
+  EX result: 0x31fe0
+  Decoded Instruction:ADDI
+  ID pc: 0x1048c
+  IF pc: 0x10490
+  EX result: 0x44c
+  Decoded Instruction:JAL
+  ID pc: 0x10490
+  IF pc: 0x10494
+  EX result: 0xfffffd6c
+  Decoded Instruction:JAL
+  ID pc: 0x10494
+  IF pc: 0x10498
+  WB: r10 = 0x44c
+  EX result: 0xfffffe8c
+  Decoded Instruction:LUI
+  ID pc: 0x10498
+  IF pc: 0x1049c
+  EX result: 0x31fe0
+  Decoded Instruction:ADDI
+  ID pc: 0x1049c
+  IF pc: 0x104a0
+  EX result: 0x46c
+  Decoded Instruction:JAL
+  ID pc: 0x104a0
+  IF pc: 0x104a4
+  EX result: 0xfffffd5c
+  Decoded Instruction:LUI
+  ID pc: 0x104a4
+  IF pc: 0x104a8
+  WB: r10 = 0x46c
+  EX result: 0x10000000
+  Decoded Instruction:ADDI
+  ID pc: 0x104a8
+  IF pc: 0x104ac
+  EX result: 0x8
+  Decoded Instruction:LW
+  ID pc: 0x104ac
+  IF pc: 0x104b0
+  EX result: 0x8
+  STALL inserted
+  Fetch stalled
+  WB: r15 = 0x8
+  LW addr: 0x8
+  Decoded Instruction:ADDI
+  ID pc: 0x104b0
+  IF pc: 0x104b4
+  WB: r15 = 0x0
+  EX result: 0x0
+  Decoded Instruction:JAL
+  ID pc: 0x104b4
+  IF pc: 0x104b8
+  EX result: 0xfffffda0
+  Decoded Instruction:JAL
+  ID pc: 0x104b8
+  IF pc: 0x104bc
+  WB: r10 = 0x0
+  EX result: 0xfffffe68
+  Decoded Instruction:LUI
+  ID pc: 0x104bc
+  IF pc: 0x104c0
+  EX result: 0x31fe0
+  Decoded Instruction:ADDI
+  ID pc: 0x104c0
+  IF pc: 0x104c4
+  EX result: 0x47c
+  Decoded Instruction:JAL
+  ID pc: 0x104c4
+  IF pc: 0x104c8
+  EX result: 0xfffffd38
+  Decoded Instruction:LUI
+  ID pc: 0x104c8
+  IF pc: 0x104cc
+  WB: r10 = 0x47c
+  EX result: 0x10000000
+  Decoded Instruction:ADDI
+  ID pc: 0x104cc
+  IF pc: 0x104d0
+  EX result: 0xc
+  Decoded Instruction:LW
+  ID pc: 0x104d0
+  IF pc: 0x104d4
+  EX result: 0xc
+  STALL inserted
+  Fetch stalled
+  WB: r15 = 0xc
+  LW addr: 0xc
+  Decoded Instruction:ADDI
+  ID pc: 0x104d4
+  IF pc: 0x104d8
+  WB: r15 = 0x0
+  EX result: 0x0
+  Decoded Instruction:JAL
+  ID pc: 0x104d8
+  IF pc: 0x104dc
+  EX result: 0xfffffd7c
+  Decoded Instruction:JAL
+  ID pc: 0x104dc
+  IF pc: 0x104e0
+  WB: r10 = 0x0
+  EX result: 0xfffffe44
+  Decoded Instruction:LUI
+  ID pc: 0x104e0
+  IF pc: 0x104e4
+  EX result: 0x31fe0
+  Decoded Instruction:ADDI
+  ID pc: 0x104e4
+  IF pc: 0x104e8
+  EX result: 0x48c
+  Decoded Instruction:JAL
+  ID pc: 0x104e8
+  IF pc: 0x104ec
+  EX result: 0xfffffd14
+  Decoded Instruction:LUI
+  ID pc: 0x104ec
+  IF pc: 0x104f0
+  WB: r10 = 0x48c
+  EX result: 0x10000000
+  Decoded Instruction:ADDI
+  ID pc: 0x104f0
+  IF pc: 0x104f4
+  EX result: 0x18
+  Decoded Instruction:LW
+  ID pc: 0x104f4
+  IF pc: 0x104f8
+  EX result: 0x18
+  STALL inserted
+  Fetch stalled
+  WB: r15 = 0x18
+  LW addr: 0x18
+  Decoded Instruction:ADDI
+  ID pc: 0x104f8
+  IF pc: 0x104fc
+  WB: r15 = 0x0
+  EX result: 0x0
+  Decoded Instruction:JAL
+  ID pc: 0x104fc
+  IF pc: 0x10500
+  EX result: 0xfffffd58
+  Decoded Instruction:JAL
+  ID pc: 0x10500
+  IF pc: 0x10504
+  WB: r10 = 0x0
+  EX result: 0xfffffe20
+  Decoded Instruction:LUI
+  ID pc: 0x10504
+  IF pc: 0x10508
+  EX result: 0x31fe0
+  Decoded Instruction:ADDI
+  ID pc: 0x10508
+  IF pc: 0x1050c
+  EX result: 0x498
+  Decoded Instruction:JAL
+  ID pc: 0x1050c
+  IF pc: 0x10510
+  EX result: 0xfffffcf0
+  Decoded Instruction:JAL
+  ID pc: 0x10510
+  IF pc: 0x10514
+  WB: r10 = 0x498
+  EX result: 0xfffffe10
+  Decoded Instruction:ADDI
+  ID pc: 0x10514
+  IF pc: 0x10518
+  EX result: 0x5d
+  Decoded Instruction:ADDI
+  ID pc: 0x10518
+  IF pc: 0x1051c
+  EX result: 0x0
+  Decoded Instruction:ECALL
+  ID pc: 0x1051c
+  IF pc: 0x10520
+  WB: r17 = 0x5d
+  SYSCALL: exit(1176)
+  EX result: 0x0
+
+Ran 11a steps.
+PC: 0x00010524
+Halt: Yes
+Exit code: 1176
+
+================================
+
+========== 运行结束 ==========
+
+========== 系统状态 ==========
+CPU:
+  PC: 0x00010524
+  Halt: Yes
+  Step count: 0
+
+Timer:
+  MTIME: 0x0000000000000119
+  MTIMECMP: 0xffffffffffffffff
+  Interrupt pending: No
+
+UART:
+  TXCTRL: 0x00000000
+  RXCTRL: 0x00000000
+  RX FIFO size: 0
+  Has received: No
+  Interrupt pending: No
+
+=============================

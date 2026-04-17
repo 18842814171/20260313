@@ -107,8 +107,13 @@ uint32_t Inst::inst_id() const{ // Use internal 'raw'
                 if (imm12 == 1) return INST_EBREAK;
                 if (imm12 == 5) return INST_WFI;  // WFI
             }
-            
-            return 0; // CSR instructions ignored
+            // CSR instructions: CSRRW(001), CSRRS(010), CSRRC(011), etc.
+            if (f3 == 0b001 || f3 == 0b010 || f3 == 0b011 ||
+                f3 == 0b101 || f3 == 0b110 || f3 == 0b111) {
+                return make_inst_id(op, f3, 0);
+            }
+
+            return 0; // Other SYSTEM instructions ignored
     }
     return 0;
 }
