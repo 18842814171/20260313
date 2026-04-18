@@ -1,12 +1,10 @@
 /**
  * @file timer_uart_test.c
- * @brief Timer 和 UART 设备测试程序
- *
- * 本程序测试 Timer 和 UART 外设设备的 MMIO 访问。
+ * @brief Timer 和 UART 设备交互式测试程序
  *
  * 设备地址:
- *   Timer: 0x02004000 (MTIME=0x00, MTIMECMP=0x08)
- *   UART:  0x10000000 (TXDATA=0x00, RXDATA=0x04, TXCTRL=0x08, RXCTRL=0x0C)
+ *   Timer: 0x02004000
+ *   UART:  0x10000000
  */
 
 #include <stdint.h>
@@ -26,120 +24,113 @@
 #define UART_RXDATA    (*(volatile uint32_t*)(UART_BASE + 0x04))
 #define UART_TXCTRL    (*(volatile uint32_t*)(UART_BASE + 0x08))
 #define UART_RXCTRL    (*(volatile uint32_t*)(UART_BASE + 0x0C))
-#define UART_IE        (*(volatile uint32_t*)(UART_BASE + 0x10))
-#define UART_IP        (*(volatile uint32_t*)(UART_BASE + 0x14))
-#define UART_DIV       (*(volatile uint32_t*)(UART_BASE + 0x18))
 
 // =====================================================
-// 辅助函数
+// UART 辅助函数
 // =====================================================
 
-// 打印字符到 UART
 void uart_putc(char c) {
+    while (UART_TXDATA & 0x80000000) { }  // 等待 TXFULL = 0
     UART_TXDATA = (uint32_t)c;
 }
 
-// 打印字符串到 UART
 void uart_puts(const char* s) {
     while (*s) {
-        uart_putc(*s);
-        s++;
+        uart_putc(*s++);
     }
 }
 
-// 打印十六进制数字
-void print_hex(uint32_t val) {
-    const char hex_chars[] = "0123456789ABCDEF";
-    char buf[11];
-    buf[0] = '0';
-    buf[1] = 'x';
-    buf[10] = '\0';
-    
-    for (int i = 9; i >= 2; i--) {
-        buf[i] = hex_chars[val & 0xF];
-        val >>= 4;
-    }
-    
-    uart_puts(buf);
-}
-
-// 打印换行
-void println() {
+void uart_puts_nl() {
+    uart_putc('\r');
     uart_putc('\n');
+}
+
+void print_hex32(uint32_t val) {
+    const char hex[] = "0123456789ABCDEF";
+    uart_puts("0x");
+    for (int i = 28; i >= 0; i -= 4) {
+        uart_putc(hex[(val >> i) & 0xF]);
+    }
+}
+
+// 检查是否有数据可读 (RXDATA[31] == 0 表示有数据)
+int uart_has_data() {
+    return !(UART_RXDATA & 0x80000000);
+}
+
+// 读取一个字符
+char uart_read() {
+    uint32_t rx;
+    while ((rx = UART_RXDATA) & 0x80000000) { }  // 阻塞等待
+    return (char)(rx & 0xFF);
+}
+
+// 读取一行（带回显）
+void uart_getline(char* buf, int max_len) {
+    int count = 0;
+    while (count < max_len - 1) {
+        char c = uart_read();
+        uart_putc(c);  // 回显
+        if (c == '\r' || c == '\n') {
+            uart_puts_nl();
+            break;
+        }
+        buf[count++] = c;
+    }
+    buf[count] = '\0';
 }
 
 // =====================================================
 // 主函数
 // =====================================================
 int main() {
+    char input_buf[64];
+
     // 初始化 UART
     UART_TXCTRL = 1;   // 启用发送
     UART_RXCTRL = 1;   // 启用接收
-    UART_DIV = 16;      // 波特率分频
-    
-    // 测试输出
-    uart_puts("=== Timer & UART Test ===");
-    println();
-    
-    // 测试 Timer
-    uart_puts("Timer MTIME: ");
-    uint64_t mtime_val = TIMER_MTIME;
-    // 打印高32位
-    print_hex((uint32_t)(mtime_val >> 32));
-    // 打印低32位
-    print_hex((uint32_t)(mtime_val & 0xFFFFFFFF));
-    println();
-    
-    // 测试 UART 发送
-    uart_puts("Writing to UART...");
-    println();
-    
-    uart_putc('H');
-    uart_putc('e');
-    uart_putc('l');
-    uart_putc('l');
-    uart_putc('o');
-    uart_putc(' ');
-    uart_putc('W');
-    uart_putc('o');
-    uart_putc('r');
-    uart_putc('l');
-    uart_putc('d');
-    uart_putc('!');
-    println();
-    
-    // 读取 UART RXDATA (应该为空，返回 0x80000000)
-    uart_puts("UART RXDATA (should be empty): ");
-    uint32_t rx = UART_RXDATA;
-    print_hex(rx);
-    println();
-    
-    // 写一些数据到 RXDATA 以模拟接收
-    uart_puts("Writing test data to RXDATA...");
-    println();
-    
-    // 测试寄存器读写
-    uart_puts("UART TXCTRL: ");
-    print_hex(UART_TXCTRL);
-    println();
-    
-    uart_puts("UART RXCTRL: ");
-    print_hex(UART_RXCTRL);
-    println();
-    
-    uart_puts("UART DIV: ");
-    print_hex(UART_DIV);
-    println();
-    
-    // 测试完成
-    uart_puts("=== Test Complete ===");
-    println();
-    
+
+    // 欢迎信息
+    uart_puts("========================================");
+    uart_puts_nl();
+    uart_puts("     Timer & UART Interactive Test");
+    uart_puts_nl();
+    uart_puts("========================================");
+    uart_puts_nl();
+    uart_puts_nl();
+
+    // 主循环
+    while (1) {
+        uart_puts("Type something and press Enter:");
+        uart_puts_nl();
+
+        uart_getline(input_buf, sizeof(input_buf));
+
+        // 回显输入
+        uart_puts("You typed: ");
+        uart_puts(input_buf);
+        uart_puts_nl();
+
+        // 显示 Timer 状态
+        uart_puts("Timer MTIME: ");
+        uint64_t mtime_val = TIMER_MTIME;
+        print_hex32((uint32_t)(mtime_val >> 32));
+        print_hex32((uint32_t)(mtime_val & 0xFFFFFFFF));
+        uart_puts_nl();
+
+        // 检查是否退出
+        if (input_buf[0] == 'q' && input_buf[1] == '\0') {
+            uart_puts("Goodbye!");
+            uart_puts_nl();
+            break;
+        }
+    }
+
     // 退出程序
     asm volatile("li a7, 93");
     asm volatile("li a0, 0");
     asm volatile("ecall");
-    
+
     while(1);
     return 0;
 }

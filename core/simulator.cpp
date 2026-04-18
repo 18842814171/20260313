@@ -42,8 +42,6 @@ void execute(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out, InstManager *im) {
 }
 
 // ============================================================
-// Step Input Handler (unified for commands + UART input)
-// ============================================================
 class StepInputHandler {
 private:
     UART* uart;

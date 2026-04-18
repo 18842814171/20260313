@@ -2,7 +2,10 @@
 #define UTIL_HPP
 #include <cassert>
 #include <sstream>
+#include <iostream>
+#include <fstream>
 #include <cstring>
+#include <ctime>
 #ifndef DEBUG
 #define DEBUG 1
 #endif
@@ -59,9 +62,13 @@ namespace
 			snprintf(buffer, sizeof(buffer), fmt, value);
 			return std::string(buffer);
 		}
+	
 	}
 }
 
+// ============================================================
+
+// ============================================================
 
 // Add a helper macro
 #define SCOPE LogScope _scope
@@ -93,7 +100,67 @@ struct LogScope {
 #define POP
 #define HEX(value) 
 #define DEC(value)
+
 #endif
+class Streambuf : public std::streambuf {
+	private:
+	std::ofstream file_;
+	public:
+	bool open(const std::string& filepath) {
+		file_.open(filepath, std::ios::out | std::ios::trunc);
+		return file_.is_open();
+	}
+	void close() { file_.close(); }
+	protected:
+	int overflow(int c) override {
+		if (file_.is_open()) {
+			file_.rdbuf()->sputc(static_cast<char>(c));
+		}
+		return c;
+	}
+	std::streamsize xsputn(const char* s, std::streamsize n) override {
+		if (file_.is_open()) {
+			file_.rdbuf()->sputn(s, n);
+		}
+		return n;
+	}
+};
+
+class LogRedirector {
+	private:
+	Streambuf file_buf_;
+	std::streambuf* old_buf_ = nullptr;
+	bool active_ = false;
+
+	static std::string make_filename(const std::string& elf_path) {
+		auto now = std::time(nullptr);
+		auto tm = *std::localtime(&now);
+		std::ostringstream ts;
+		//ts << std::put_time(&tm, "%Y%m%d_%H%M%S");
+		std::string base = elf_path;
+		size_t pos = base.rfind('/');
+		if (pos != std::string::npos) base = base.substr(pos + 1);
+		pos = base.rfind('.');
+		if (pos != std::string::npos) base = base.substr(0, pos);
+		return ts.str() + "-" + base + ".txt";
+	}
+
+	public:
+	bool start(const std::string& elf_path) {
+		std::string fname = make_filename(elf_path);
+		if (!file_buf_.open(fname)) return false;
+		old_buf_ = std::cout.rdbuf(&file_buf_);
+		active_ = true;
+		return true;
+	}
+
+	void stop() {
+		if (!active_) return;
+		std::cout.rdbuf(old_buf_);
+		file_buf_.close();
+		active_ = false;
+	}
+};
 #endif
 
 #ifndef OPEN_ASSERT
@@ -108,3 +175,6 @@ struct LogScope {
 #endif
 
 #define ifThenOrThrow(cond, ifCondThen, Message) ASSERT(!(cond)  || (ifCondThen))
+
+
+

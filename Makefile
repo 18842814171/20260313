@@ -2,10 +2,10 @@
 
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -g \
-           -Iinclude -Iinclude/utils -Iinclude/inst \
+           -Iinclude -Iinclude/utils -Iinclude/inst -Iinclude/device\
            -MMD -MP
 
-LDFLAGS = 
+LDFLAGS =
 
 BUILD_DIR = build
 

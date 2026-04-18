@@ -221,7 +221,7 @@ void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
         out.alu_result = 0;
         out.val_rs2 = 0;
         return;
-    }
+        }
 
     // Use architectural regs after writeback() ran this cycle; id_ex.val_rs*
     // is stale for values that completed WB between decode and execute.
@@ -353,8 +353,8 @@ bool CPU::step()
     if (int_ctrl) {
         int_ctrl->tick();
     }
-    dump_registers();
-    dump_pipeline_state();
+    //dump_registers();
+    //dump_pipeline_state();
     return true;
 } 
 
