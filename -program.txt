@@ -6,8 +6,14 @@ Entry point: 0x0x100f8
 [UART input enabled - type characters to interact]
 
 ========== Running (halt when program exits) ==========
+==============================
+Step: 0
+==============================
   IF pc: 0x100f8
     raw_inst: 0x3197
+==============================
+Step: 1
+==============================
   Decoded Instruction: AUIPC
   ID pc: 0x100f8
     rs1=x0 rs2=x0 rd=x3
@@ -17,8 +23,11 @@ Entry point: 0x0x100f8
   ID pc: 0x100f8
   IF pc: 0x100fc
     raw_inst: 0x7d018193
+==============================
+Step: 2
+==============================
   EXEC: AUIPC rd=x3 rs1=x0 rs2=x0 imm=0x3000 | vals: x0=0x0 x0=0x0
-  EX result: 0x3000
+  EX result: 0x0
   Decoded Instruction: ADDI
   ID pc: 0x100fc
     rs1=x3 rs2=x16 rd=x3
@@ -28,6 +37,9 @@ Entry point: 0x0x100f8
   ID pc: 0x100fc
   IF pc: 0x10100
     raw_inst: 0x513
+==============================
+Step: 3
+==============================
   EXEC: ADDI rd=x3 rs1=x3 rs2=x16 imm=0x7d0 | vals: x3=0x138c8 x16=0x0
   EX result: 0x14098
   Decoded Instruction: ADDI
@@ -38,6 +50,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10100
   IF pc: 0x10104
     raw_inst: 0x50463
+==============================
+Step: 4
+==============================
   EXEC: ADDI rd=x10 rs1=x0 rs2=x0 | vals: x0=0x0 x0=0x0
   EX result: 0x0
   Decoded Instruction: BEQ
@@ -49,6 +64,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10104
   IF pc: 0x10108
     raw_inst: 0x1751073
+==============================
+Step: 5
+==============================
   WB: r3 = 0x14098 (from ALU)
   EXEC: BEQ rd=x8 rs1=x10 rs2=x0 imm=0x8 | vals: x10=0x0 x0=0x0
   Forwarding: x10 from MEM/WB
@@ -62,6 +80,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10108
   IF pc: 0x1010c
     raw_inst: 0x3517
+==============================
+Step: 6
+==============================
   WB: r10 = 0x0 (from ALU)
   EXEC: CSRRW rd=x0 rs1=x10 rs2=x23 | vals: x10=0x0 x23=0x0
   Decoded Instruction: AUIPC
@@ -73,6 +94,9 @@ Entry point: 0x0x100f8
   ID pc: 0x1010c
   IF pc: 0x10110
     raw_inst: 0x52450513
+==============================
+Step: 7
+==============================
   EXEC: AUIPC rd=x10 rs1=x0 rs2=x0 imm=0x3000 | vals: x0=0x0 x0=0x0
   EX result: 0x3000
   Decoded Instruction: ADDI
@@ -84,6 +108,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10110
   IF pc: 0x10114
     raw_inst: 0x4617
+==============================
+Step: 8
+==============================
   WB: r8 = 0x0 (from ALU)
   EXEC: ADDI rd=x10 rs1=x10 rs2=x4 imm=0x524 | vals: x10=0x0 x4=0x0
   EX result: 0x524
@@ -96,6 +123,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10114
   IF pc: 0x10118
     raw_inst: 0x84460613
+==============================
+Step: 9
+==============================
   EXEC: AUIPC rd=x12 rs1=x0 rs2=x0 imm=0x4000 | vals: x0=0x0 x0=0x0
   EX result: 0x4000
   Decoded Instruction: ADDI
@@ -107,6 +137,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10118
   IF pc: 0x1011c
     raw_inst: 0x40a60633
+==============================
+Step: 10
+==============================
   WB: r10 = 0x524 (from ALU)
   EXEC: ADDI rd=x12 rs1=x12 rs2=x4 imm=0xfffff844 | vals: x12=0x0 x4=0x0
   EX result: 0xfffff844
@@ -118,6 +151,9 @@ Entry point: 0x0x100f8
   ID pc: 0x1011c
   IF pc: 0x10120
     raw_inst: 0x593
+==============================
+Step: 11
+==============================
   EXEC: SUB rd=x12 rs1=x12 rs2=x10 | vals: x12=0x0 x10=0x524
   Forwarding: x12 from MEM/WB
   Forwarding: x12 from EX/MEM
@@ -130,6 +166,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10120
   IF pc: 0x10124
     raw_inst: 0x165000ef
+==============================
+Step: 12
+==============================
   WB: r12 = 0xfffff844 (from ALU)
   EXEC: ADDI rd=x11 rs1=x0 rs2=x0 | vals: x0=0x0 x0=0x0
   EX result: 0x0
@@ -142,6 +181,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10124
   IF pc: 0x10128
     raw_inst: 0x1517
+==============================
+Step: 13
+==============================
   EXEC: JAL rd=x1 rs1=x0 rs2=x5 imm=0x964 | vals: x0=0x0 x5=0x0
   EX result: 0x964
   Decoded Instruction: AUIPC
@@ -153,6 +195,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10128
   IF pc: 0x1012c
     raw_inst: 0xb8c50513
+==============================
+Step: 14
+==============================
   WB: r11 = 0x0 (from ALU)
   EXEC: AUIPC rd=x10 rs1=x0 rs2=x0 imm=0x1000 | vals: x0=0x0 x0=0x0
   EX result: 0x1000
@@ -165,6 +210,9 @@ Entry point: 0x0x100f8
   ID pc: 0x1012c
   IF pc: 0x10130
     raw_inst: 0x50863
+==============================
+Step: 15
+==============================
   EXEC: ADDI rd=x10 rs1=x10 rs2=x12 imm=0xfffffb8c | vals: x10=0x524 x12=0xfffff844
   EX result: 0xb0
   Decoded Instruction: BEQ
@@ -176,6 +224,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10130
   IF pc: 0x10134
     raw_inst: 0x2517
+==============================
+Step: 16
+==============================
   EXEC: BEQ rd=x16 rs1=x10 rs2=x0 imm=0x10 | vals: x10=0x524 x0=0x0
   Forwarding: x10 from MEM/WB
   Forwarding: x10 from EX/MEM
@@ -189,6 +240,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10134
   IF pc: 0x10138
     raw_inst: 0xce450513
+==============================
+Step: 17
+==============================
   WB: r10 = 0xb0 (from ALU)
   EXEC: AUIPC rd=x10 rs1=x0 rs2=x0 imm=0x2000 | vals: x0=0x0 x0=0x0
   EX result: 0x2000
@@ -201,6 +255,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10138
   IF pc: 0x1013c
     raw_inst: 0x379000ef
+==============================
+Step: 18
+==============================
   EXEC: ADDI rd=x10 rs1=x10 rs2=x4 imm=0xfffffce4 | vals: x10=0xb0 x4=0x0
   EX result: 0xfffffd94
   Decoded Instruction: JAL
@@ -212,6 +269,9 @@ Entry point: 0x0x100f8
   ID pc: 0x1013c
   IF pc: 0x10140
     raw_inst: 0xb5000ef
+==============================
+Step: 19
+==============================
   EXEC: JAL rd=x1 rs1=x0 rs2=x25 imm=0xb78 | vals: x0=0x0 x25=0x0
   EX result: 0xb78
   Decoded Instruction: JAL
@@ -223,6 +283,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10140
   IF pc: 0x10144
     raw_inst: 0x12503
+==============================
+Step: 20
+==============================
   WB: r10 = 0xfffffd94 (from ALU)
   EXEC: JAL rd=x1 rs1=x0 rs2=x21 imm=0x8b4 | vals: x0=0x0 x21=0x0
   EX result: 0x8b4
@@ -234,6 +297,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10144
   IF pc: 0x10148
     raw_inst: 0x410593
+==============================
+Step: 21
+==============================
   EXEC: LW rd=x10 rs1=x2 rs2=x0 | vals: x2=0x20008 x0=0x0
   EX result: 0x20008
   Decoded Instruction: ADDI
@@ -245,6 +311,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10148
   IF pc: 0x1014c
     raw_inst: 0x251613
+==============================
+Step: 22
+==============================
   LW addr: 0x20008
   EXEC: ADDI rd=x11 rs1=x2 rs2=x4 imm=0x4 | vals: x2=0x20008 x4=0x0
   EX result: 0x2000c
@@ -257,6 +326,9 @@ Entry point: 0x0x100f8
   ID pc: 0x1014c
   IF pc: 0x10150
     raw_inst: 0x460613
+==============================
+Step: 23
+==============================
   WB: r10 = 0x0 (from MEM)
   EXEC: UNKNOWN rd=x12 rs1=x10 rs2=x2 imm=0x2 | vals: x10=0x0 x2=0x20008
   EX result: 0x2
@@ -269,6 +341,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10150
   IF pc: 0x10154
     raw_inst: 0xb60633
+==============================
+Step: 24
+==============================
   WB: r11 = 0x2000c (from ALU)
   EXEC: ADDI rd=x12 rs1=x12 rs2=x4 imm=0x4 | vals: x12=0xfffff844 x4=0x0
   EX result: 0xfffff848
@@ -280,6 +355,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10154
   IF pc: 0x10158
     raw_inst: 0x6c000ef
+==============================
+Step: 25
+==============================
   EXEC: ADD rd=x12 rs1=x12 rs2=x11 | vals: x12=0xfffff844 x11=0x2000c
   Forwarding: x12 from MEM/WB
   Forwarding: x12 from EX/MEM
@@ -293,6 +371,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10158
   IF pc: 0x1015c
     raw_inst: 0xf59ff06f
+==============================
+Step: 26
+==============================
   WB: r12 = 0xfffff848 (from ALU)
   EXEC: JAL rd=x1 rs1=x0 rs2=x12 imm=0x6c | vals: x0=0x0 x12=0xfffff848
   Forwarding: x12 from MEM/WB
@@ -307,6 +388,9 @@ Entry point: 0x0x100f8
   ID pc: 0x1015c
   IF pc: 0x10160
     raw_inst: 0xff010113
+==============================
+Step: 27
+==============================
   WB: r12 = 0x1f854 (from ALU)
   EXEC: JAL rd=x0 rs1=x31 rs2=x25 imm=0xffffff58 | vals: x31=0x0 x25=0x0
   EX result: 0x0
@@ -319,6 +403,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10160
   IF pc: 0x10164
     raw_inst: 0x812423
+==============================
+Step: 28
+==============================
   EXEC: ADDI rd=x2 rs1=x2 rs2=x16 imm=0xfffffff0 | vals: x2=0x20008 x16=0x0
   EX result: 0x1fff8
   Decoded Instruction: SW
@@ -330,6 +417,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10164
   IF pc: 0x10168
     raw_inst: 0xd841c783
+==============================
+Step: 29
+==============================
   EXEC: SW rd=x8 rs1=x2 rs2=x8 imm=0x8 | vals: x2=0x20008 x8=0x0
   Forwarding: x2 from MEM/WB
   Forwarding: x2 from EX/MEM
@@ -343,6 +433,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10168
   IF pc: 0x1016c
     raw_inst: 0x112623
+==============================
+Step: 30
+==============================
   WB: r2 = 0x1fff8 (from ALU)
   SW addr: 0x20000
   EXEC: UNKNOWN rd=x15 rs1=x3 rs2=x4 imm=0xfffffd84 | vals: x3=0x14098 x4=0x0
@@ -356,6 +449,9 @@ Entry point: 0x0x100f8
   ID pc: 0x1016c
   IF pc: 0x10170
     raw_inst: 0x2079263
+==============================
+Step: 31
+==============================
   EXEC: SW rd=x12 rs1=x2 rs2=x1 imm=0xc | vals: x2=0x1fff8 x1=0xffffffff
   EX result: 0x20004
   Decoded Instruction: UNKNOWN
@@ -367,6 +463,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10170
   IF pc: 0x10174
     raw_inst: 0x793
+==============================
+Step: 32
+==============================
   SW addr: 0x20004
   EXEC: UNKNOWN rd=x4 rs1=x15 rs2=x0 imm=0x24 | vals: x15=0x0 x0=0x0
   EX result: 0x24
@@ -378,6 +477,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10174
   IF pc: 0x10178
     raw_inst: 0x78a63
+==============================
+Step: 33
+==============================
   EXEC: ADDI rd=x15 rs1=x0 rs2=x0 | vals: x0=0x0 x0=0x0
   EX result: 0x0
   Decoded Instruction: BEQ
@@ -389,6 +491,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10178
   IF pc: 0x1017c
     raw_inst: 0x12537
+==============================
+Step: 34
+==============================
   EXEC: BEQ rd=x20 rs1=x15 rs2=x0 imm=0x14 | vals: x15=0x0 x0=0x0
   Forwarding: x15 from MEM/WB
   Forwarding: x15 from EX/MEM
@@ -402,6 +507,9 @@ Entry point: 0x0x100f8
   ID pc: 0x1017c
   IF pc: 0x10180
     raw_inst: 0xb850513
+==============================
+Step: 35
+==============================
   WB: r15 = 0x0 (from ALU)
   EXEC: LUI rd=x10 rs1=x2 rs2=x0 imm=0x12000 | vals: x2=0x1fff8 x0=0x0
   EX result: 0x31ff8
@@ -414,6 +522,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10180
   IF pc: 0x10184
     raw_inst: 0x97
+==============================
+Step: 36
+==============================
   EXEC: ADDI rd=x10 rs1=x10 rs2=x24 imm=0xb8 | vals: x10=0x0 x24=0x0
   EX result: 0xb8
   Decoded Instruction: AUIPC
@@ -424,6 +535,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10184
   IF pc: 0x10188
     raw_inst: 0xe7
+==============================
+Step: 37
+==============================
   EXEC: AUIPC rd=x1 rs1=x0 rs2=x0 | vals: x0=0x0 x0=0x0
   EX result: 0x0
   Decoded Instruction: JALR
@@ -434,6 +548,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10188
   IF pc: 0x1018c
     raw_inst: 0x100793
+==============================
+Step: 38
+==============================
   WB: r10 = 0xb8 (from ALU)
   EXEC: JALR rd=x1 rs1=x0 rs2=x0 | vals: x0=0x0 x0=0x0
   EX result: 0x0
@@ -446,6 +563,9 @@ Entry point: 0x0x100f8
   ID pc: 0x1018c
   IF pc: 0x10190
     raw_inst: 0xd8f18223
+==============================
+Step: 39
+==============================
   EXEC: ADDI rd=x15 rs1=x0 rs2=x1 imm=0x1 | vals: x0=0x0 x1=0xffffffff
   EX result: 0x1
   Decoded Instruction: UNKNOWN
@@ -457,6 +577,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10190
   IF pc: 0x10194
     raw_inst: 0xc12083
+==============================
+Step: 40
+==============================
   EXEC: UNKNOWN rd=x4 rs1=x3 rs2=x15 imm=0xfffffd84 | vals: x3=0x14098 x15=0x0
   Forwarding: x15 from MEM/WB
   Forwarding: x15 from EX/MEM
@@ -470,6 +593,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10194
   IF pc: 0x10198
     raw_inst: 0x812403
+==============================
+Step: 41
+==============================
   WB: r15 = 0x1 (from ALU)
   EXEC: LW rd=x1 rs1=x2 rs2=x12 imm=0xc | vals: x2=0x1fff8 x12=0x1f854
   EX result: 0x20004
@@ -482,6 +608,9 @@ Entry point: 0x0x100f8
   ID pc: 0x10198
   IF pc: 0x1019c
     raw_inst: 0x1010113
+==============================
+Step: 42
+==============================
   LW addr: 0x20004
   EXEC: LW rd=x8 rs1=x2 rs2=x8 imm=0x8 | vals: x2=0x1fff8 x8=0x0
   EX result: 0x20000
@@ -494,6 +623,9 @@ Entry point: 0x0x100f8
   ID pc: 0x1019c
   IF pc: 0x101a0
     raw_inst: 0x8067
+==============================
+Step: 43
+==============================
   WB: r1 = 0xffffffff (from MEM)
   LW addr: 0x20000
   EXEC: ADDI rd=x2 rs1=x2 rs2=x16 imm=0x10 | vals: x2=0x1fff8 x16=0x0
@@ -506,6 +638,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101a0
   IF pc: 0x101a4
     raw_inst: 0x793
+==============================
+Step: 44
+==============================
   WB: r8 = 0x0 (from MEM)
   EXEC: JALR rd=x0 rs1=x1 rs2=x0 | vals: x1=0xffffffff x0=0x0
   EX result: 0xffffffff
@@ -517,6 +652,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101a4
   IF pc: 0x101a8
     raw_inst: 0x78c63
+==============================
+Step: 45
+==============================
   WB: r2 = 0x20008 (from ALU)
   EXEC: ADDI rd=x15 rs1=x0 rs2=x0 | vals: x0=0x0 x0=0x0
   EX result: 0x0
@@ -529,6 +667,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101a8
   IF pc: 0x101ac
     raw_inst: 0x12537
+==============================
+Step: 46
+==============================
   EXEC: BEQ rd=x24 rs1=x15 rs2=x0 imm=0x18 | vals: x15=0x1 x0=0x0
   Forwarding: x15 from MEM/WB
   Forwarding: x15 from EX/MEM
@@ -542,6 +683,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101ac
   IF pc: 0x101b0
     raw_inst: 0xd8818593
+==============================
+Step: 47
+==============================
   WB: r15 = 0x0 (from ALU)
   EXEC: LUI rd=x10 rs1=x2 rs2=x0 imm=0x12000 | vals: x2=0x20008 x0=0x0
   EX result: 0x32008
@@ -554,6 +698,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101b0
   IF pc: 0x101b4
     raw_inst: 0xb850513
+==============================
+Step: 48
+==============================
   EXEC: ADDI rd=x11 rs1=x3 rs2=x8 imm=0xfffffd88 | vals: x3=0x14098 x8=0x0
   EX result: 0x13e20
   Decoded Instruction: ADDI
@@ -565,6 +712,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101b4
   IF pc: 0x101b8
     raw_inst: 0x317
+==============================
+Step: 49
+==============================
   EXEC: ADDI rd=x10 rs1=x10 rs2=x24 imm=0xb8 | vals: x10=0xb8 x24=0x0
   EX result: 0x170
   Decoded Instruction: AUIPC
@@ -575,6 +725,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101b8
   IF pc: 0x101bc
     raw_inst: 0x67
+==============================
+Step: 50
+==============================
   WB: r11 = 0x13e20 (from ALU)
   EXEC: AUIPC rd=x6 rs1=x0 rs2=x0 | vals: x0=0x0 x0=0x0
   EX result: 0x0
@@ -586,6 +739,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101bc
   IF pc: 0x101c0
     raw_inst: 0x8067
+==============================
+Step: 51
+==============================
   WB: r10 = 0x170 (from ALU)
   EXEC: JALR rd=x0 rs1=x0 rs2=x0 | vals: x0=0x0 x0=0x0
   EX result: 0x0
@@ -597,6 +753,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101c0
   IF pc: 0x101c4
     raw_inst: 0xfe010113
+==============================
+Step: 52
+==============================
   EXEC: JALR rd=x0 rs1=x1 rs2=x0 | vals: x1=0xffffffff x0=0x0
   EX result: 0xffffffff
   Decoded Instruction: ADDI
@@ -608,6 +767,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101c4
   IF pc: 0x101c8
     raw_inst: 0x112e23
+==============================
+Step: 53
+==============================
   EXEC: ADDI rd=x2 rs1=x2 rs2=x0 imm=0xffffffe0 | vals: x2=0x20008 x0=0x0
   EX result: 0x1ffe8
   Decoded Instruction: SW
@@ -619,6 +781,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101c8
   IF pc: 0x101cc
     raw_inst: 0x812c23
+==============================
+Step: 54
+==============================
   EXEC: SW rd=x28 rs1=x2 rs2=x1 imm=0x1c | vals: x2=0x20008 x1=0xffffffff
   Forwarding: x2 from MEM/WB
   Forwarding: x2 from EX/MEM
@@ -632,6 +797,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101cc
   IF pc: 0x101d0
     raw_inst: 0x2010413
+==============================
+Step: 55
+==============================
   WB: r2 = 0x1ffe8 (from ALU)
   SW addr: 0x20004
   EXEC: SW rd=x24 rs1=x2 rs2=x8 imm=0x18 | vals: x2=0x1ffe8 x8=0x0
@@ -645,6 +813,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101d0
   IF pc: 0x101d4
     raw_inst: 0x500793
+==============================
+Step: 56
+==============================
   SW addr: 0x20000
   EXEC: ADDI rd=x8 rs1=x2 rs2=x0 imm=0x20 | vals: x2=0x1ffe8 x0=0x0
   EX result: 0x20008
@@ -657,6 +828,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101d4
   IF pc: 0x101d8
     raw_inst: 0xfef42623
+==============================
+Step: 57
+==============================
   EXEC: ADDI rd=x15 rs1=x0 rs2=x5 imm=0x5 | vals: x0=0x0 x5=0x0
   EX result: 0x5
   Decoded Instruction: SW
@@ -668,6 +842,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101d8
   IF pc: 0x101dc
     raw_inst: 0x300793
+==============================
+Step: 58
+==============================
   WB: r8 = 0x20008 (from ALU)
   EXEC: SW rd=x12 rs1=x8 rs2=x15 imm=0xffffffec | vals: x8=0x20008 x15=0x0
   Forwarding: x15 from MEM/WB
@@ -682,6 +859,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101dc
   IF pc: 0x101e0
     raw_inst: 0xfef42423
+==============================
+Step: 59
+==============================
   WB: r15 = 0x5 (from ALU)
   SW addr: 0x1fff4
   EXEC: ADDI rd=x15 rs1=x0 rs2=x3 imm=0x3 | vals: x0=0x0 x3=0x14098
@@ -695,6 +875,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101e0
   IF pc: 0x101e4
     raw_inst: 0xfec42703
+==============================
+Step: 60
+==============================
   EXEC: SW rd=x8 rs1=x8 rs2=x15 imm=0xffffffe8 | vals: x8=0x20008 x15=0x5
   Forwarding: x15 from MEM/WB
   Forwarding: x15 from EX/MEM
@@ -708,6 +891,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101e4
   IF pc: 0x101e8
     raw_inst: 0xfe842783
+==============================
+Step: 61
+==============================
   WB: r15 = 0x3 (from ALU)
   SW addr: 0x1fff0
   EXEC: LW rd=x14 rs1=x8 rs2=x12 imm=0xffffffec | vals: x8=0x20008 x12=0x1f854
@@ -721,12 +907,18 @@ Entry point: 0x0x100f8
   ID pc: 0x101e8
   IF pc: 0x101ec
     raw_inst: 0xf707b3
+==============================
+Step: 62
+==============================
   LW addr: 0x1fff4
   EXEC: LW rd=x15 rs1=x8 rs2=x8 imm=0xffffffe8 | vals: x8=0x20008 x8=0x20008
   EX result: 0x1fff0
   LOAD-USE hazard detected: waiting for x15
   STALL inserted
   Fetch stalled
+==============================
+Step: 63
+==============================
   WB: r14 = 0x5 (from MEM)
   LW addr: 0x1fff0
   Decoded Instruction: ADD
@@ -737,6 +929,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101ec
   IF pc: 0x101f0
     raw_inst: 0xfef42223
+==============================
+Step: 64
+==============================
   WB: r15 = 0x3 (from MEM)
   EXEC: ADD rd=x15 rs1=x14 rs2=x15 | vals: x14=0x5 x15=0x3
   EX result: 0x8
@@ -749,6 +944,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101f0
   IF pc: 0x101f4
     raw_inst: 0x5d00893
+==============================
+Step: 65
+==============================
   EXEC: SW rd=x4 rs1=x8 rs2=x15 imm=0xffffffe4 | vals: x8=0x20008 x15=0x3
   Forwarding: x15 from MEM/WB
   Forwarding: x15 from EX/MEM
@@ -762,6 +960,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101f4
   IF pc: 0x101f8
     raw_inst: 0x800513
+==============================
+Step: 66
+==============================
   WB: r15 = 0x8 (from ALU)
   SW addr: 0x1ffec
   EXEC: ADDI rd=x17 rs1=x0 rs2=x29 imm=0x5d | vals: x0=0x0 x29=0x0
@@ -775,6 +976,9 @@ Entry point: 0x0x100f8
   ID pc: 0x101f8
   IF pc: 0x101fc
     raw_inst: 0x73
+==============================
+Step: 67
+==============================
   EXEC: ADDI rd=x10 rs1=x0 rs2=x8 imm=0x8 | vals: x0=0x0 x8=0x20008
   EX result: 0x8
   Decoded Instruction: ECALL
@@ -783,16 +987,19 @@ Entry point: 0x0x100f8
   ID pc: 0x101fc
   IF pc: 0x10200
     raw_inst: 0x6f
+==============================
+Step: 68
+==============================
   WB: r17 = 0x5d (from ALU)
   EXEC: ECALL
-  SYSCALL: exit(368)
+  SYSCALL: exit(8)
   SYSCALL: a7=93 a0=8 a1=81440 a2=129108
   EX result: 0x0
 
 Ran 69 steps.
 PC: 0x0x10204
 Halt: Yes
-Exit code: 368
+Exit code: 8
 
 ========== Final Status ==========
 Timer MTIME: 68

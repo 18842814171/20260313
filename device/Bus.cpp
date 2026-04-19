@@ -74,3 +74,14 @@ void Bus::write_word(uint32_t addr, uint32_t value) {
     }
     write(addr, data, 4);
 }
+
+uint8_t Bus::read_byte(uint32_t addr) {
+    uint8_t data[1] = {0};
+    read(addr, data, 1);        // reuse your existing read() which handles devices + memory
+    return data[0];
+}
+
+void Bus::write_byte(uint32_t addr, uint8_t value) {
+    uint8_t data[1] = {value};
+    write(addr, data, 1);       // reuse your existing write() which handles devices + memory
+}

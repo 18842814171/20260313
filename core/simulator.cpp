@@ -326,7 +326,9 @@ void simulator_interactive(std::string infile, bool enable_uart_input, bool auto
 
             if (cpu.halt) break;
         }
-
+        GAP;
+        LOG("Step: " + DEC(step_count));
+        GAP;
         // Execute one instruction
         cpu.step();
         step_count++;

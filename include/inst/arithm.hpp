@@ -69,4 +69,30 @@ inline void inst_sub(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
      
 }
 
+inline void inst_slli(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    out.valid = in.valid;
+    out.rd = in.rd;
+
+    // RV32: shift amount is lower 5 bits
+    uint32_t shamt = static_cast<uint32_t>(in.imm) & 0x1F;
+
+    uint32_t val = in.val_rs1;
+
+    out.alu_result = val << shamt;
+
+    // no memory access
+    out.mem_read = false;
+    out.mem_write = false;
+
+    // writeback
+    out.reg_write = in.reg_write;
+
+    // not a control-flow instruction
+    out.pc_modified = false;
+
+    LOG("SLLI: x" + std::to_string(in.rd) +
+        " = x" + std::to_string(in.rs1) +
+        " << " + std::to_string(shamt) +
+        " = " + HEX(out.alu_result));
+}
 #endif // INST_ARITHM_HPP

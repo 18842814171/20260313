@@ -98,7 +98,8 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
         out.reg_write = false;
         out.mem_read  = false;
         out.mem_write = false;
-
+        out.is_byte   = false;
+        out.is_unsigned = false;
         // Log decode info
     std::string inst_name = get_inst_name(out.inst_id);
     LOG("Decoded Instruction: " + inst_name);
@@ -122,11 +123,37 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
                 out.alu_src = true;
                 out.alu_op = ALUOp::ADD;
                 break;
-            case INST_LW: // LW
+
+            case INST_SLLI:         // SLLI
+                out.reg_write = true;
+                out.alu_src = true;
+                out.alu_op = ALUOp::SLL;
+                break;
+            
+            case INST_LBU:          // byte unsigned load
+            out.reg_write   = true;
+            out.mem_read    = true;
+            out.alu_src     = true;
+            out.alu_op      = ALUOp::ADD;
+            out.is_byte     = true;
+            out.is_unsigned = true;     // ← this is what you asked for
+            break;
+
+        case INST_LB:           // byte signed load (add this case if you support LB)
+            out.reg_write   = true;
+            out.mem_read    = true;
+            out.alu_src     = true;
+            out.alu_op      = ALUOp::ADD;
+            out.is_byte     = true;
+            out.is_unsigned = false;
+            break;
+
+        case INST_LW: // LW
                 out.reg_write = true;
                 out.mem_read = true;
                 out.alu_src = true;
                 out.alu_op = ALUOp::ADD;
+                out.is_byte   = false;
                 break;
             case INST_SW: // SW
                 out.mem_write = true;
@@ -145,9 +172,7 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
         }
         LOG("Decoded Instruction:" + get_inst_name(out.inst_id));
         LOG("ID pc: " + HEX(out.pc));
-    }
-
-
+}
 
 void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     SCOPE;
@@ -180,7 +205,7 @@ void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
         uint32_t arg2    = read_reg_forwarded(12);
         
         // Use enhanced syscall handler
-        handle_syscall(*this);
+        handle_syscall(*this, syscall, arg0, arg1, arg2);
         // Log syscall details
         LOG("SYSCALL: a7=" + DEC(syscall) + " a0=" + DEC(arg0) + 
             " a1=" + DEC(arg1) + " a2=" + DEC(arg2));
@@ -258,7 +283,8 @@ void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     out.reg_write = in.reg_write;
     out.mem_read  = in.mem_read;
     out.mem_write = in.mem_write;
-
+    out.is_byte     = in.is_byte;
+    out.is_unsigned = in.is_unsigned;
     LOG("EX result: " + HEX(out.alu_result));
 }
 
@@ -272,28 +298,61 @@ void CPU::memory_access(Pipe_EX_MEM& in, Pipe_MEM_WB& out) {
         out.valid = true;
         out.rd = in.rd;
         out.alu_result = in.alu_result;
-
+        out.is_byte    = in.is_byte;
         out.reg_write = in.reg_write;
         out.mem_read  = in.mem_read;
-
+        uint32_t addr = in.alu_result;
         if (in.mem_read) {
+        if (in.is_byte) {                  // byte load: LB or LBU
+            uint8_t byte_val;
             if (bus) {
-                out.mem_data = bus->read_word(in.alu_result);
+                byte_val = bus->read_byte(addr);
             } else {
-                out.mem_data = memory.read_word(in.alu_result);
+                byte_val = memory.read_byte(addr);
             }
-            LOG("LW addr: " + HEX(in.alu_result));
+
+            // Simple rule: if funct3 == 0b100 (LBU) → unsigned, else (LB) → signed
+            // We will set is_unsigned in decode stage using funct3
+            // For now, to keep it minimal, we assume you will pass the info.
+            // Temporary simple version:
+            //bool is_unsigned = /* TODO: set from decode based on funct3 */;
+
+            if (in.is_unsigned) {
+                out.mem_data = byte_val;                    // zero extend
+            } else {
+                out.mem_data = static_cast<int32_t>(static_cast<int8_t>(byte_val)); // sign extend
+            }
+            LOG("LB/LBU addr: " + HEX(addr));
         }
-        else if (in.mem_write) {
+        else {  // word load (LW)
             if (bus) {
-                bus->write_word(in.alu_result, in.val_rs2);
+                out.mem_data = bus->read_word(addr);
             } else {
-                memory.write_word(in.alu_result, in.val_rs2);
+                out.mem_data = memory.read_word(addr);
             }
-            LOG("SW addr: " + HEX(in.alu_result));
+            LOG("LW addr: " + HEX(addr));
         }
     }
-
+    else if (in.mem_write) {
+        if (in.is_byte) {                  // byte store: SB
+            uint8_t data = static_cast<uint8_t>(in.val_rs2 & 0xFFu);
+            if (bus) {
+                bus->write_byte(addr, data);
+            } else {
+                memory.write_byte(addr, data);
+            }
+            LOG("SB addr: " + HEX(addr));
+        }
+        else {  // word store (SW)
+            if (bus) {
+                bus->write_word(addr, in.val_rs2);
+            } else {
+                memory.write_word(addr, in.val_rs2);
+            }
+            LOG("SW addr: " + HEX(addr));
+        }
+    }
+}
 
 void CPU::writeback(Pipe_MEM_WB& in) {
     SCOPE;    
@@ -306,9 +365,7 @@ void CPU::writeback(Pipe_MEM_WB& in) {
             LOG("WB: r" + DEC(in.rd) + " = "  + HEX(data) + " (from " + source + ")"); 
         }
                 
-    }
-
-
+}
 
 bool CPU::step()
 {    

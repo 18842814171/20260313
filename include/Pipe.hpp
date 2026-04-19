@@ -30,7 +30,8 @@ struct Pipe_ID_EX{
     bool reg_write;
     bool mem_read;
     bool mem_write;
-    
+    bool is_byte = false;      // ← ADD THIS
+    bool is_unsigned = false;  // ← ADD THIS (only meaningful for loads)
     // interrupt/exception related
     bool is_trap;
     uint32_t trap_cause;
@@ -41,7 +42,7 @@ struct Pipe_EX_MEM{
 
     uint32_t pc;
     uint32_t rd;
-
+    bool is_unsigned = false;
     uint32_t alu_result;
     uint32_t val_rs2;   // needed for SW
     uint32_t target_pc;
@@ -50,7 +51,7 @@ struct Pipe_EX_MEM{
     bool reg_write;
     bool mem_read;
     bool mem_write;
-    
+    bool is_byte = false;
     // interrupt/exception related
     bool is_trap;
     uint32_t trap_cause;
@@ -67,7 +68,8 @@ struct Pipe_MEM_WB{
     // control
     bool reg_write;
     bool mem_read;
-    
+    bool is_byte = false;
+    bool is_unsigned = false;
     // interrupt/exception related
     bool is_trap;
     uint32_t trap_cause;

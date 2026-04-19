@@ -31,8 +31,6 @@ void test_interrupt();
 // Test timer interrupt (expects ELF file)
 void test_timer_interrupt(const std::string& elf_file);
 
-// Test with external device (specify device type: timer, uart, all)
-void test_ext_device(const std::string& infile, const std::string& device_type = "all");
 
 // Interactive device testing
 void test_interactive();

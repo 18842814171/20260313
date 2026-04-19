@@ -16,6 +16,7 @@
 #include "inst/jump.hpp"
 #include "inst/system.hpp"
 #include "inst/lui.hpp"
+
 #include "inst/opcode.hpp"
 #include <iostream>
 #include <stdexcept>
@@ -30,14 +31,19 @@ void register_all_instructions(InstManager *im) {
     im->register_inst(INST_ADDI, "ADDI", inst_addi);
     im->register_inst(INST_AUIPC, "AUIPC", inst_auipc);
     im->register_inst(INST_LUI, "LUI", inst_lui);
+    im->register_inst(INST_LBU, "LBU", inst_lbu);
+    im->register_inst(INST_LB, "LB", inst_lb);
+    
     im->register_inst(INST_LW, "LW", inst_lw);
     im->register_inst(INST_SW, "SW", inst_sw);
+    im->register_inst(INST_SB, "SB", inst_sb);
     im->register_inst(INST_BEQ, "BEQ", inst_beq);
     im->register_inst(INST_JAL, "JAL", inst_jal);
     im->register_inst(INST_JALR, "JALR", inst_jalr);
     im->register_inst(INST_EBREAK, "EBREAK", inst_ebreak);
     im->register_inst(INST_ECALL, "ECALL", inst_ecall);
     im->register_inst(INST_WFI, "WFI", inst_wfi);
+    im->register_inst(INST_SLLI, "SLLI", inst_slli);
     // CSR instructions
     im->register_inst(INST_CSRRW, "CSRRW", inst_csrrw);
     im->register_inst(INST_CSRRS, "CSRRS", inst_csrrs);
@@ -172,75 +178,6 @@ void test_full_program(const std::string& infile) {
     }
     
     LOG("\n=== Full Program Test Complete ===");
-    cpu->dump_registers();
-    cleanup_cpu(cpu, mem, im);
-}
-
-void test_interrupt() {
-    LOG("========== TEST E2: Interrupt Functionality ==========");
-    LOG("Testing interrupt functionality");
-    
-    InstManager im;
-    register_all_instructions(&im);
-    
-    Memory mem;
-    CPU cpu(mem, im);
-    
-    static InterruptController int_ctrl;
-    static TrapHandler trap;
-    cpu.set_interrupt_controller(&int_ctrl);
-    cpu.set_trap_handler(&trap);
-    cpu.enable_interrupts();
-    
-    
-    LOG("\n=== Interrupt Test Complete ===");
-    cpu.dump_registers();
-}
-
-// test_ext_device: 根据设备类型挂载指定设备
-// device_type: "timer", "uart", "all"
-void test_ext_device(const std::string& infile, const std::string& device_type) {
-    LOG("========== TEST E2: External Device ==========");
-    LOG("Testing with device: " + device_type);
-    LOG("ELF file: " + infile);
-    
-    CPU* cpu = nullptr;
-    Memory* mem = nullptr;
-    InstManager* im = nullptr;
-    Bus* bus = nullptr;
-    
-    init_cpu(cpu, mem, im, infile, 0);
-    
-    bus = new Bus();
-    bus->attach_memory(mem);
-    
-    // 根据设备类型挂载
-    if (device_type == "timer" || device_type == "all") {
-        static Timer timer;
-        bus->attach_device(0x02004000, &timer);
-        LOG("Timer device attached at 0x02004000");
-    }
-    
-    if (device_type == "uart" || device_type == "all") {
-        static UART uart;
-        bus->attach_device(0x10000000, &uart);
-        LOG("UART device attached at 0x10000000");
-    }
-    
-    cpu->attach_bus(bus);
-    
-    LOG("MMIO range: 0x10000000+");
-    
-    cpu->run(1000);  // Run limited steps
-    
-    LOG("Result after 1000 steps: ");
-    if (cpu->halt) {
-        LOG("Halted with exit_code=" + DEC(cpu->exit_code));
-    } else {
-        LOG("Running (step " + DEC(cpu->step_count) + ")");
-    }
-    
-    LOG("\n=== External Device Test Complete ===");
     cpu->dump_registers();
     cleanup_cpu(cpu, mem, im);
 }

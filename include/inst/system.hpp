@@ -36,13 +36,8 @@ inline void inst_wfi(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
 }
 
 // Enhanced syscall handling function
-inline int handle_syscall(CPU& cpu) {
-    uint32_t syscall_num = cpu.reg[17];
-    uint32_t arg0 = cpu.reg[10];
-    uint32_t arg1 = cpu.reg[11];
-    uint32_t arg2 = cpu.reg[12];
-    uint32_t arg3 = cpu.reg[13];
-    int ret = 0;
+inline int handle_syscall(CPU& cpu, uint32_t syscall_num, uint32_t arg0, uint32_t arg1, uint32_t arg2) {
+   int ret = 0;
 
     switch (syscall_num) {
         case 93: { // exit
@@ -166,16 +161,7 @@ inline void inst_ecall(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     (void)in;
     (void)out;
 
-    // Handle syscall using the enhanced handler
-    handle_syscall(cpu);
-
-    // If the syscall was exit, halt will be set by the handler
-    // Otherwise, we continue execution
-    if (cpu.halt) {
-        LOG("ECALL: CPU halted with exit code " + std::to_string(cpu.exit_code));
-    } else {
-        LOG("ECALL: syscall handled, a0 = " + std::to_string(cpu.reg[10]));
-    }
+    // This function is not used; ECALL is handled directly in CPU::execute().
 }
 
 // CSR Register addresses
