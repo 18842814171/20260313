@@ -12,11 +12,10 @@
 #include "inst/arithm.hpp"
 #include "inst/load_store.hpp"
 #include "inst/auipc.hpp"
-#include "inst/beq.hpp"
+#include "inst/branch.hpp"
 #include "inst/jump.hpp"
 #include "inst/system.hpp"
 #include "inst/lui.hpp"
-
 #include "inst/opcode.hpp"
 #include <iostream>
 #include <stdexcept>
@@ -29,6 +28,11 @@ void register_all_instructions(InstManager *im) {
     im->register_inst(INST_ADD, "ADD", inst_add);
     im->register_inst(INST_SUB, "SUB", inst_sub);
     im->register_inst(INST_ADDI, "ADDI", inst_addi);
+    im->register_inst(INST_ANDI, "ANDI", inst_andi);
+    im->register_inst(INST_ANDI, "ANDI", inst_andi);
+    im->register_inst(INST_XORI, "XORI", inst_xori);
+
+
     im->register_inst(INST_AUIPC, "AUIPC", inst_auipc);
     im->register_inst(INST_LUI, "LUI", inst_lui);
     im->register_inst(INST_LBU, "LBU", inst_lbu);
@@ -38,12 +42,18 @@ void register_all_instructions(InstManager *im) {
     im->register_inst(INST_SW, "SW", inst_sw);
     im->register_inst(INST_SB, "SB", inst_sb);
     im->register_inst(INST_BEQ, "BEQ", inst_beq);
+    im->register_inst(INST_BNE, "BNE", inst_bne);
+    im->register_inst(INST_BGE, "BGE", inst_bge);
+
+    im->register_inst(INST_BLT, "BLT", inst_blt);
     im->register_inst(INST_JAL, "JAL", inst_jal);
     im->register_inst(INST_JALR, "JALR", inst_jalr);
     im->register_inst(INST_EBREAK, "EBREAK", inst_ebreak);
     im->register_inst(INST_ECALL, "ECALL", inst_ecall);
     im->register_inst(INST_WFI, "WFI", inst_wfi);
     im->register_inst(INST_SLLI, "SLLI", inst_slli);
+    im->register_inst(INST_SRLI, "SRLI", inst_srli);
+    im->register_inst(INST_SRL, "SRL", inst_srl);
     // CSR instructions
     im->register_inst(INST_CSRRW, "CSRRW", inst_csrrw);
     im->register_inst(INST_CSRRS, "CSRRS", inst_csrrs);

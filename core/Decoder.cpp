@@ -92,10 +92,7 @@ uint32_t Inst::inst_id() const{ // Use internal 'raw'
         case OP_LOAD:
         case OP_STORE:
         case OP_JALR:
-            return make_inst_id(op, f3, 0); // no funct7 needed for these instructions
         case OP_BRANCH:
-            if(f3==0b000 || f3 ==0b001)
-                return INST_BEQ;
             return make_inst_id(op, f3, 0);
         
         case OP_LUI:

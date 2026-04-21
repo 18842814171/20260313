@@ -15,7 +15,7 @@
 #include "inst/arithm.hpp"
 #include "inst/load_store.hpp"
 #include "inst/auipc.hpp"
-#include "inst/beq.hpp"
+#include "inst/branch.hpp"
 #include "inst/jump.hpp"
 #include "inst/system.hpp"
 #include "inst/lui.hpp"
@@ -33,13 +33,13 @@
 #include <unistd.h>
 #include <deque>
 #include <mutex>
-
+#define DEBUG 1
 // Forward declaration - defined in simulator_api.cpp
 extern void register_all_instructions(InstManager *im);
 
-void execute(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out, InstManager *im) {
-    im->execute_inst(cpu,in,out);
-}
+//void execute(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out, InstManager *im) {
+   // im->execute_inst(cpu,in,out);
+//}
 
 // ============================================================
 class StepInputHandler {
@@ -346,6 +346,9 @@ void simulator_interactive(std::string infile, bool enable_uart_input, bool auto
         // Progress report every 1000 steps (in continuous mode)
         if (continuous_mode && step_count % 1000 == 0) {
             LOG("Progress: " + std::to_string(step_count) + " steps, PC=0x" + HEX(cpu.pc));
+        }
+        if(step_count >= 8000) {
+            cpu.halt = true;
         }
     }
 

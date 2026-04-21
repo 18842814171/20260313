@@ -7,7 +7,7 @@ build/simulator.o: core/simulator.cpp include/simulator.hpp \
  include/device/Timer.hpp include/device/UART.hpp include/Loader.hpp \
  include/device/Device.hpp include/Interrupt.hpp include/SimulatorAPI.hpp \
  include/inst/arithm.hpp include/inst/load_store.hpp include/Pipe.hpp \
- include/inst/auipc.hpp include/inst/beq.hpp include/inst/jump.hpp \
+ include/inst/auipc.hpp include/inst/branch.hpp include/inst/jump.hpp \
  include/inst/system.hpp include/inst/lui.hpp
 include/simulator.hpp:
 include/utils/utils.hpp:
@@ -34,7 +34,7 @@ include/inst/arithm.hpp:
 include/inst/load_store.hpp:
 include/Pipe.hpp:
 include/inst/auipc.hpp:
-include/inst/beq.hpp:
+include/inst/branch.hpp:
 include/inst/jump.hpp:
 include/inst/system.hpp:
 include/inst/lui.hpp:

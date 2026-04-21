@@ -95,4 +95,75 @@ inline void inst_slli(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
         " << " + std::to_string(shamt) +
         " = " + HEX(out.alu_result));
 }
+
+
+inline void inst_srl(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    out.valid = in.valid;
+    out.rd = in.rd;
+
+    uint32_t in1 = in.val_rs1;
+    uint32_t in2 = in.alu_src ? in.imm : in.val_rs2;
+
+    out.alu_result = alu_execute(ALUOp::SRL, in1, in2);
+
+    // Control signals
+    out.reg_write = true;
+    out.mem_read = false;
+    out.mem_write = false;
+    LOG("SRL: in1=" + std::to_string(in1) + ", in2=" + std::to_string(in2)
+          + ", result=" + std::to_string(out.alu_result));
+}
+
+inline void inst_srli(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    out.valid = in.valid;
+    out.rd = in.rd;
+    
+    uint32_t in1 = in.val_rs1;
+    uint32_t shift_amount = in.imm & 0x1F;  // Only lower 5 bits matter for RV32
+    
+    out.alu_result = alu_execute(ALUOp::SRL, in1, shift_amount);
+    out.reg_write = true;
+    out.mem_read = false;
+    out.mem_write = false;
+    
+    LOG("SRLI: in1=" + std::to_string(in1) + ", shift=" + std::to_string(shift_amount)
+          + ", result=" + std::to_string(out.alu_result));
+}
+
+inline void inst_andi(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    out.valid = in.valid;
+    out.rd = in.rd;
+    
+    uint32_t in1 = in.val_rs1;
+    uint32_t in2 = in.alu_src ? in.imm : in.val_rs2;
+    
+    out.alu_result = alu_execute(ALUOp::AND, in1, in2);
+    
+    // Control signals
+    out.reg_write = true;
+    out.mem_read = false;
+    out.mem_write = false;
+    
+    LOG("ANDI: in1=" + std::to_string(in1) + ", imm=" + std::to_string(in.imm) 
+          + ", result=" + std::to_string(out.alu_result));
+}
+
+inline void inst_xori(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    out.valid = in.valid;
+    out.rd = in.rd;
+    
+    uint32_t in1 = in.val_rs1;
+    uint32_t in2 = in.alu_src ? in.imm : in.val_rs2;
+    
+    out.alu_result = alu_execute(ALUOp::XOR, in1, in2);
+    
+    // Control signals
+    out.reg_write = true;
+    out.mem_read = false;
+    out.mem_write = false;
+    
+    LOG("XORI: in1=" + std::to_string(in1) + ", imm=" + std::to_string(in.imm) 
+          + ", result=" + std::to_string(out.alu_result));
+}
+
 #endif // INST_ARITHM_HPP

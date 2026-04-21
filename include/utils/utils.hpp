@@ -135,14 +135,14 @@ class LogRedirector {
 	static std::string make_filename(const std::string& elf_path) {
 		auto now = std::time(nullptr);
 		auto tm = *std::localtime(&now);
-		std::ostringstream ts;
+		const char* ts = "log/";
 		//ts << std::put_time(&tm, "%Y%m%d_%H%M%S");
 		std::string base = elf_path;
 		size_t pos = base.rfind('/');
 		if (pos != std::string::npos) base = base.substr(pos + 1);
 		pos = base.rfind('.');
 		if (pos != std::string::npos) base = base.substr(0, pos);
-		return ts.str() + "-" + base + ".txt";
+		return std::string(ts) + "-" + base + ".txt";
 	}
 
 	public:

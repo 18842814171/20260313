@@ -123,13 +123,23 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
                 out.alu_src = true;
                 out.alu_op = ALUOp::ADD;
                 break;
+                case INST_ANDI:
+                out.reg_write = true;
+                out.alu_src = true;
+                out.alu_op = ALUOp::AND;
+                break;
 
             case INST_SLLI:         // SLLI
                 out.reg_write = true;
                 out.alu_src = true;
                 out.alu_op = ALUOp::SLL;
                 break;
-            
+            case INST_SRL:   // R-type shift
+                out.reg_write = true;
+                out.alu_src = false;  // uses rs2, not immediate
+                out.alu_op = ALUOp::SRL;
+                break;
+
             case INST_LBU:          // byte unsigned load
             out.reg_write   = true;
             out.mem_read    = true;
@@ -155,10 +165,17 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
                 out.alu_op = ALUOp::ADD;
                 out.is_byte   = false;
                 break;
-            case INST_SW: // SW
+        case INST_SW: // SW
                 out.mem_write = true;
                 out.alu_src = true;
                 out.alu_op = ALUOp::ADD;
+                break;
+        case INST_SB: // SB
+                out.mem_write = true;
+                out.alu_src = true;
+                out.alu_op = ALUOp::ADD;
+                out.is_byte = true;
+                out.is_unsigned = false;
                 break;
             case INST_ECALL:
             case INST_EBREAK:
@@ -170,8 +187,7 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
             case INST_CSRRCI:
                 break;
         }
-        LOG("Decoded Instruction:" + get_inst_name(out.inst_id));
-        LOG("ID pc: " + HEX(out.pc));
+        
 }
 
 void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
@@ -180,111 +196,167 @@ void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
         out.valid = false;
         return;
     }
-    std::string inst_name = get_inst_name(in.inst_id);
-        // Log instruction execution with details
-        if (DEBUG) {
-            std::stringstream ss;
-            ss << "EXEC: " << inst_name;
-            if (in.inst_id != INST_ECALL && in.inst_id != INST_EBREAK) {
-                ss << " rd=x" << in.rd << " rs1=x" << in.rs1 << " rs2=x" << in.rs2;
-                if (in.imm != 0) {
-                    ss << " imm=" << HEX(in.imm);
-                }
-                // Show register values
-                uint32_t rs1_val = reg[in.rs1];
-                uint32_t rs2_val = reg[in.rs2];
-                ss << " | vals: x" << in.rs1 << "=" << HEX(rs1_val) 
-                   << " x" << in.rs2 << "=" << HEX(rs2_val);
-            }
-            LOG(ss.str());
-        }
-    if (in.inst_id == INST_ECALL) {
-        uint32_t syscall = read_reg_forwarded(17);
-        uint32_t arg0    = read_reg_forwarded(10);
-        uint32_t arg1    = read_reg_forwarded(11);
-        uint32_t arg2    = read_reg_forwarded(12);
-        
-        // Use enhanced syscall handler
-        handle_syscall(*this, syscall, arg0, arg1, arg2);
-        // Log syscall details
-        LOG("SYSCALL: a7=" + DEC(syscall) + " a0=" + DEC(arg0) + 
-            " a1=" + DEC(arg1) + " a2=" + DEC(arg2));
-        
-        out.valid = true;
-        out.rd = in.rd;
-        out.alu_result = 0;
-        out.val_rs2 = 0;
-        out.reg_write = false;
-        out.mem_read = false;
-        out.mem_write = false;
-        LOG("EX result: " + HEX(out.alu_result));
-        return;
-    }
-    if (in.inst_id == INST_EBREAK) {
-        halt = true;
-        exit_code = -1;
-        LOG("EBREAK");
-        out.valid = true;
-        out.rd = in.rd;
-        out.alu_result = 0;
-        out.val_rs2 = 0;
-        out.reg_write = false;
-        out.mem_read = false;
-        out.mem_write = false;
-        LOG("EX result: " + HEX(out.alu_result));
-        return;
-    }
 
-    // CSR instructions - handled by inst_* functions in system.hpp via execute_inst
-    if (in.inst_id == INST_CSRRW || in.inst_id == INST_CSRRS ||
-        in.inst_id == INST_CSRRC || in.inst_id == INST_CSRRWI ||
-        in.inst_id == INST_CSRRSI || in.inst_id == INST_CSRRCI) {
-        out.valid = true;
-        out.reg_write = true;  // CSR instructions write to rd
-        out.mem_read = false;
-        out.mem_write = false;
-        out.alu_result = 0;
-        out.val_rs2 = 0;
-        return;
-        }
+    out.valid   = true;
+    out.rd      = in.rd;
+    out.pc_modified = false;
 
-    // Use architectural regs after writeback() ran this cycle; id_ex.val_rs*
-    // is stale for values that completed WB between decode and execute.
+    // Forwarding: use youngest result first (MEM/WB then EX/MEM)
     uint32_t rs1_val = reg[in.rs1];
     uint32_t rs2_val = reg[in.rs2];
-
-    // Forwarding: MEM/WB first, then EX/MEM overwrites (younger result wins)
     if (mem_wb.valid && mem_wb.reg_write && mem_wb.rd != 0) {
         uint32_t wb_val = mem_wb.mem_read ? mem_wb.mem_data : mem_wb.alu_result;
-        if (mem_wb.rd == in.rs1) 
-        {rs1_val = wb_val;
-        LOGIF("Forwarding: x" + std::to_string(in.rs1) + " from MEM/WB", DEBUG);}
-        if (mem_wb.rd == in.rs2) {rs2_val = wb_val;
-        LOGIF("Forwarding: x" + std::to_string(in.rs2) + " from MEM/WB", DEBUG);}
+        if (mem_wb.rd == in.rs1) { rs1_val = wb_val; LOGIF("FWD: x" + DEC(in.rs1) + " <- MEM/WB", DEBUG); }
+        if (mem_wb.rd == in.rs2) { rs2_val = wb_val; LOGIF("FWD: x" + DEC(in.rs2) + " <- MEM/WB", DEBUG); }
     }
     if (ex_mem.valid && ex_mem.reg_write && ex_mem.rd != 0) {
-        if (ex_mem.rd == in.rs1) 
-        {rs1_val = ex_mem.alu_result;
-        LOGIF("Forwarding: x" + std::to_string(in.rs1) + " from EX/MEM", DEBUG);}
-        if (ex_mem.rd == in.rs2) 
-        {rs2_val = ex_mem.alu_result;
-        LOGIF("Forwarding: x" + std::to_string(in.rs2) + " from EX/MEM", DEBUG);}
+        if (ex_mem.rd == in.rs1) { rs1_val = ex_mem.alu_result; LOGIF("FWD: x" + DEC(in.rs1) + " <- EX/MEM", DEBUG); }
+        if (ex_mem.rd == in.rs2) { rs2_val = ex_mem.alu_result; LOGIF("FWD: x" + DEC(in.rs2) + " <- EX/MEM", DEBUG); }
+    }
+    in.val_rs1 = rs1_val;
+    in.val_rs2 = rs2_val;
+
+    // Use forwarded values for logging
+    LOG("EXEC: " + get_inst_name(in.inst_id) +
+        " rd=x" + DEC(in.rd) +
+        " rs1=x" + DEC(in.rs1) +
+        " rs2=x" + DEC(in.rs2) +
+        " | x" + DEC(in.rs1) + "=" + HEX(rs1_val) +
+        " x" + DEC(in.rs2) + "=" + HEX(rs2_val) +
+        (in.imm != 0 ? " imm=" + HEX(in.imm) : ""));
+
+    // =============================================================
+    // Control-flow handled directly here — no cross-file state leakage.
+    // Each branch/jump sets out.pc_modified and out.target_pc.
+    // =============================================================
+    switch (in.inst_id) {
+
+        // ----- JAL: rd = PC+4, PC = PC + imm -----
+        case INST_JAL: {
+            out.reg_write  = in.reg_write;
+            out.mem_read   = false;
+            out.mem_write  = false;
+            out.alu_result = in.pc + 4;              // link address
+            out.target_pc  = in.pc + static_cast<uint32_t>(in.imm);
+            out.pc_modified = true;
+            LOG("JAL: target=" + HEX(out.target_pc) + " link=" + HEX(out.alu_result));
+            return;
+        }
+
+        // ----- JALR: rd = PC+4, PC = (rs1 + imm) & ~1 -----
+        case INST_JALR: {
+            out.reg_write  = in.reg_write;
+            out.mem_read   = false;
+            out.mem_write  = false;
+            out.alu_result = in.pc + 4;                           // link address
+            out.target_pc  = (in.val_rs1 + static_cast<uint32_t>(in.imm)) & ~1U;
+            out.pc_modified = true;
+            LOG("JALR: target=" + HEX(out.target_pc) + " link=" + HEX(out.alu_result));
+            return;
+        }
+
+        // ----- BEQ: branch if rs1 == rs2 -----
+        case INST_BEQ: {
+            out.target_pc   = in.pc + static_cast<uint32_t>(in.imm);
+            out.pc_modified = (in.val_rs1 == in.val_rs2);
+            out.reg_write   = false;
+            out.mem_read    = false;
+            out.mem_write   = false;
+            LOG("BEQ: " + HEX(in.val_rs1) + " == " + HEX(in.val_rs2) +
+                " ? " + (out.pc_modified ? "TAKEN" : "NOT TAKEN"));
+            return;
+        }
+
+        // ----- BNE: branch if rs1 != rs2 -----
+        case INST_BNE: {
+            out.target_pc   = in.pc + static_cast<uint32_t>(in.imm);
+            out.pc_modified = (in.val_rs1 != in.val_rs2);
+            out.reg_write   = false;
+            out.mem_read    = false;
+            out.mem_write   = false;
+            LOG("BNE: " + HEX(in.val_rs1) + " != " + HEX(in.val_rs2) +
+                " ? " + (out.pc_modified ? "TAKEN" : "NOT TAKEN"));
+            return;
+        }
+
+        // ----- BLT: branch if rs1 < rs2 (signed) -----
+        case INST_BLT: {
+            out.target_pc   = in.pc + static_cast<uint32_t>(in.imm);
+            int32_t s1 = static_cast<int32_t>(in.val_rs1);
+            int32_t s2 = static_cast<int32_t>(in.val_rs2);
+            out.pc_modified = (s1 < s2);
+            out.reg_write   = false;
+            out.mem_read    = false;
+            out.mem_write   = false;
+            LOG("BLT: " + DEC(s1) + " < " + DEC(s2) +
+                " ? " + (out.pc_modified ? "TAKEN" : "NOT TAKEN"));
+            return;
+        }
+
+        // ----- BGE: branch if rs1 >= rs2 (signed) -----
+        case INST_BGE: {
+            out.target_pc   = in.pc + static_cast<uint32_t>(in.imm);
+            int32_t s1 = static_cast<int32_t>(in.val_rs1);
+            int32_t s2 = static_cast<int32_t>(in.val_rs2);
+            out.pc_modified = (s1 >= s2);
+            out.reg_write   = false;
+            out.mem_read    = false;
+            out.mem_write   = false;
+            LOG("BGE: " + DEC(s1) + " >= " + DEC(s2) +
+                " ? " + (out.pc_modified ? "TAKEN" : "NOT TAKEN"));
+            return;
+        }
+
+        // ----- ECALL: syscall -----
+        case INST_ECALL: {
+            uint32_t sc  = read_reg_forwarded(17);
+            uint32_t a0  = read_reg_forwarded(10);
+            uint32_t a1  = read_reg_forwarded(11);
+            uint32_t a2  = read_reg_forwarded(12);
+            handle_syscall(*this, sc, a0, a1, a2);
+            LOG("ECALL: a7=" + DEC(sc) + " a0=" + DEC(a0) +
+                " a1=" + DEC(a1) + " a2=" + DEC(a2));
+            out.alu_result = 0;
+            out.reg_write  = false;
+            out.mem_read   = false;
+            out.mem_write  = false;
+            return;
+        }
+
+        // ----- EBREAK: halt -----
+        case INST_EBREAK: {
+            halt     = true;
+            exit_code = -1;
+            LOG("EBREAK");
+            out.alu_result = 0;
+            out.reg_write  = false;
+            out.mem_read   = false;
+            out.mem_write  = false;
+            return;
+        }
+
+        default:
+            break;
     }
 
-    uint32_t op1 = rs1_val;
-    uint32_t op2 = in.alu_src ? in.imm : rs2_val;
+    // =============================================================
+    // Non-control instructions: run via instruction manager then
+    // forward control signals from decode (except for AUIPC/LUI
+    // which override alu_result themselves).
+    // =============================================================
 
-    out.alu_result = alu_execute(in.alu_op, op1, op2);
-
-    out.valid = true;
-    out.rd = in.rd;
-    out.val_rs2 = rs2_val;
-
-    out.reg_write = in.reg_write;
-    out.mem_read  = in.mem_read;
-    out.mem_write = in.mem_write;
-    out.is_byte     = in.is_byte;
+    out.reg_write  = in.reg_write;
+    out.mem_read   = in.mem_read;
+    out.mem_write  = in.mem_write;
+    out.is_byte    = in.is_byte;
     out.is_unsigned = in.is_unsigned;
+    out.val_rs2    = in.val_rs2;
+
+    // For AUIPC: out.alu_result = pc + imm (pc came from IF/ID latch)
+    // For LUI:   out.alu_result = imm (already shifted by decoder)
+    // For ALU ops / loads / stores: inst_manager computes out.alu_result
+    inst_manager.execute_inst(*this, in, out);
+
     LOG("EX result: " + HEX(out.alu_result));
 }
 
@@ -392,6 +464,13 @@ bool CPU::step()
     // fault on a bogus PC or pull more instructions after syscall.
     if (halt)
         return true;
+    if (ex_mem.pc_modified) {
+        pc = ex_mem.target_pc;
+        if_id.valid = false;
+        id_ex.valid = false;
+        ex_mem.pc_modified = false;
+        LOG("FLUSH: branch/jump taken, PC -> " + HEX(pc));
+    }
     decode(if_id, id_ex);
     fetch(if_id);
     
