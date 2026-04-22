@@ -6,8 +6,9 @@
 
 class Timer : public Device {
 private:
-    static const uint32_t MTIME_ADDR = 0x02004000;
-    static const uint32_t MTIMECMP_ADDR = 0x02004008;
+    // Bus 传入的是设备内偏移地址（addr - base），不是绝对物理地址。
+    static const uint32_t MTIME_ADDR = 0x00;
+    static const uint32_t MTIMECMP_ADDR = 0x08;
 
     uint64_t mtime;       // 64-bit timer counter
     uint64_t mtimecmp;    // 64-bit compare value

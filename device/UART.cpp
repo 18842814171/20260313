@@ -24,7 +24,11 @@
 #endif
 
 UART::UART()
-    : txctrl(0), rxctrl(0), ie(0), ip(0), div(0) {
+    : txctrl(TXCTRL_TXEN_MASK),
+      rxctrl(RXCTRL_RXEN_MASK | RXCTRL_RXWM_MASK),
+      ie(INT_RXWM_MASK),
+      ip(0),
+      div(0) {
 }
 
 UART::~UART() {
@@ -33,9 +37,10 @@ UART::~UART() {
 
 void UART::reset() {
     std::lock_guard<std::mutex> lock(mutex_);
-    txctrl = 0;
-    rxctrl = 0;
-    ie = 0;
+    // Default-on UART so tests don't need to repeatedly program control registers.
+    txctrl = TXCTRL_TXEN_MASK;
+    rxctrl = RXCTRL_RXEN_MASK | RXCTRL_RXWM_MASK;
+    ie = INT_RXWM_MASK;
     ip = 0;
     div = 0;
     while (!rx_fifo.empty()) {

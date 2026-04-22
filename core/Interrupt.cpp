@@ -1,11 +1,17 @@
 // Interrupt.cpp
 #include "Interrupt.hpp"
+#include "utils/utils.hpp"
 #include <iostream>
 #include <cstring>
 #include <unistd.h>
 #include <sys/time.h>
 
-#define LOG(msg) std::cout << "[Interrupt] " << msg << std::endl
+#define INTERRUPT_LOG(msg)                                                         \
+    do {                                                                           \
+        if (sim_debug_runtime_enabled()) {                                         \
+            std::cout << "[Interrupt] " << msg << std::endl;                       \
+        }                                                                          \
+    } while (0)
 
 InterruptController::InterruptController()
     : mie(false), mstatus_mie(false), mtvec(MTVEC_BASE),
@@ -29,7 +35,7 @@ void InterruptController::request_interrupt(InterruptType type, uint32_t source)
     pending_interrupts.emplace(type, source, cycle_count);
     mip_reg |= (1 << idx);
 
-    LOG("IRQ pending: type=" << idx << " source=" << source << " @ cycle " << cycle_count);
+    INTERRUPT_LOG("IRQ pending: type=" << idx << " source=" << source << " @ cycle " << cycle_count);
 }
 
 bool InterruptController::has_pending_interrupt() const {
@@ -141,7 +147,7 @@ void TrapHandler::enter_trap(bool is_interrupt, uint32_t cause, uint32_t epc) {
     mstatus &= ~0x8;
     mstatus |= (static_cast<uint32_t>(mode) << 11);
 
-    LOG("TRAP: enter is_interrupt=" << is_interrupt
+    INTERRUPT_LOG("TRAP: enter is_interrupt=" << is_interrupt
           << " cause=0x" << std::hex << cause
           << " epc=0x" << mepc << " vec=0x" << trap_vec);
 }
@@ -150,5 +156,5 @@ void TrapHandler::exit_trap() {
     if (!trapping) return;
     trapping = false;
     mstatus |= 0x8;
-    LOG("TRAP: exit to epc=0x" << std::hex << mepc);
+    INTERRUPT_LOG("TRAP: exit to epc=0x" << std::hex << mepc);
 }

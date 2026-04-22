@@ -26,6 +26,6 @@ void test_simple_asm(const std::string& elf_file);
 void test_full_program(const std::string& infile);
 
 // Test timer interrupt (expects ELF file)
-void test_timer_interrupt(const std::string& elf_file);
+//void test_timer_interrupt(const std::string& elf_file);
 
 #endif // SIMULATOR_API_HPP
