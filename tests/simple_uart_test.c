@@ -1,5 +1,5 @@
 // Simple UART test - no crt0, direct main
-void _start() {
+void main() {
     volatile unsigned int* UART_TXCTRL = (unsigned int*)0x10000008;
     volatile unsigned int* UART_TXDATA = (unsigned int*)0x10000000;
     
@@ -14,7 +14,4 @@ void _start() {
     
     // Send '\n'
     *UART_TXDATA = 0x0A;
-    
-    // Exit
-    while(1);
 }

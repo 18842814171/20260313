@@ -96,6 +96,21 @@ inline void inst_slli(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
         " = " + HEX(out.alu_result));
 }
 
+inline void inst_sll(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    out.valid = in.valid;
+    out.rd = in.rd;
+
+    uint32_t in1 = in.val_rs1;
+    uint32_t in2 = in.val_rs2 & 0x1F;  // RV32 shift amount from rs2[4:0]
+    out.alu_result = alu_execute(ALUOp::SLL, in1, in2);
+
+    out.reg_write = true;
+    out.mem_read = false;
+    out.mem_write = false;
+    LOG("SLL: in1=" + std::to_string(in1) + ", shamt=" + std::to_string(in2)
+          + ", result=" + std::to_string(out.alu_result));
+}
+
 
 inline void inst_srl(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     out.valid = in.valid;
@@ -127,6 +142,83 @@ inline void inst_srli(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     out.mem_write = false;
     
     LOG("SRLI: in1=" + std::to_string(in1) + ", shift=" + std::to_string(shift_amount)
+          + ", result=" + std::to_string(out.alu_result));
+}
+
+inline void inst_srai(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    out.valid = in.valid;
+    out.rd = in.rd;
+
+    uint32_t in1 = in.val_rs1;
+    uint32_t shamt = static_cast<uint32_t>(in.imm) & 0x1F;
+    out.alu_result = static_cast<uint32_t>(static_cast<int32_t>(in1) >> shamt);
+
+    out.reg_write = true;
+    out.mem_read = false;
+    out.mem_write = false;
+
+    LOG("SRAI: in1=" + std::to_string(in1) + ", shift=" + std::to_string(shamt)
+          + ", result=" + std::to_string(out.alu_result));
+}
+
+inline void inst_sra(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    out.valid = in.valid;
+    out.rd = in.rd;
+
+    uint32_t in1 = in.val_rs1;
+    uint32_t shamt = in.val_rs2 & 0x1F;
+    out.alu_result = static_cast<uint32_t>(static_cast<int32_t>(in1) >> shamt);
+
+    out.reg_write = true;
+    out.mem_read = false;
+    out.mem_write = false;
+
+    LOG("SRA: in1=" + std::to_string(in1) + ", shift=" + std::to_string(shamt)
+          + ", result=" + std::to_string(out.alu_result));
+}
+
+inline void inst_or(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    out.valid = in.valid;
+    out.rd = in.rd;
+
+    uint32_t in1 = in.val_rs1;
+    uint32_t in2 = in.alu_src ? in.imm : in.val_rs2;
+    out.alu_result = alu_execute(ALUOp::OR, in1, in2);
+
+    out.reg_write = true;
+    out.mem_read = false;
+    out.mem_write = false;
+    LOG("OR: in1=" + std::to_string(in1) + ", in2=" + std::to_string(in2)
+          + ", result=" + std::to_string(out.alu_result));
+}
+
+inline void inst_and(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    out.valid = in.valid;
+    out.rd = in.rd;
+
+    uint32_t in1 = in.val_rs1;
+    uint32_t in2 = in.alu_src ? in.imm : in.val_rs2;
+    out.alu_result = alu_execute(ALUOp::AND, in1, in2);
+
+    out.reg_write = true;
+    out.mem_read = false;
+    out.mem_write = false;
+    LOG("AND: in1=" + std::to_string(in1) + ", in2=" + std::to_string(in2)
+          + ", result=" + std::to_string(out.alu_result));
+}
+
+inline void inst_xor(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    out.valid = in.valid;
+    out.rd = in.rd;
+
+    uint32_t in1 = in.val_rs1;
+    uint32_t in2 = in.alu_src ? in.imm : in.val_rs2;
+    out.alu_result = alu_execute(ALUOp::XOR, in1, in2);
+
+    out.reg_write = true;
+    out.mem_read = false;
+    out.mem_write = false;
+    LOG("XOR: in1=" + std::to_string(in1) + ", in2=" + std::to_string(in2)
           + ", result=" + std::to_string(out.alu_result));
 }
 

@@ -3,15 +3,13 @@
 #define INST_SYSTEM_HPP
 #include "utils/utils.hpp"
 #include "Pipe.hpp"
+#include "CPU.hpp"
+#include <chrono>
 #include <iostream>
+#include <thread>
 #include <unistd.h>
 #include <sys/time.h>
 #include <sys/types.h>
-
-#define DEBUG 1
-
-// Forward declaration
-class CPU;
 
 inline void inst_ebreak(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     (void)in;
@@ -24,15 +22,18 @@ inline void inst_ebreak(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
 inline void inst_wfi(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     (void)in;
     (void)out;
-    // WFI - Wait for Interrupt. In simulation:
-    // If there's a pending interrupt, return immediately.
-    // Otherwise, we just continue (no actual waiting in simulation).
-    if (cpu.interrupts_enabled() && cpu.get_interrupt_controller() &&
-        cpu.get_interrupt_controller()->has_pending_interrupt()) {
-        LOG("WFI: interrupt already pending, returning immediately");
+    if (!cpu.interrupts_enabled() || !cpu.get_interrupt_controller()) {
         return;
     }
-    LOG("WFI: no pending interrupt, continuing");
+    InterruptController* ic = cpu.get_interrupt_controller();
+    if (ic->has_pending_interrupt()) {
+        LOG("WFI: interrupt already pending");
+        return;
+    }
+    LOG("WFI: wait for interrupt (UART/Timer 等外设 tick)");
+    while (!cpu.halt && !ic->has_pending_interrupt()) {
+        cpu.tick_mmio_and_irq_sources();
+    }
 }
 
 // Enhanced syscall handling function
@@ -55,14 +56,8 @@ inline int handle_syscall(CPU& cpu, uint32_t syscall_num, uint32_t arg0, uint32_
             if (fd == 1 || fd == 2) { // stdout or stderr
                 Memory& mem = cpu.get_memory();
                 for (uint32_t i = 0; i < count; ++i) {
-                    uint32_t word = mem.read_word(buf_addr + i * 4);
-                    for (int j = 0; j < 4; ++j) {
-                        char c = static_cast<char>(word & 0xFF);
-                        if (j < static_cast<int>(count - i * 4)) {
-                            std::cout << c;
-                        }
-                        word >>= 8;
-                    }
+                    char c = static_cast<char>(mem.read_byte(buf_addr + i));
+                    std::cout << c;
                 }
                 ret = static_cast<int>(count);
             } else {
@@ -77,16 +72,37 @@ inline int handle_syscall(CPU& cpu, uint32_t syscall_num, uint32_t arg0, uint32_
             uint32_t fd = arg0;
             uint32_t buf_addr = arg1;
             uint32_t count = arg2;
-            
-            char buf[256];
-            ssize_t n = read(fd, buf, count < 256 ? count : 256);
-            if (n > 0) {
+
+            if (fd == 0 && cpu.get_uart()) {
                 Memory& mem = cpu.get_memory();
-                for (ssize_t i = 0; i < n; ++i) {
-                    mem.write_word(buf_addr + i * 4, static_cast<uint32_t>(buf[i]));
+                uint32_t maxb = count < 256 ? count : 256;
+                uint32_t nread = 0;
+                for (; nread < maxb; ++nread) {
+                    uint8_t ch = 0;
+                    while (!cpu.halt) {
+                        if (cpu.get_uart()->try_pop_syscall_byte(ch)) {
+                            break;
+                        }
+                        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                    }
+                    if (cpu.halt) {
+                        break;
+                    }
+                    mem.write_byte(buf_addr + nread, ch);
                 }
+                ret = static_cast<int>(nread);
+            } else {
+                char buf[256];
+                ssize_t n = read(static_cast<int>(fd), buf, count < 256 ? count : 256);
+                if (n > 0) {
+                    Memory& mem = cpu.get_memory();
+                    for (ssize_t i = 0; i < n; ++i) {
+                        mem.write_byte(buf_addr + static_cast<uint32_t>(i),
+                                       static_cast<uint8_t>(static_cast<unsigned char>(buf[i])));
+                    }
+                }
+                ret = static_cast<int>(n);
             }
-            ret = static_cast<int>(n);
             cpu.reg[10] = static_cast<uint32_t>(ret);
             LOG("SYSCALL: read(fd=" + std::to_string(fd) + ", len=" + std::to_string(count) + ") = " + std::to_string(ret));
             break;

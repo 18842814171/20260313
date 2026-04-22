@@ -1,4 +1,4 @@
-OUTPUT_FORMAT("elf32-littlebriscv")
+OUTPUT_FORMAT("elf32-littleriscv")
 OUTPUT_ARCH("riscv")
 ENTRY(_start)
 

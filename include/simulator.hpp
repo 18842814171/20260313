@@ -1,15 +1,14 @@
 #ifndef SIMULATOR_HPP
 #define SIMULATOR_HPP
 
+#include <cstddef>
 #include <string>
-#include <tuple>
 
-// 运行模拟器（非交互模式）
+/**
+ * 唯一模拟器入口：加载 ELF，默认挂载 Timer + UART，默认开启主机 stdin→UART RX。
+ * @param max_steps 期望的最大周期数；0 表示使用 CPU::kDefaultRunStepLimit。
+ *                  显式传入时实际执行不超过 min(max_steps, CPU::kHardAbsoluteRunStepLimit)。
+ */
 void simulator(std::string infile, size_t max_steps = 0);
-
-// 运行模拟器（交互模式，支持键盘输入到 UART 和单步调试）
-// enable_uart_input: 是否启用 UART 输入（用于程序需要读取键盘输入时）
-// auto_run: true=自动连续运行, false=单步模式（按 'n' 执行一步）
-void simulator_interactive(std::string infile, bool enable_uart_input = true, bool auto_run = true);
 
 #endif

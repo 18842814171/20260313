@@ -63,6 +63,9 @@ public:
     void tick();
 
 private:
+    /** 合并重复的 MACHINE 外部中断入队（UART 电平为真时每周期只需一条）。 */
+    bool ext_request_queued_ = false;
+
     bool mie;
     bool mstatus_mie;
     uint32_t mtvec;

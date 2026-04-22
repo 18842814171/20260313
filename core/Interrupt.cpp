@@ -19,6 +19,13 @@ void InterruptController::request_interrupt(InterruptType type, uint32_t source)
     int idx = static_cast<int>(type);
     if (idx >= 3) return;
 
+    if (type == InterruptType::EXTERNAL && ext_request_queued_) {
+        return;
+    }
+    if (type == InterruptType::EXTERNAL) {
+        ext_request_queued_ = true;
+    }
+
     pending_interrupts.emplace(type, source, cycle_count);
     mip_reg |= (1 << idx);
 
@@ -36,6 +43,10 @@ InterruptRequest InterruptController::get_pending_interrupt() {
     }
     InterruptRequest irq = pending_interrupts.front();
     pending_interrupts.pop();
+
+    if (irq.type == InterruptType::EXTERNAL) {
+        ext_request_queued_ = false;
+    }
 
     int idx = static_cast<int>(irq.type);
     if (idx >= 0 && idx < 3 && !interrupt_enabled[idx]) {

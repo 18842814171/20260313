@@ -4,6 +4,7 @@
 // include/cpu.hpp
 #include <cstdint>
 #include <cstdio>
+#include <iosfwd>
 #include <string>
 #include "Pipe.hpp"
 #include "Interrupt.hpp"
@@ -17,7 +18,11 @@ class Inst;
 
 class CPU {
 public:
-   
+    /** max_steps==0 时使用的默认周期上限（防死循环刷日志） */
+    static constexpr size_t kDefaultRunStepLimit = 10'000'000;
+    /** 用户显式传入 max_steps 时的绝对硬顶（防误传天文数字） */
+    static constexpr size_t kHardAbsoluteRunStepLimit = 100'000'000;
+
     Pipe_IF_ID if_id;
     Pipe_ID_EX id_ex;
     Pipe_EX_MEM ex_mem;
@@ -29,6 +34,12 @@ public:
     int exit_code = 0;
     bool stall=false;
     size_t step_count = 0;
+
+    // Last memory access info (for interactive frontends)
+    bool last_mem_valid = false;
+    bool last_mem_is_read = false;
+    uint32_t last_mem_addr = 0;
+    uint32_t last_mem_read_data = 0;
     
     CPU(Memory& mem_ref, InstManager& im_ref); 
     ~CPU();
@@ -36,12 +47,15 @@ public:
     //Pipeline stages
     void fetch(Pipe_IF_ID& out);
     void decode(Pipe_IF_ID& in, Pipe_ID_EX& out);
-    void execute(Pipe_ID_EX& in, Pipe_EX_MEM& out);
+    void execute(Pipe_ID_EX& in, const Pipe_EX_MEM& prev_ex_mem, Pipe_EX_MEM& out);
     void memory_access(Pipe_EX_MEM& in, Pipe_MEM_WB& out);
     void writeback(Pipe_MEM_WB& in);
 
     bool step();//single cycle
     void run(size_t max_steps = 0);//multiple cycles
+
+    /** 推进 Timer / UART 并投递 IRQ（不取指、不写回），供 WFI 与外设同步。 */
+    void tick_mmio_and_irq_sources();
 
     void set_pc(uint32_t new_pc) { pc = new_pc; }
     void dump_registers() const; 
@@ -94,6 +108,9 @@ public:
     void attach_uart(UART* u) { uart = u; }
     UART* get_uart() const { return uart; }
 
+    void reset_instruction_statistics();
+    void dump_instruction_statistics(std::ostream& os) const;
+
 private:
     Memory& memory;
     InstManager& inst_manager;
@@ -104,5 +121,8 @@ private:
     bool interrupt_enabled = false;
     InterruptController* int_ctrl = nullptr;
     TrapHandler* trap_handler = nullptr;
+
+    uint64_t gpr_read_count_[32]{};
+    uint64_t gpr_write_count_[32]{};
 };
 #endif

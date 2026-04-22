@@ -33,21 +33,8 @@ $(TARGET): $(SOURCES_OBJS) test.cpp
 		build/Bus.o build/Memory.o build/Timer.o build/UART.o build/ALU.o build/CPU.o \
 		build/Decoder.o build/Instmngr.o build/Interrupt.o \
 		build/simulator.o build/simulator_api.o build/loader.o \
-		$(LDFLAGS) -o $@
-
-# 交互式测试程式
-TARGET_INTERACTIVE = $(BUILD_DIR)/test_interactive
-
-$(TARGET_INTERACTIVE): $(SOURCES_OBJS) test_interactive.cpp
-	@echo "Compiling test_interactive.cpp ..."
-	$(CXX) $(CXXFLAGS) test_interactive.cpp \
-		build/Bus.o build/Memory.o build/Timer.o build/UART.o build/ALU.o build/CPU.o \
-		build/Decoder.o build/Instmngr.o build/Interrupt.o \
-		build/simulator.o build/simulator_api.o build/loader.o \
 		-lpthread $(LDFLAGS) -o $@
-
-test-interactive: $(TARGET_INTERACTIVE)
-	@echo "Run: ./$(TARGET_INTERACTIVE)"
+	@echo "Run: ./$(TARGET)"
 
 # Clean only object files, keep simulator.o for main build
 clean_objs:

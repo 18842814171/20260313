@@ -68,28 +68,62 @@ struct ArgvInfo {
     uint32_t sp;
 };
 
-inline ArgvInfo setup_args_for_elf(const std::string& filename, 
-                                     uint32_t stack_base, 
+/** 已加载 ELF 的可执行/可访问段范围（来自 PT_LOAD 或 section fallback）。 */
+struct LoadedElfSegment {
+    uint32_t begin; // inclusive
+    uint32_t end;   // exclusive
+};
+
+/** 加载 ELF 的结果：entry + 各 LOAD 段范围。 */
+struct LoadedElfInfo {
+    uint32_t entry = 0;
+    std::vector<LoadedElfSegment> segments;
+};
+
+/** 判断 addr 是否落在任一已加载段中。 */
+inline bool loaded_elf_contains(const LoadedElfInfo& info, uint32_t addr) {
+    for (const auto& s : info.segments) {
+        if (addr >= s.begin && addr < s.end)
+            return true;
+    }
+    return false;
+}
+
+/** 让 CPU/Simulator 获取当前 ELF 装载段信息（由 load_elf 填充）。 */
+inline LoadedElfInfo& loaded_elf_last_info() {
+    static LoadedElfInfo last;
+    return last;
+}
+
+inline void setup_write_u32_le(Device& mem, uint32_t addr, uint32_t v) {
+    uint8_t d[4];
+    d[0] = static_cast<uint8_t>(v & 0xff);
+    d[1] = static_cast<uint8_t>((v >> 8) & 0xff);
+    d[2] = static_cast<uint8_t>((v >> 16) & 0xff);
+    d[3] = static_cast<uint8_t>((v >> 24) & 0xff);
+    mem.write(addr, d, 4);
+}
+
+/**
+ * 构造 RISC-V psABI 的 _start 参数：a0=argc, a1=argv（指向 char* 数组，而非 argc 本体）。
+ * 使用 argc=1、argv[0] 指向空串，argv[1]=NULL，避免 newlib 将 argc 误当作指针而跑飞。
+ */
+inline ArgvInfo setup_args_for_elf(const std::string& filename,
+                                     uint32_t stack_base,
                                      Device& mem) {
-    // For now, we run with argc=0 (no command line args)
-    // Store argc and a null argv pointer on stack
+    (void)filename;
     ArgvInfo info;
-    info.argc = 0;
-    info.argv_addr = stack_base;  // argv points to argc
-    
-    // Write argc at stack_base
-    uint8_t data[4];
-    for (int i = 0; i < 4; i++) {
-        data[i] = (0 >> (i * 8)) & 0xFF;
-    }
-    mem.write(stack_base, data, 4);
-    
-    // Write null argv[0] (end of argv array)
-    for (int i = 0; i < 4; i++) {
-        data[i] = 0;
-    }
-    mem.write(stack_base + 4, data, 4);
-    
-    info.sp = stack_base + 8;  // sp after argc and argv[0]
+    const uint32_t base = stack_base;
+    const uint32_t str_addr = base + 12u;
+
+    setup_write_u32_le(mem, base + 0u, 1u);           // argc
+    setup_write_u32_le(mem, base + 4u, str_addr);    // argv[0] -> "\0"
+    setup_write_u32_le(mem, base + 8u, 0u);           // argv[1] = NULL
+    uint8_t z = 0;
+    mem.write(str_addr, &z, 1);
+
+    info.argc = 1;
+    info.argv_addr = base + 4u;
+    info.sp = (base + 16u + 15u) & ~15u;
     return info;
 }

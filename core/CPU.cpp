@@ -5,18 +5,79 @@
 #include "device/Device.hpp"
 #include "device/Bus.hpp"
 #include "device/Timer.hpp"
+#include "device/UART.hpp"
 #include "utils/utils.hpp"
 #include "inst/encoding.hpp"
 #include "inst/system.hpp"
+#include "Loader.hpp"
 #include "Interrupt.hpp"
-#define DEBUG 1
 #include <cstring>
+#include <algorithm>
+#include <iostream>
 #include <string>
 
 CPU::CPU(Memory& mem_ref, InstManager& im_ref)
     : memory(mem_ref), inst_manager(im_ref)
 {
     reg[0] = 0;
+}
+
+static bool inst_reads_rs1(uint32_t inst_id) {
+    if (inst_id == INST_LUI || inst_id == INST_AUIPC || inst_id == INST_JAL) {
+        return false;
+    }
+    return true;
+}
+
+static bool inst_reads_rs2(uint32_t inst_id) {
+    switch (inst_id) {
+        case INST_ADD:
+        case INST_SUB:
+        case INST_SLL:
+        case INST_SRL:
+        case INST_SRA:
+        case INST_XOR:
+        case INST_OR:
+        case INST_AND:
+        case INST_BEQ:
+        case INST_BNE:
+        case INST_BLT:
+        case INST_BGE:
+        case INST_BLTU:
+        case INST_BGEU:
+        case INST_SW:
+        case INST_SB:
+        case INST_CSRRW:
+        case INST_CSRRS:
+        case INST_CSRRC:
+            return true;
+        default:
+            return false;
+    }
+}
+
+void CPU::reset_instruction_statistics() {
+    for (int i = 0; i < 32; ++i) {
+        gpr_read_count_[i] = 0;
+        gpr_write_count_[i] = 0;
+    }
+}
+
+void CPU::dump_instruction_statistics(std::ostream& os) const {
+    uint64_t rd_total = 0;
+    uint64_t wr_total = 0;
+    for (int i = 0; i < 32; ++i) {
+        rd_total += gpr_read_count_[i];
+        wr_total += gpr_write_count_[i];
+    }
+    os << "  寄存器读次数合计: " << rd_total << "  写次数合计: " << wr_total << "\n";
+    os << "  各寄存器读/写 (x0 也会统计读端口占用):\n";
+    for (int i = 0; i < 32; ++i) {
+        if (gpr_read_count_[i] == 0 && gpr_write_count_[i] == 0) {
+            continue;
+        }
+        os << "    x" << i << " 读=" << gpr_read_count_[i] << " 写=" << gpr_write_count_[i] << "\n";
+    }
 }
 
 uint32_t CPU::read_reg_forwarded(unsigned r) const {
@@ -112,13 +173,35 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
         }
         LOG("  rs1_val=" + HEX(out.val_rs1) + " rs2_val=" + HEX(out.val_rs2));
     }
+        if (inst_reads_rs1(out.inst_id) && out.rs1 < 32) {
+            gpr_read_count_[out.rs1]++;
+        }
+        if (inst_reads_rs2(out.inst_id) && out.rs2 < 32) {
+            gpr_read_count_[out.rs2]++;
+        }
+
         switch (out.inst_id) {
             case INST_ADD: // ADD
                 out.reg_write = true;
                 out.alu_src = false;
                 out.alu_op = ALUOp::ADD;
                 break;
+            case INST_SUB: // SUB
+                out.reg_write = true;
+                out.alu_src = false;
+                out.alu_op = ALUOp::SUB;
+                break;
             case INST_ADDI: // ADDI
+                out.reg_write = true;
+                out.alu_src = true;
+                out.alu_op = ALUOp::ADD;
+                break;
+            case INST_AUIPC: // AUIPC
+                out.reg_write = true;
+                out.alu_src = true;
+                out.alu_op = ALUOp::ADD;
+                break;
+            case INST_LUI: // LUI
                 out.reg_write = true;
                 out.alu_src = true;
                 out.alu_op = ALUOp::ADD;
@@ -134,10 +217,45 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
                 out.alu_src = true;
                 out.alu_op = ALUOp::SLL;
                 break;
+            case INST_SLL:          // SLL
+                out.reg_write = true;
+                out.alu_src = false;
+                out.alu_op = ALUOp::SLL;
+                break;
+            case INST_SRLI:         // SRLI
+                out.reg_write = true;
+                out.alu_src = true;
+                out.alu_op = ALUOp::SRL;
+                break;
+            case INST_SRAI:         // SRAI
+                out.reg_write = true;
+                out.alu_src = true;
+                out.alu_op = ALUOp::SRA;
+                break;
             case INST_SRL:   // R-type shift
                 out.reg_write = true;
                 out.alu_src = false;  // uses rs2, not immediate
                 out.alu_op = ALUOp::SRL;
+                break;
+            case INST_SRA:   // R-type arithmetic shift
+                out.reg_write = true;
+                out.alu_src = false;
+                out.alu_op = ALUOp::SRA;
+                break;
+            case INST_XOR:   // R-type xor
+                out.reg_write = true;
+                out.alu_src = false;
+                out.alu_op = ALUOp::XOR;
+                break;
+            case INST_OR:    // R-type or
+                out.reg_write = true;
+                out.alu_src = false;
+                out.alu_op = ALUOp::OR;
+                break;
+            case INST_AND:   // R-type and
+                out.reg_write = true;
+                out.alu_src = false;
+                out.alu_op = ALUOp::AND;
                 break;
 
             case INST_LBU:          // byte unsigned load
@@ -186,11 +304,25 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
             case INST_CSRRSI:
             case INST_CSRRCI:
                 break;
+            case INST_JAL:
+            case INST_JALR:
+                out.reg_write = true;
+                break;
+            case INST_BEQ:
+            case INST_BNE:
+            case INST_BLT:
+            case INST_BGE:
+            case INST_BLTU:
+            case INST_BGEU:
+                out.reg_write = false;
+                out.mem_read = false;
+                out.mem_write = false;
+                break;
         }
         
 }
 
-void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+void CPU::execute(Pipe_ID_EX& in, const Pipe_EX_MEM& prev_ex_mem, Pipe_EX_MEM& out) {
     SCOPE;
     if (!in.valid) {
         out.valid = false;
@@ -198,10 +330,12 @@ void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     }
 
     out.valid   = true;
+    out.pc      = in.pc;
     out.rd      = in.rd;
     out.pc_modified = false;
 
-    // Forwarding: use youngest result first (MEM/WB then EX/MEM)
+    // Forwarding: use youngest result first (MEM/WB then EX/MEM).
+    // IMPORTANT: use prev_ex_mem (the prior cycle's EX/MEM latch).
     uint32_t rs1_val = reg[in.rs1];
     uint32_t rs2_val = reg[in.rs2];
     if (mem_wb.valid && mem_wb.reg_write && mem_wb.rd != 0) {
@@ -209,9 +343,9 @@ void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
         if (mem_wb.rd == in.rs1) { rs1_val = wb_val; LOGIF("FWD: x" + DEC(in.rs1) + " <- MEM/WB", DEBUG); }
         if (mem_wb.rd == in.rs2) { rs2_val = wb_val; LOGIF("FWD: x" + DEC(in.rs2) + " <- MEM/WB", DEBUG); }
     }
-    if (ex_mem.valid && ex_mem.reg_write && ex_mem.rd != 0) {
-        if (ex_mem.rd == in.rs1) { rs1_val = ex_mem.alu_result; LOGIF("FWD: x" + DEC(in.rs1) + " <- EX/MEM", DEBUG); }
-        if (ex_mem.rd == in.rs2) { rs2_val = ex_mem.alu_result; LOGIF("FWD: x" + DEC(in.rs2) + " <- EX/MEM", DEBUG); }
+    if (prev_ex_mem.valid && prev_ex_mem.reg_write && prev_ex_mem.rd != 0) {
+        if (prev_ex_mem.rd == in.rs1) { rs1_val = prev_ex_mem.alu_result; LOGIF("FWD: x" + DEC(in.rs1) + " <- EX/MEM", DEBUG); }
+        if (prev_ex_mem.rd == in.rs2) { rs2_val = prev_ex_mem.alu_result; LOGIF("FWD: x" + DEC(in.rs2) + " <- EX/MEM", DEBUG); }
     }
     in.val_rs1 = rs1_val;
     in.val_rs2 = rs2_val;
@@ -307,6 +441,30 @@ void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
             return;
         }
 
+        // ----- BLTU: branch if rs1 < rs2 (unsigned) -----
+        case INST_BLTU: {
+            out.target_pc   = in.pc + static_cast<uint32_t>(in.imm);
+            out.pc_modified = (in.val_rs1 < in.val_rs2);
+            out.reg_write   = false;
+            out.mem_read    = false;
+            out.mem_write   = false;
+            LOG("BLTU: " + HEX(in.val_rs1) + " < " + HEX(in.val_rs2) +
+                " ? " + (out.pc_modified ? "TAKEN" : "NOT TAKEN"));
+            return;
+        }
+
+        // ----- BGEU: branch if rs1 >= rs2 (unsigned) -----
+        case INST_BGEU: {
+            out.target_pc   = in.pc + static_cast<uint32_t>(in.imm);
+            out.pc_modified = (in.val_rs1 >= in.val_rs2);
+            out.reg_write   = false;
+            out.mem_read    = false;
+            out.mem_write   = false;
+            LOG("BGEU: " + HEX(in.val_rs1) + " >= " + HEX(in.val_rs2) +
+                " ? " + (out.pc_modified ? "TAKEN" : "NOT TAKEN"));
+            return;
+        }
+
         // ----- ECALL: syscall -----
         case INST_ECALL: {
             uint32_t sc  = read_reg_forwarded(17);
@@ -344,6 +502,24 @@ void CPU::execute(Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     // forward control signals from decode (except for AUIPC/LUI
     // which override alu_result themselves).
     // =============================================================
+    if (!inst_manager.has_instruction(in.inst_id)) {
+        halt = true;
+        exit_code = -2;
+        out.reg_write = false;
+        out.mem_read = false;
+        out.mem_write = false;
+        uint32_t raw = 0;
+        if (bus) {
+            raw = bus->read_word(in.pc);
+        } else {
+            raw = memory.read_word(in.pc);
+        }
+        std::cerr << "[模拟器] 非法/未实现指令，已停止。inst_id=0x"
+                  << std::hex << in.inst_id << std::dec
+                  << " pc=0x" << std::hex << in.pc
+                  << " raw=0x" << raw << std::dec << "\n";
+        return;
+    }
 
     out.reg_write  = in.reg_write;
     out.mem_read   = in.mem_read;
@@ -367,6 +543,9 @@ void CPU::memory_access(Pipe_EX_MEM& in, Pipe_MEM_WB& out) {
             return;
         }
 
+        // Clear last access (set again below if we actually touch memory/MMIO)
+        last_mem_valid = false;
+
         out.valid = true;
         out.rd = in.rd;
         out.alu_result = in.alu_result;
@@ -375,6 +554,9 @@ void CPU::memory_access(Pipe_EX_MEM& in, Pipe_MEM_WB& out) {
         out.mem_read  = in.mem_read;
         uint32_t addr = in.alu_result;
         if (in.mem_read) {
+        last_mem_valid = true;
+        last_mem_is_read = true;
+        last_mem_addr = addr;
         if (in.is_byte) {                  // byte load: LB or LBU
             uint8_t byte_val;
             if (bus) {
@@ -394,6 +576,7 @@ void CPU::memory_access(Pipe_EX_MEM& in, Pipe_MEM_WB& out) {
             } else {
                 out.mem_data = static_cast<int32_t>(static_cast<int8_t>(byte_val)); // sign extend
             }
+            last_mem_read_data = out.mem_data;
             LOG("LB/LBU addr: " + HEX(addr));
         }
         else {  // word load (LW)
@@ -402,10 +585,14 @@ void CPU::memory_access(Pipe_EX_MEM& in, Pipe_MEM_WB& out) {
             } else {
                 out.mem_data = memory.read_word(addr);
             }
+            last_mem_read_data = out.mem_data;
             LOG("LW addr: " + HEX(addr));
         }
     }
     else if (in.mem_write) {
+        last_mem_valid = true;
+        last_mem_is_read = false;
+        last_mem_addr = addr;
         if (in.is_byte) {                  // byte store: SB
             uint8_t data = static_cast<uint8_t>(in.val_rs2 & 0xFFu);
             if (bus) {
@@ -433,10 +620,32 @@ void CPU::writeback(Pipe_MEM_WB& in) {
     if (in.reg_write && in.rd != 0) {
             uint32_t data = in.mem_read ? in.mem_data : in.alu_result;
             reg[in.rd] = data;
+            gpr_write_count_[in.rd]++;
             std::string source = in.mem_read ? "MEM" : "ALU";
             LOG("WB: r" + DEC(in.rd) + " = "  + HEX(data) + " (from " + source + ")"); 
         }
                 
+}
+
+void CPU::tick_mmio_and_irq_sources() {
+    if (bus && int_ctrl) {
+        Timer* timer = dynamic_cast<Timer*>(bus->find_device(0x02004000));
+        if (timer) {
+            timer->tick();
+            if (timer->check_interrupt()) {
+                int_ctrl->request_interrupt(InterruptType::TIMER, 0);
+            }
+        }
+
+        UART* uart_dev = dynamic_cast<UART*>(bus->find_device(0x10000000));
+        if (uart_dev && uart_dev->check_interrupt()) {
+            int_ctrl->request_interrupt(InterruptType::EXTERNAL, 0);
+        }
+    }
+
+    if (int_ctrl) {
+        int_ctrl->tick();
+    }
 }
 
 bool CPU::step()
@@ -459,12 +668,52 @@ bool CPU::step()
     if (halt) return false;
     writeback(mem_wb);
     memory_access(ex_mem, mem_wb);
-    execute(id_ex, ex_mem);
+    Pipe_EX_MEM prev_ex_mem = ex_mem;
+    execute(id_ex, prev_ex_mem, ex_mem);
     // ECALL/EBREAK set halt in execute; do not decode/fetch this cycle or we may
     // fault on a bogus PC or pull more instructions after syscall.
     if (halt)
         return true;
+    // 控制流重定向：仅冲刷比 EX 更年轻的流水级（IF/ID、ID/EX）。
+    // 本周期 EX/MEM 已是产生跳转的那条指令的结果（如 JAL 的 link），必须保留，不得清空 ex_mem。
     if (ex_mem.pc_modified) {
+        // 越界哨兵：若跳转目标不在任何已加载 ELF 段范围内，通常表示返回地址/跳转目标被破坏。
+        const auto& elf = loaded_elf_last_info();
+        if (!loaded_elf_contains(elf, ex_mem.target_pc)) {
+            uint32_t raw = 0;
+            if (bus) {
+                raw = bus->read_word(ex_mem.pc);
+            } else {
+                raw = memory.read_word(ex_mem.pc);
+            }
+            halt = true;
+            exit_code = -3;
+            std::cerr << "[模拟器] 跳转目标越界，已停止。pc=0x" << std::hex << ex_mem.pc
+                      << " raw=0x" << raw
+                      << " -> target_pc=0x" << ex_mem.target_pc;
+            // 如果是 JALR，额外打印 rs1/imm/rs1_val，方便定位是函数指针为 0 还是计算错。
+            if ((raw & 0x7f) == 0x67) {
+                const uint32_t rs1 = (raw >> 15) & 0x1f;
+                int32_t imm = static_cast<int32_t>(raw) >> 20; // sign-extend imm[31:20]
+                uint32_t rs1_word = 0;
+                if (bus) {
+                    rs1_word = bus->read_word(reg[8]); // s0 is frequently used as table pointer in crt/newlib
+                } else {
+                    rs1_word = memory.read_word(reg[8]);
+                }
+                uint32_t init0 = bus ? bus->read_word(0x130c4) : memory.read_word(0x130c4);
+                uint32_t init1 = bus ? bus->read_word(0x130c8) : memory.read_word(0x130c8);
+                std::cerr << " (JALR rs1=x" << std::dec << rs1
+                          << " rs1_val=0x" << std::hex << reg[rs1]
+                          << " imm=" << std::dec << imm
+                          << " s0=0x" << std::hex << reg[8]
+                          << " mem[s0]=0x" << rs1_word
+                          << " init_array[0]=0x" << init0
+                          << " init_array[1]=0x" << init1 << ")";
+            }
+            std::cerr << std::dec << "\n";
+            return true;
+        }
         pc = ex_mem.target_pc;
         if_id.valid = false;
         id_ex.valid = false;
@@ -474,21 +723,7 @@ bool CPU::step()
     decode(if_id, id_ex);
     fetch(if_id);
     
-    // Tick devices via bus
-    if (bus) {
-        Timer* timer = dynamic_cast<Timer*>(bus->find_device(0x02004000));
-        if (timer) {
-            timer->tick();
-            if (timer->check_interrupt()) {
-                int_ctrl->request_interrupt(InterruptType::TIMER, 0);
-            }
-        }
-    }
-    
-    // Tick interrupt controller
-    if (int_ctrl) {
-        int_ctrl->tick();
-    }
+    tick_mmio_and_irq_sources();
     //dump_registers();
     //dump_pipeline_state();
     return true;
@@ -496,28 +731,35 @@ bool CPU::step()
 
 
 void CPU::run(size_t max_steps) {
-    
     step_count = 0;
-    
+
+    const size_t effective_limit = max_steps
+        ? std::min(max_steps, kHardAbsoluteRunStepLimit)
+        : kDefaultRunStepLimit;
+
     while (!halt) {
-        if (max_steps && step_count >= max_steps)
+        if (step_count >= effective_limit) {
+            if (!halt) {
+                std::cerr << "[模拟器] 已达步数上限 " << effective_limit
+                          << "，未通过 ECALL 正常退出。请检查死循环，或显式传入更大的 max_steps（受 "
+                             "CPU::kHardAbsoluteRunStepLimit 硬顶）；max_steps==0 时默认上限为 "
+                             "CPU::kDefaultRunStepLimit。\n";
+            }
             break;
+        }
         GAP;
         LOG("Step: " + DEC(step_count));
         GAP;
-        if (!step())
+        if (!step()) {
             break;
-        //dump_registers();
+        }
         step_count++;
-        
     }
 
-    if (halt)
+    if (halt) {
         LOG("Halted (ECALL/EBREAK).");
-    else if (max_steps)
-        LOG("Stopped: step limit (" + std::to_string(max_steps) + ") reached before halt.");
+    }
 
-    // exit_code is set by ECALL exit syscall; else main's return is typically in a0 (x10).
     LOG("Ran " + std::to_string(step_count) + " step(s). "
         "a0 (x10) = " + std::to_string(reg[10]) + ". "
         "exit_code = " + std::to_string(exit_code));

@@ -26,24 +26,8 @@ make
 # 非交互式
 
 ```bash
-./build/test --e0 out/hello      # 运行汇编程序
-./build/test --e1 out/hello      # 运行完整程序 (Timer)
-./build/test --e2 timer out/timer_uart_test # 测试设备 (timer/uart/all)
+./build/test out/hello              # 运行 ELF（Timer+UART；日志见 log/）
+./build/test out/hello 2000      # 同上，最多 100000 周期
 ```
 
-# 交互
-## 编译
-make test-interactive
-
-## 交互模式运行
-./build/test_interactive
-
-
-## 交互模式帮助
-./build/test_interactive --help
-
-## 直接运行模式
-
-./compile.sh runi out/program
-
-./build/test_interactive -i out/program
+汇编等可先编成 ELF 再运行。

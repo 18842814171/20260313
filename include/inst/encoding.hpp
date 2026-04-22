@@ -8,12 +8,18 @@ constexpr uint32_t make_inst_id(uint32_t opcode, uint32_t funct3, uint32_t funct
 // ADD and SUB (R-type)
 constexpr uint32_t INST_ADD =make_inst_id(0x33, 0b000, 0b0000000);
 constexpr uint32_t INST_SUB =make_inst_id(0x33, 0b000, 0b0100000);
+constexpr uint32_t INST_SLL =make_inst_id(0x33, 0b001, 0b0000000);
+constexpr uint32_t INST_XOR =make_inst_id(0x33, 0b100, 0b0000000);
+constexpr uint32_t INST_SRA =make_inst_id(0x33, 0b101, 0b0100000);
+constexpr uint32_t INST_OR  =make_inst_id(0x33, 0b110, 0b0000000);
+constexpr uint32_t INST_AND =make_inst_id(0x33, 0b111, 0b0000000);
 
 // ADDI (I-type) - no funct7 needed for I-type instructions
 constexpr uint32_t INST_ADDI =make_inst_id(0x13, 0b000);  // OP_IMM = 0x13, funct3 = 0b000 for ADD/ADDI
 constexpr uint32_t INST_SLLI = make_inst_id(0x13, 0b001, 0);
 constexpr uint32_t INST_SRL =make_inst_id(0x33,0b101, 0);
 constexpr uint32_t INST_SRLI = make_inst_id(0x13, 0b101, 0);  // bit30=0
+constexpr uint32_t INST_SRAI = make_inst_id(0x13, 0b101, 1);  // bit30=1
 constexpr uint32_t INST_ANDI = make_inst_id(OP_IMM, 0b111, 0);  // funct3=0b111 for ANDI
 constexpr uint32_t INST_XORI = make_inst_id(0x13, 0b100, 0);  // OP_IMM, funct3=0b100
 
@@ -31,6 +37,8 @@ constexpr uint32_t INST_AUIPC = make_inst_id(0x17, 0);   // opcode 0x17, no func
 constexpr uint32_t INST_BEQ   = make_inst_id(0x63, 0b000);   // BRANCH, funct3=000
 constexpr uint32_t INST_BNE = make_inst_id(OP_BRANCH, 0b001, 0);
 constexpr uint32_t INST_BGE = make_inst_id(OP_BRANCH, 0b101, 0);  // funct3=0b101
+constexpr uint32_t INST_BLTU = make_inst_id(OP_BRANCH, 0b110, 0);
+constexpr uint32_t INST_BGEU = make_inst_id(OP_BRANCH, 0b111, 0);
 
 constexpr uint32_t INST_BLT   = make_inst_id(0x63, 0b100, 0);
 //======================= J-type ======================

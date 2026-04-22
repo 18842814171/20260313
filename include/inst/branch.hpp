@@ -23,3 +23,11 @@ inline void inst_bne(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
 inline void inst_bge(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
     (void)cpu; (void)in; (void)out;
 }
+
+inline void inst_bltu(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    (void)cpu; (void)in; (void)out;
+}
+
+inline void inst_bgeu(CPU& cpu, Pipe_ID_EX& in, Pipe_EX_MEM& out) {
+    (void)cpu; (void)in; (void)out;
+}

@@ -10,6 +10,15 @@
 #define DEBUG 1
 #endif
 
+/**
+ * 运行时可改写（如 ./build/test ... --debug=0）。为 false 时：不输出 LOG/GAP、不挂接 LogRedirector 日志文件；
+ * simulator 内非错误 stderr 亦被抑制。编译期 DEBUG!=1 时宏已为空，此开关仍可供 simulator 使用。
+ */
+inline bool& sim_debug_runtime_enabled() {
+    static bool enabled = true;
+    return enabled;
+}
+
 #if DEBUG == 1
 #include <iostream>
 
@@ -22,27 +31,32 @@ namespace
 
 		void _0__counts_pop()
 		{
+			if (!sim_debug_runtime_enabled()) return;
 			if (!tab_counts.empty()) tab_counts.pop_back();
 		}
 
 		void _0__counts_push()
 		{
+			if (!sim_debug_runtime_enabled()) return;
 			tab_counts += ' ';
 		}
 
 		void _0__log_if_func(const std::string& str, const bool cond)
 		{
-			if (cond)
-				std::cout << tab_counts << str << '\n';
+			if (!sim_debug_runtime_enabled() || !cond)
+				return;
+			std::cout << tab_counts << str << '\n';
 		}
 
 		void _0__log_func(const std::string& str)
 		{
+			if (!sim_debug_runtime_enabled()) return;
 			std::cout << tab_counts << str << '\n';
 		}
 
 		void _0__gap_func()
 		{
+			if (!sim_debug_runtime_enabled()) return;
 			std::cout << "==============================\n";
 		}
 
@@ -126,6 +140,13 @@ class Streambuf : public std::streambuf {
 	}
 };
 
+/**
+ * 由测试入口 LogRedirector 管理：写日志文件时抑制 UART 寄存器级 LOG（串口字符仍由 putchar 输出，不进 cout）。
+ */
+struct SimLogConfig {
+    static inline bool suppress_uart_mmio_logs = false;
+};
+
 class LogRedirector {
 	private:
 	Streambuf file_buf_;
@@ -151,6 +172,7 @@ class LogRedirector {
 		if (!file_buf_.open(fname)) return false;
 		old_buf_ = std::cout.rdbuf(&file_buf_);
 		active_ = true;
+		SimLogConfig::suppress_uart_mmio_logs = true;
 		return true;
 	}
 
@@ -159,6 +181,7 @@ class LogRedirector {
 		std::cout.rdbuf(old_buf_);
 		file_buf_.close();
 		active_ = false;
+		SimLogConfig::suppress_uart_mmio_logs = false;
 	}
 };
 #endif

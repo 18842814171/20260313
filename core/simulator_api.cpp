@@ -17,12 +17,10 @@
 #include "inst/system.hpp"
 #include "inst/lui.hpp"
 #include "inst/opcode.hpp"
+#include "simulator.hpp"
 #include <iostream>
 #include <stdexcept>
 #include <fstream>
-
-// Forward declaration - defined in simulator.cpp
-extern void simulator(std::string infile, size_t max_steps);
 
 void register_all_instructions(InstManager *im) {
     im->register_inst(INST_ADD, "ADD", inst_add);
@@ -44,6 +42,8 @@ void register_all_instructions(InstManager *im) {
     im->register_inst(INST_BEQ, "BEQ", inst_beq);
     im->register_inst(INST_BNE, "BNE", inst_bne);
     im->register_inst(INST_BGE, "BGE", inst_bge);
+    im->register_inst(INST_BLTU, "BLTU", inst_bltu);
+    im->register_inst(INST_BGEU, "BGEU", inst_bgeu);
 
     im->register_inst(INST_BLT, "BLT", inst_blt);
     im->register_inst(INST_JAL, "JAL", inst_jal);
@@ -51,9 +51,15 @@ void register_all_instructions(InstManager *im) {
     im->register_inst(INST_EBREAK, "EBREAK", inst_ebreak);
     im->register_inst(INST_ECALL, "ECALL", inst_ecall);
     im->register_inst(INST_WFI, "WFI", inst_wfi);
+    im->register_inst(INST_SLL, "SLL", inst_sll);
     im->register_inst(INST_SLLI, "SLLI", inst_slli);
     im->register_inst(INST_SRLI, "SRLI", inst_srli);
+    im->register_inst(INST_SRAI, "SRAI", inst_srai);
+    im->register_inst(INST_SRA, "SRA", inst_sra);
     im->register_inst(INST_SRL, "SRL", inst_srl);
+    im->register_inst(INST_XOR, "XOR", inst_xor);
+    im->register_inst(INST_OR, "OR", inst_or);
+    im->register_inst(INST_AND, "AND", inst_and);
     // CSR instructions
     im->register_inst(INST_CSRRW, "CSRRW", inst_csrrw);
     im->register_inst(INST_CSRRS, "CSRRS", inst_csrrs);
@@ -162,34 +168,7 @@ void test_simple_asm(const std::string& elf_file) {
 
 void test_full_program(const std::string& infile) {
     LOG("========== TEST E1: Full Program ==========");
-    LOG("Running full program: " + infile);
-    
-    CPU* cpu = nullptr;
-    Memory* mem = nullptr;
-    InstManager* im = nullptr;
-    Bus* bus = nullptr;
-    
-    init_cpu(cpu, mem, im, infile, 0);
-    
-    // 默认只挂载 Timer 和内存
-    bus = new Bus();
-    bus->attach_memory(mem);
-    static Timer timer;
-    bus->attach_device(0x02004000, &timer);
-    cpu->attach_bus(bus);
-    
-    cpu->run(0);
-    
-    std::cout << "\nResult: ";
-    if (cpu->halt) {
-        LOG("PASS - Halted after " + DEC(cpu->step_count) + " steps");
-    } else {
-        LOG ("FAIL - Did not halt");
-    }
-    
-    LOG("\n=== Full Program Test Complete ===");
-    cpu->dump_registers();
-    cleanup_cpu(cpu, mem, im);
+    simulator(infile, 0);
 }
 
 void test_timer_interrupt(const std::string& elf_file) {
@@ -245,3 +224,4 @@ void test_timer_interrupt(const std::string& elf_file) {
     cpu->dump_registers();
     cleanup_cpu(cpu, mem, im);
 }
+

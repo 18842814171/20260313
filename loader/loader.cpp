@@ -10,6 +10,9 @@
 // --------------------------------------------------
 
 uint32_t load_elf(const std::string& filename, Device& mem) {
+    // Reset "last loaded elf" info for jump-range checks.
+    loaded_elf_last_info() = LoadedElfInfo{};
+
     std::ifstream file(filename, std::ios::binary);
     if (!file) {
         throw std::runtime_error("Failed to open ELF file");
@@ -38,12 +41,13 @@ uint32_t load_elf(const std::string& filename, Device& mem) {
     }
 
     uint32_t entry = ehdr.e_entry;
+    loaded_elf_last_info().entry = entry;
 
     // Try program headers first (EXEC/ET_DYN)
     if (ehdr.e_phoff > 0 && ehdr.e_phnum > 0) {
-        file.seekg(ehdr.e_phoff, std::ios::beg);
-
         for (int i = 0; i < ehdr.e_phnum; i++) {
+            // Always read each PHDR from its table slot; segment reads below move file cursor.
+            file.seekg(ehdr.e_phoff + static_cast<std::streamoff>(i) * sizeof(Elf32_Phdr), std::ios::beg);
             Elf32_Phdr phdr;
             file.read(reinterpret_cast<char*>(&phdr), sizeof(phdr));
 
@@ -54,6 +58,14 @@ uint32_t load_elf(const std::string& filename, Device& mem) {
             file.seekg(phdr.p_offset, std::ios::beg);
             file.read(reinterpret_cast<char*>(segment.data()), phdr.p_filesz);
             mem.write(phdr.p_vaddr, segment.data(), phdr.p_filesz);
+
+            // Record LOAD segment virtual range [vaddr, vaddr+memsz)
+            if (phdr.p_memsz > 0) {
+                LoadedElfSegment seg;
+                seg.begin = phdr.p_vaddr;
+                seg.end = phdr.p_vaddr + phdr.p_memsz;
+                loaded_elf_last_info().segments.push_back(seg);
+            }
 
             if (phdr.p_memsz > phdr.p_filesz) {
                 size_t zero_size = phdr.p_memsz - phdr.p_filesz;
@@ -84,6 +96,14 @@ uint32_t load_elf(const std::string& filename, Device& mem) {
 
                 if (entry == 0 || entry < 0x10000)
                     entry = vaddr;
+
+                // Record section load range [vaddr, vaddr+size) as a best-effort segment
+                if (shdr.sh_size > 0) {
+                    LoadedElfSegment seg;
+                    seg.begin = vaddr;
+                    seg.end = vaddr + static_cast<uint32_t>(shdr.sh_size);
+                    loaded_elf_last_info().segments.push_back(seg);
+                }
             }
         }
     }
@@ -91,6 +111,7 @@ uint32_t load_elf(const std::string& filename, Device& mem) {
     if (entry == 0)
         entry = 0x10000;
 
+    loaded_elf_last_info().entry = entry;
     return entry;
 }
 

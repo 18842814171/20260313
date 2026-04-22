@@ -22,18 +22,10 @@ void cleanup_cpu(CPU* cpu, Memory* mem, InstManager* im);
 // Run simple assembly program (expects ELF file)
 void test_simple_asm(const std::string& elf_file);
 
-// Run compiled full program (expects ELF file)
+// Run compiled full program（等价于 simulator(infile, 0)）
 void test_full_program(const std::string& infile);
-
-// Test interrupt functionality
-void test_interrupt();
 
 // Test timer interrupt (expects ELF file)
 void test_timer_interrupt(const std::string& elf_file);
-
-
-// Interactive device testing
-void test_interactive();
-void test_interactive_with_elf(const std::string& elf_file);
 
 #endif // SIMULATOR_API_HPP
