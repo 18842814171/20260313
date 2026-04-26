@@ -7,8 +7,10 @@
 #include "device/Bus.hpp"
 #include "device/Timer.hpp"
 #include "device/UART.hpp"
+#include "device/Display.hpp"
 #include "Decoder.hpp"
 #include "Loader.hpp"
+#include "maploader.hpp"
 #include "Interrupt.hpp"
 #include "SimulatorAPI.hpp"
 #include "inst/arithm.hpp"
@@ -28,6 +30,42 @@
 #include <unistd.h>
 
 extern void register_all_instructions(InstManager *im);
+namespace {
+constexpr uint32_t kDispBase = 0x10001000u;
+constexpr uint32_t kDispCtrl = 0x00u;
+constexpr uint32_t kDispFbAddr = 0x08u;
+constexpr uint32_t kDispWidth = 0x0Cu;
+constexpr uint32_t kDispHeight = 0x10u;
+constexpr uint32_t kDispFormat = 0x14u;
+constexpr uint32_t kDispCtrlEnable = 1u << 0;
+constexpr uint32_t kDispCtrlRefresh = 1u << 1;
+constexpr uint32_t kDefaultFbAddr = 0x30000u;
+
+void preload_display_map_if_requested(const std::string& map_json_path, Memory& mem, Bus& bus) {
+    if (map_json_path.empty()) {
+        return;
+    }
+    MapImage image = load_map_from_json_file(map_json_path);
+    if (image.pixels.empty()) {
+        throw std::runtime_error("Map image has no pixels: " + map_json_path);
+    }
+
+    const uint32_t fb_addr = kDefaultFbAddr;
+    for (size_t i = 0; i < image.pixels.size(); ++i) {
+        mem.write_byte(fb_addr + static_cast<uint32_t>(i), image.pixels[i]);
+    }
+
+    bus.write_word(kDispBase + kDispFbAddr, fb_addr);
+    bus.write_word(kDispBase + kDispWidth, image.width);
+    bus.write_word(kDispBase + kDispHeight, image.height);
+    bus.write_word(kDispBase + kDispFormat,
+                   image.format == ColorFormat::RGB332 ? 1u : 0u);
+    bus.write_word(kDispBase + kDispCtrl, kDispCtrlEnable | kDispCtrlRefresh);
+
+    LOG("Display map preloaded from JSON: " + map_json_path +
+        " (" + std::to_string(image.width) + "x" + std::to_string(image.height) + ")");
+}
+} // namespace
 
 static void print_device_status(const char* title, Memory& mem, const CPU& cpu, const Timer& timer,
                                 const UART& uart) {
@@ -48,7 +86,7 @@ static void print_device_status(const char* title, Memory& mem, const CPU& cpu, 
     std::cerr.flush();
 }
 
-void simulator(std::string infile, size_t max_steps) {
+void simulator(std::string infile, size_t max_steps, const std::string& map_json_path) {
     InstManager im;
     register_all_instructions(&im);
 
@@ -99,8 +137,13 @@ void simulator(std::string infile, size_t max_steps) {
     UART uart;
     bus.attach_device(0x10000000, &uart);
 
+    DisplayDevice display(mem);
+    bus.attach_device(0x10001000, &display);
+
     cpu.attach_bus(&bus);
     cpu.attach_uart(&uart);
+
+    preload_display_map_if_requested(map_json_path, mem, bus);
 
     uart.reset_transfer_counters();
     cpu.reset_instruction_statistics();

@@ -12,7 +12,8 @@ BUILD_DIR = build
 SOURCES = \
     $(wildcard device/*.cpp) \
 	$(wildcard core/*.cpp) \
-	loader/loader.cpp 
+	loader/loader.cpp \
+	loader/maploader.cpp
 
 
 
@@ -30,9 +31,9 @@ all: $(TARGET)
 $(TARGET): $(SOURCES_OBJS) test.cpp
 	@echo "Compiling test.cpp ..."
 	$(CXX) $(CXXFLAGS) test.cpp \
-		build/Bus.o build/Memory.o build/Timer.o build/UART.o build/ALU.o build/CPU.o \
+		build/Bus.o build/Memory.o build/Timer.o build/UART.o build/Display.o build/ALU.o build/CPU.o \
 		build/Decoder.o build/Instmngr.o build/Interrupt.o \
-		build/simulator.o build/simulator_api.o build/loader.o \
+		build/simulator.o build/simulator_api.o build/loader.o build/maploader.o \
 		-lpthread $(LDFLAGS) -o $@
 	@echo "Run: ./$(TARGET)"
 

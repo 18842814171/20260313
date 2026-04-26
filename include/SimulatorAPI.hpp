@@ -24,6 +24,7 @@ void test_simple_asm(const std::string& elf_file);
 
 // Run compiled full program（等价于 simulator(infile, 0)）
 void test_full_program(const std::string& infile);
+void test_full_program_with_map(const std::string& infile, const std::string& map_json_path);
 
 // Test timer interrupt (expects ELF file)
 //void test_timer_interrupt(const std::string& elf_file);

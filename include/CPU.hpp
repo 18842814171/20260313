@@ -8,6 +8,7 @@
 #include <string>
 #include "Pipe.hpp"
 #include "Interrupt.hpp"
+#include "MultiplierUnit.hpp"
 class Memory;
 class InstManager;
 class Bus;
@@ -85,6 +86,7 @@ public:
             if_id.valid = false;
             id_ex.valid = false;
             ex_mem.valid = false;
+            mul_unit_.cancel();
         }
     }
     void exit_trap() {
@@ -110,10 +112,13 @@ public:
 
     void reset_instruction_statistics();
     void dump_instruction_statistics(std::ostream& os) const;
+    uint64_t mul_issued_count() const { return mul_issued_count_; }
+    uint64_t mul_completed_count() const { return mul_completed_count_; }
 
 private:
     Memory& memory;
     InstManager& inst_manager;
+    MultiplierUnit mul_unit_{};
     Bus* bus = nullptr;
     UART* uart = nullptr;
     uint32_t read_reg_forwarded(unsigned r) const;
@@ -124,5 +129,7 @@ private:
 
     uint64_t gpr_read_count_[32]{};
     uint64_t gpr_write_count_[32]{};
+    uint64_t mul_issued_count_ = 0;
+    uint64_t mul_completed_count_ = 0;
 };
 #endif

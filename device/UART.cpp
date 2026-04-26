@@ -49,9 +49,14 @@ void UART::reset() {
 }
 
 void UART::write(uint32_t addr, uint8_t* data, size_t size) {
-    if (size != 4) return;
-
-    uint32_t value = bytes_to_word(data);
+    uint32_t value = 0;
+    if (size == 4) {
+        value = bytes_to_word(data);
+    } else if (size == 1) {
+        value = data[0];
+    } else {
+        return;
+    }
 
     switch (addr) {
         case REG_TXDATA: {

@@ -16,13 +16,13 @@ OUT_DIR="out"
 case "$CMD" in
     asm)
         BASENAME=$(basename "$SRC" .s)
-        riscv64-unknown-elf-as -march=rv32i "$SRC" -o "$OUT_DIR/${BASENAME}.o"
+        riscv64-unknown-elf-as -march=rv32im "$SRC" -o "$OUT_DIR/${BASENAME}.o"
         echo "OK: $OUT_DIR/${BASENAME}"
         ;;
 
     c)
         BASENAME=$(basename "$SRC" .c)
-        riscv64-unknown-elf-gcc -march=rv32i -mabi=ilp32 "$SRC" -o "$OUT_DIR/${BASENAME}"
+        riscv64-unknown-elf-gcc -march=rv32im -mabi=ilp32 "$SRC" -o "$OUT_DIR/${BASENAME}"
         echo "OK: $OUT_DIR/${BASENAME}"
         ;;
 

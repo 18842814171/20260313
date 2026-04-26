@@ -2,13 +2,16 @@ build/simulator.o: core/simulator.cpp include/simulator.hpp \
  include/utils/utils.hpp include/Instmngr.hpp include/Pipe.hpp \
  include/Decoder.hpp include/inst/encoding.hpp include/inst/opcode.hpp \
  include/ALU.hpp include/CPU.hpp include/Interrupt.hpp \
- include/utils/utils.hpp include/device/Device.hpp include/device/Bus.hpp \
+ include/MultiplierUnit.hpp include/utils/utils.hpp \
+ include/device/Device.hpp include/device/Bus.hpp \
  include/device/Device.hpp include/device/Memory.hpp \
- include/device/Timer.hpp include/device/UART.hpp include/Loader.hpp \
- include/device/Device.hpp include/Interrupt.hpp include/SimulatorAPI.hpp \
- include/inst/arithm.hpp include/inst/load_store.hpp include/Pipe.hpp \
- include/inst/auipc.hpp include/inst/branch.hpp include/inst/jump.hpp \
- include/inst/system.hpp include/inst/lui.hpp
+ include/device/Timer.hpp include/device/UART.hpp \
+ include/device/Display.hpp include/Loader.hpp include/device/Device.hpp \
+ include/maploader.hpp include/utils/color_schema.hpp \
+ include/Interrupt.hpp include/SimulatorAPI.hpp include/inst/arithm.hpp \
+ include/inst/load_store.hpp include/Pipe.hpp include/inst/auipc.hpp \
+ include/inst/branch.hpp include/inst/jump.hpp include/inst/system.hpp \
+ include/inst/lui.hpp
 include/simulator.hpp:
 include/utils/utils.hpp:
 include/Instmngr.hpp:
@@ -19,6 +22,7 @@ include/inst/opcode.hpp:
 include/ALU.hpp:
 include/CPU.hpp:
 include/Interrupt.hpp:
+include/MultiplierUnit.hpp:
 include/utils/utils.hpp:
 include/device/Device.hpp:
 include/device/Bus.hpp:
@@ -26,8 +30,11 @@ include/device/Device.hpp:
 include/device/Memory.hpp:
 include/device/Timer.hpp:
 include/device/UART.hpp:
+include/device/Display.hpp:
 include/Loader.hpp:
 include/device/Device.hpp:
+include/maploader.hpp:
+include/utils/color_schema.hpp:
 include/Interrupt.hpp:
 include/SimulatorAPI.hpp:
 include/inst/arithm.hpp:

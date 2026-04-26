@@ -21,9 +21,10 @@ make
 |-------|------------|
 | Timer | 0x02004000 |
 | UART  | 0x10000000 |
+| Display (MMIO ctrl) | 0x10001000 |
 
 
-# 非交互式
+# Entry
 
 ```bash
 ./build/test out/hello              # 运行 ELF（Timer+UART；日志见 log/）
@@ -31,3 +32,10 @@ make
 ```
 
 汇编等可先编成 ELF 再运行。
+
+# New: plotting device for maps
+```bash
+./compile.sh c tests/map_device_caller_test.c
+
+./build/test out/map_device_caller_test --map=tests/maploader_sample.json
+```

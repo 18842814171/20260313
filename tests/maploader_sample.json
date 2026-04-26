@@ -1,0 +1,7431 @@
+[
+  {
+      "handle": "143F74",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106735.3425346529,
+                  78568.7255512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106734.3265346529,
+                  78548.0668842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106702.1532016529,
+                  78548.0668842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106702.1532016529,
+                  78568.7255512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F75",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106739.7452016529,
+                  78568.7255512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106739.0678686529,
+                  78549.0828842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106738.7292016529,
+                  78541.9708842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106734.6652016529,
+                  78541.9708842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106734.6652016529,
+                  78544.3415512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F76",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106697.7505346529,
+                  78581.2562182884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106547.6130818153,
+                  78581.2562182884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F77",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106734.6652016529,
+                  78544.3415512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106698.089201653,
+                  78544.00288428839,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106697.7505346529,
+                  78581.2562182884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F7A",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106740.0838686529,
+                  78568.7255512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106702.1532016529,
+                  78568.7255512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 256,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F7B",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106731.9558686529,
+                  78566.6935512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106733.6492016529,
+                  78568.0482182884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106742.1158686529,
+                  78568.0482182884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106744.4865346529,
+                  78566.3548842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F7C",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106731.6172016529,
+                  78574.14421828839,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106733.3105346529,
+                  78572.4508842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106741.0998686529,
+                  78572.4508842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106742.1158686529,
+                  78573.8055512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F7D",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106702.1532016529,
+                  78571.4348842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106740.0838686529,
+                  78571.4348842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 256,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F7E",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106701.8145346529,
+                  78592.0935512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106701.8145267775,
+                  78592.09378755192,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F7F",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106654.6913256612,
+                  78584.27175152632,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106654.7293521159,
+                  78591.64014388388,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F80",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106622.1503838354,
+                  78583.96555128839,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106617.6534633973,
+                  78591.64014388388,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F81",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106736.0206460716,
+                  78592.11765131648,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106736.0198686529,
+                  78592.0935512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F83",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106740.4225346529,
+                  78589.7228842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106740.4225346529,
+                  78587.35221828839,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106739.7452016529,
+                  78571.4348842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F84",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106736.0198686529,
+                  78589.7228842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106735.3425346529,
+                  78571.4348842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F85",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106702.1532016529,
+                  78571.4348842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106702.1532016529,
+                  78579.90155128839,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106701.8145346529,
+                  78588.3682182884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106701.8145346529,
+                  78589.7228842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F86",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106801.0438686529,
+                  78568.7255512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106739.7452016529,
+                  78568.7255512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F87",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106739.7452016529,
+                  78571.4348842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106797.9958686529,
+                  78571.4348842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F88",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106701.8145346529,
+                  78589.7228842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106797.9907171574,
+                  78589.7228842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F89",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106801.0295070879,
+                  78589.7228842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106832.155527593,
+                  78589.7228842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F8A",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106797.9958686529,
+                  78589.69401093441,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106797.9958686529,
+                  78571.4348842884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F8B",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106701.8145344881,
+                  78592.09378755727,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106832.155527593,
+                  78592.18471943845,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F8C",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106801.0438686529,
+                  78589.66814678768,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106801.0438686529,
+                  78571.7735512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F8D",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106736.6972016529,
+                  78547.1911652884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106737.1119816529,
+                  78546.9516912884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106737.1119816529,
+                  78546.47274428839,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106736.6972016529,
+                  78546.23327128841,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106736.2824216529,
+                  78546.47274428839,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106736.2824216529,
+                  78546.9516912884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106736.6972016529,
+                  78547.1911652884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": true,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F91",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106739.6967096529,
+                  78546.6162652884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106760.6967096529,
+                  78546.6162652884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 9,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F9C",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106801.0438686529,
+                  78571.7735512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106801.0438686529,
+                  78568.7255512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 256,
+          "linetype": "PHANTOM",
+          "lineweight": -1,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143F9D",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106750.835771968,
+                  78553.13099517395,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106751.6254842984,
+                  78553.13757609711,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 20,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "143FAF",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106697.7505346529,
+              78583.96555128839,
+              0.0
+          ],
+          "end": [
+              106656.7041675622,
+              78583.96555128839,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "143FB0",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106654.6560526042,
+              78583.96555128839,
+              0.0
+          ],
+          "end": [
+              106624.8708921319,
+              78583.96555128839,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "143FB1",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106622.1503838354,
+              78583.96555128839,
+              0.0
+          ],
+          "end": [
+              106581.6975972865,
+              78583.96555128838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "143FB2",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106580.0920064792,
+              78583.96555128839,
+              0.0
+          ],
+          "end": [
+              106550.0918686529,
+              78583.96555128839,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "143FB3",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106550.0918686529,
+              78583.96555128839,
+              0.0
+          ],
+          "end": [
+              106550.0686050889,
+              78591.64014388388,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "143FB4",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106580.0920064792,
+              78583.96555128839,
+              0.0
+          ],
+          "end": [
+              106580.0687429152,
+              78591.64014388388,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "143FB5",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106547.3823758417,
+              78581.38689786164,
+              0.0
+          ],
+          "end": [
+              106547.3529888427,
+              78591.37981798305,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "143FB8",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106547.245874244,
+              78591.41500304936,
+              0.0
+          ],
+          "end": [
+              106522.1078650063,
+              78591.41500304936,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "143FB9",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106522.0515450262,
+              78581.30130058003,
+              0.0
+          ],
+          "end": [
+              106522.0244507634,
+              78591.38742299736,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "143FBB",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106519.342052215,
+              78580.97019771933,
+              0.0
+          ],
+          "end": [
+              106519.3111741036,
+              78591.64014388388,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "143FBC",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106624.7472904517,
+              78584.05111097742,
+              0.0
+          ],
+          "end": [
+              106624.6913256612,
+              78584.27175152632,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "143FBD",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106656.6982765316,
+              78584.05111097742,
+              0.0
+          ],
+          "end": [
+              106656.6982765316,
+              78591.64014388388,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14402F",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106279.8834654725,
+              78457.79769696499,
+              0.0
+          ],
+          "end": [
+              106279.8834654725,
+              78457.79769696499,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144036",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106279.8834654726,
+              78558.7956147474,
+              0.0
+          ],
+          "end": [
+              106279.8834654726,
+              78557.9822826725,
+              0.0
+          ],
+          "linetype": "ACAD_ISO02W100"
+      }
+  },
+  {
+      "handle": "144037",
+      "type": "LINE",
+      "layer": "进尺",
+      "attributes": {
+          "start": [
+              106279.8834654727,
+              78486.73077722307,
+              0.0
+          ],
+          "end": [
+              106279.8834654727,
+              78482.79769696498,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144038",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654725,
+              78491.4639442709,
+              0.0
+          ],
+          "end": [
+              106275.8834654725,
+              78482.79769696498,
+              0.0
+          ],
+          "linetype": "ACAD_ISO02W100"
+      }
+  },
+  {
+      "handle": "144039",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654725,
+              78415.41609671335,
+              0.0
+          ],
+          "end": [
+              106275.8834654724,
+              78415.41609671335,
+              0.0
+          ],
+          "linetype": "ACAD_ISO02W100"
+      }
+  },
+  {
+      "handle": "14403A",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3504806941,
+              78558.7956147474,
+              0.0
+          ],
+          "end": [
+              106316.3504806941,
+              78544.92707048946,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14403B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3504806939,
+              78308.80855128841,
+              0.0
+          ],
+          "end": [
+              106316.3504806939,
+              78308.80855128841,
+              0.0
+          ],
+          "linetype": "ACAD_ISO02W100"
+      }
+  },
+  {
+      "handle": "14403C",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78558.7956147474,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78544.92707048943,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14403D",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78531.2235512884,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78522.7956147474,
+              0.0
+          ],
+          "linetype": "ACAD_ISO02W100"
+      }
+  },
+  {
+      "handle": "14403E",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78265.7475512884,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78265.7475512884,
+              0.0
+          ],
+          "linetype": "ACAD_ISO02W100"
+      }
+  },
+  {
+      "handle": "144043",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78255.4475512884,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78252.7956147474,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144044",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78252.79561474739,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78227.79561474755,
+              0.0
+          ],
+          "linetype": "ACAD_ISO02W100"
+      }
+  },
+  {
+      "handle": "144045",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78223.79561474753,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78255.4475512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144047",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78472.79561474742,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78489.0005512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144048",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78494.0005512884,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78497.52578273657,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14404A",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78473.1867908996,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78489.0005512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14404B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78494.0005512884,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78522.7956147474,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14404C",
+      "type": "LINE",
+      "layer": "进尺",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78522.7956147474,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78528.34129059482,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14404D",
+      "type": "LINE",
+      "layer": "进尺",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78532.40309777824,
+              0.0
+          ],
+          "end": [
+              106361.888201653,
+              78553.2956147474,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14404E",
+      "type": "LINE",
+      "layer": "进尺",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78547.7956147474,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78558.7956147474,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14404F",
+      "type": "LINE",
+      "layer": "进尺",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78558.7956147474,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78591.64014388388,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144050",
+      "type": "LINE",
+      "layer": "进尺",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78469.17107048945,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78474.91790265884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144051",
+      "type": "LINE",
+      "layer": "进尺",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78474.91790265884,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78482.79769696499,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144052",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78482.79769696499,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78489.0005512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144053",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78494.0005512884,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78499.25689449582,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144054",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78499.25689449582,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78521.0835512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144055",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78525.0835512884,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78530.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144056",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78534.13017648117,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78534.79561474742,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144057",
+      "type": "LINE",
+      "layer": "进尺",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78525.0835512884,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78546.79561474742,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144058",
+      "type": "LINE",
+      "layer": "进尺",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78546.79561474742,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78558.7956147474,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144059",
+      "type": "LINE",
+      "layer": "进尺",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78558.7956147474,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78576.68247310066,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14405A",
+      "type": "LINE",
+      "layer": "进尺",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78579.76102745572,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78591.64014388388,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14405B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654725,
+              78415.41609671335,
+              0.0
+          ],
+          "end": [
+              106275.8834654725,
+              78415.41609671335,
+              0.0
+          ],
+          "linetype": "ACAD_ISO02W100"
+      }
+  },
+  {
+      "handle": "14405C",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.3496391184,
+              78223.79561474756,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78223.79561474753,
+              0.0
+          ],
+          "linetype": "ACAD_ISO02W100"
+      }
+  },
+  {
+      "handle": "14405D",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106280.4452016529,
+              78227.79561474756,
+              0.0
+          ],
+          "end": [
+              106289.2045833979,
+              78227.79561474756,
+              0.0
+          ],
+          "linetype": "ACAD_ISO02W100"
+      }
+  },
+  {
+      "handle": "14405E",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78227.79561474756,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78227.79561474753,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14405F",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78255.4475512884,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78252.79561474739,
+              0.0
+          ],
+          "linetype": "ACAD_ISO02W100"
+      }
+  },
+  {
+      "handle": "14406C",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.350480694,
+              78531.2235512884,
+              0.0
+          ],
+          "end": [
+              106316.350480694,
+              78516.29504088916,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14406D",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.350480694,
+              78516.29504088916,
+              0.0
+          ],
+          "end": [
+              106316.350480694,
+              78507.70254578778,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14406E",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.350480694,
+              78503.5405512884,
+              0.0
+          ],
+          "end": [
+              106316.3504806941,
+              78501.99026349359,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144071",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.350480694,
+              78466.06311121535,
+              0.0
+          ],
+          "end": [
+              106316.350480694,
+              78457.79769696498,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144072",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78531.2235512884,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78514.65633916188,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144073",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78514.65633916188,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78494.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144074",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78490.31734732492,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78472.47407094577,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144077",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78464.17107048945,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78457.79769696503,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144078",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78464.17107048942,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78453.79561474749,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144079",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78457.79769696503,
+              0.0
+          ],
+          "end": [
+              106341.1446367706,
+              78457.79769696503,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14407A",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106337.1362016529,
+              78457.79769696503,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78457.797696965,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14407B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78453.79561474749,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78453.79561474749,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144092",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78453.7956147474,
+              0.0
+          ],
+          "end": [
+              106357.688201653,
+              78431.9925512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144093",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106357.688201653,
+              78427.9925512884,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78395.63168353081,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144094",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106357.688201653,
+              78421.18989877973,
+              0.0
+          ],
+          "end": [
+              106357.688201653,
+              78413.5174065414,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144095",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106357.688201653,
+              78413.5174065414,
+              0.0
+          ],
+          "end": [
+              106357.688201653,
+              78407.79769696505,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144096",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106357.688201653,
+              78407.79769696505,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78399.6425512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144097",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106361.888201653,
+              78399.6425512884,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78415.47605405653,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144098",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78415.47605405653,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78422.23707639168,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144099",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78422.23707639168,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78444.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14409A",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78444.13017648117,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78457.79571983928,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14409B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3504806941,
+              78457.79769696498,
+              0.0
+          ],
+          "end": [
+              106301.2162016529,
+              78457.79769696498,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14409C",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3504806941,
+              78453.79561474749,
+              0.0
+          ],
+          "end": [
+              106301.2162016529,
+              78453.79561474748,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14409D",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106316.350480694,
+              78453.79561474749,
+              0.0
+          ],
+          "end": [
+              106316.350480694,
+              78431.0956147475,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14409E",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78453.79561474749,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78431.0956147475,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440AF",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106301.2162016529,
+              78457.79769696498,
+              0.0
+          ],
+          "end": [
+              106279.8834654725,
+              78457.79769696498,
+              0.0
+          ],
+          "linetype": "ACAD_ISO02W100"
+      }
+  },
+  {
+      "handle": "1440B0",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106301.2162016529,
+              78457.79769696498,
+              0.0
+          ],
+          "end": [
+              106279.8834654725,
+              78457.79769696499,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440B1",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106280.445201653,
+              78453.79561474759,
+              0.0
+          ],
+          "end": [
+              106295.8834654726,
+              78453.7956147475,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440B2",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106299.8834654726,
+              78453.79561474749,
+              0.0
+          ],
+          "end": [
+              106301.2162016529,
+              78453.79561474748,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440B3",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106316.350480694,
+              78431.0956147475,
+              0.0
+          ],
+          "end": [
+              106316.350480694,
+              78410.88324737105,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440B4",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106316.350480694,
+              78406.76079285366,
+              0.0
+          ],
+          "end": [
+              106316.350480694,
+              78397.79769696503,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440B5",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106316.350480694,
+              78397.79769696503,
+              0.0
+          ],
+          "end": [
+              106316.3504806941,
+              78380.32340768594,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440B6",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106316.3504806941,
+              78380.32340768594,
+              0.0
+          ],
+          "end": [
+              106316.350480694,
+              78358.80855128841,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440B7",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78431.0956147475,
+              0.0
+          ],
+          "end": [
+              106320.3262767209,
+              78411.87452465411,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440B8",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106320.3262767208,
+              78407.75207013659,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78397.79769696503,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440B9",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78397.79769696503,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78380.97266947983,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440BA",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78380.97266947983,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78358.8085512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440BB",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78389.00755128839,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78395.63168353081,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440BC",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78399.05547064723,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78399.6425512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440BD",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78399.6425512884,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78399.41223777682,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440BE",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78399.41223777682,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78389.00755128839,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440BF",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106279.8834654726,
+              78478.79561474756,
+              0.0
+          ],
+          "end": [
+              106279.8834654726,
+              78457.79769696499,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440C0",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654725,
+              78496.2093598696,
+              0.0
+          ],
+          "end": [
+              106275.8834654725,
+              78457.79769696499,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440C1",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106279.8834654726,
+              78502.66019283107,
+              0.0
+          ],
+          "end": [
+              106279.8834654726,
+              78494.13017648115,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440C2",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106279.8834654726,
+              78490.13017648117,
+              0.0
+          ],
+          "end": [
+              106279.8834654725,
+              78457.79769696499,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440C3",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.350480694,
+              78358.80855128841,
+              0.0
+          ],
+          "end": [
+              106316.350480694,
+              78339.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440C4",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.350480694,
+              78335.13017648117,
+              0.0
+          ],
+          "end": [
+              106316.3504806939,
+              78308.80855128841,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440C5",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78358.8085512884,
+              0.0
+          ],
+          "end": [
+              106320.3262767209,
+              78339.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440C6",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.3262767209,
+              78335.13017648117,
+              0.0
+          ],
+          "end": [
+              106320.3262767208,
+              78314.10807469633,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440C7",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78389.10282796984,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78354.0075512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440C8",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78389.00755128839,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78354.0075512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440D9",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654726,
+              78535.29705595129,
+              0.0
+          ],
+          "end": [
+              106275.8834654725,
+              78503.2093598696,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440DA",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106279.8834654726,
+              78502.66019283107,
+              0.0
+          ],
+          "end": [
+              106279.8834654725,
+              78513.2093598696,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440DB",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106279.8834654725,
+              78520.20935986961,
+              0.0
+          ],
+          "end": [
+              106279.8834654726,
+              78535.29705595129,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440DC",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.3262767208,
+              78310.13017648117,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78265.7475512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440DD",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3504806939,
+              78308.80855128841,
+              0.0
+          ],
+          "end": [
+              106316.3562310763,
+              78277.797696965,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440DE",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3569824792,
+              78273.74550623477,
+              0.0
+          ],
+          "end": [
+              106316.3584655503,
+              78265.7475512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440DF",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78354.0075512884,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78339.13017648115,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440E0",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78335.13017648117,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78317.28455128841,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440E1",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78354.0075512884,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78339.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440E2",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.688201653,
+              78335.13017648117,
+              0.0
+          ],
+          "end": [
+              106357.688201653,
+              78317.28455128842,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440E4",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106279.8834654726,
+              78591.64014388388,
+              0.0
+          ],
+          "end": [
+              106279.8834654727,
+              78535.29705595129,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440E5",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3584655503,
+              78265.7475512884,
+              0.0
+          ],
+          "end": [
+              106316.350480704,
+              78227.7956621712,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440E6",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78265.7475512884,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78252.7956147474,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440E7",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78252.7956147474,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78227.79561474755,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440E8",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.688201653,
+              78317.28455128842,
+              0.0
+          ],
+          "end": [
+              106357.688201653,
+              78314.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440E9",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.688201653,
+              78310.13017648117,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78273.86249502176,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440EA",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78255.4475512884,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78310.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440EB",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78314.13017648117,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78317.28455128841,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1440EC",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78273.86249502176,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78255.4475512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144100",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.3496391184,
+              78223.79561474756,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78223.79561474753,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144101",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78255.4475512884,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78223.79561474753,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144102",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78255.4475512884,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78227.79561474753,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144105",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.688201653,
+              78427.9925512884,
+              0.0
+          ],
+          "end": [
+              106321.7462016529,
+              78427.9925512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144106",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106357.6882016529,
+              78431.9925512884,
+              0.0
+          ],
+          "end": [
+              106321.7462016529,
+              78431.9925512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144107",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106299.8834654726,
+              78453.79561474749,
+              0.0
+          ],
+          "end": [
+              106299.8834654726,
+              78446.99561474747,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144108",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106295.9228455138,
+              78446.99561474747,
+              0.0
+          ],
+          "end": [
+              106295.9228455139,
+              78453.7956147475,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14410B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106279.8834654726,
+              78415.41609671335,
+              0.0
+          ],
+          "end": [
+              106279.8834654726,
+              78415.41609671335,
+              0.0
+          ],
+          "linetype": "ACAD_ISO02W100"
+      }
+  },
+  {
+      "handle": "144110",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3504806939,
+              78310.13017648117,
+              0.0
+          ],
+          "end": [
+              106316.4904335743,
+              78310.13017648117,
+              0.0
+          ],
+          "linetype": "ACAD_ISO02W100"
+      }
+  },
+  {
+      "handle": "14411E",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106280.445201653,
+              78453.79561474759,
+              0.0
+          ],
+          "end": [
+              106280.4452016529,
+              78415.41609671335,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14411F",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106295.9228455138,
+              78400.75372793972,
+              0.0
+          ],
+          "end": [
+              106299.8834654726,
+              78400.75372793972,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144120",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106295.9228455138,
+              78446.99561474747,
+              0.0
+          ],
+          "end": [
+              106295.9228455138,
+              78407.4405512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144121",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106295.9228455138,
+              78403.74055128839,
+              0.0
+          ],
+          "end": [
+              106295.9228455138,
+              78400.75372793972,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144122",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3569824792,
+              78273.74550623477,
+              0.0
+          ],
+          "end": [
+              106280.4452016529,
+              78273.76727460348,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144123",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3562310763,
+              78277.797696965,
+              0.0
+          ],
+          "end": [
+              106280.4452016529,
+              78277.76610228838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144124",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106246.1791007561,
+              78427.9925512884,
+              0.0
+          ],
+          "end": [
+              106246.1791007562,
+              78431.61263204768,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144125",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106321.7462016529,
+              78427.9925512884,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78427.99255128838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144126",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3504806941,
+              78427.99255128838,
+              0.0
+          ],
+          "end": [
+              106299.8834654726,
+              78427.99255128838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144127",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106295.9228455138,
+              78427.9925512884,
+              0.0
+          ],
+          "end": [
+              106279.8834654726,
+              78427.9925512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144128",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654724,
+              78427.9925512884,
+              0.0
+          ],
+          "end": [
+              106250.7012016529,
+              78427.9925512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144129",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106246.7012016529,
+              78427.9925512884,
+              0.0
+          ],
+          "end": [
+              106246.1791007561,
+              78427.9925512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14412A",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106321.7462016529,
+              78431.9925512884,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78431.9925512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14412B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3504806941,
+              78431.9925512884,
+              0.0
+          ],
+          "end": [
+              106299.8834654726,
+              78431.9925512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14412C",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106295.9228455138,
+              78431.9925512884,
+              0.0
+          ],
+          "end": [
+              106279.8834654727,
+              78431.9925512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14412D",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654725,
+              78431.9925512884,
+              0.0
+          ],
+          "end": [
+              106251.1117320978,
+              78431.99255128838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14412E",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.350480704,
+              78227.7956621712,
+              0.0
+          ],
+          "end": [
+              106295.9045833979,
+              78227.79563558228,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14412F",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3496391184,
+              78223.79561474756,
+              0.0
+          ],
+          "end": [
+              106295.9045833979,
+              78223.79561474756,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144130",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106282.3263980009,
+              78520.2093598696,
+              0.0
+          ],
+          "end": [
+              106279.8834654725,
+              78520.20935986961,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144131",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106282.3263980009,
+              78520.2093598696,
+              0.0
+          ],
+          "end": [
+              106282.3263980009,
+              78513.2093598696,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144132",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106282.3263980009,
+              78513.2093598696,
+              0.0
+          ],
+          "end": [
+              106279.8834654725,
+              78513.2093598696,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144133",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654725,
+              78503.2093598696,
+              0.0
+          ],
+          "end": [
+              106272.7904564345,
+              78503.2093598696,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144134",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654725,
+              78496.2093598696,
+              0.0
+          ],
+          "end": [
+              106272.7904564345,
+              78496.2093598696,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144135",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106272.7904564345,
+              78496.2093598696,
+              0.0
+          ],
+          "end": [
+              106272.7904564345,
+              78503.2093598696,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14413D",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106243.3812016529,
+              78457.79769696498,
+              0.0
+          ],
+          "end": [
+              106238.679415958,
+              78457.79769696498,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14413E",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106243.3812016529,
+              78457.79769696503,
+              0.0
+          ],
+          "end": [
+              106238.679415958,
+              78457.79769696499,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14413F",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106295.9228455138,
+              78403.74055128839,
+              0.0
+          ],
+          "end": [
+              106284.256201653,
+              78403.74055128839,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144140",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106295.9228455138,
+              78407.4405512884,
+              0.0
+          ],
+          "end": [
+              106284.256201653,
+              78407.4405512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144141",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106238.679415958,
+              78440.40866523972,
+              0.0
+          ],
+          "end": [
+              106242.0217884077,
+              78436.48855128836,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144142",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106245.4322734,
+              78432.48855128836,
+              0.0
+          ],
+          "end": [
+              106246.1791007562,
+              78431.61263204768,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144143",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106238.679415958,
+              78446.5738394842,
+              0.0
+          ],
+          "end": [
+              106246.7012016529,
+              78437.16545831467,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144144",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106250.7012016529,
+              78432.47404344658,
+              0.0
+          ],
+          "end": [
+              106251.1117320978,
+              78431.99255128838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144145",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.945201653,
+              78415.41609671335,
+              0.0
+          ],
+          "end": [
+              106275.945201653,
+              78410.41609671335,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144146",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106280.4452016529,
+              78415.41609671335,
+              0.0
+          ],
+          "end": [
+              106280.4452016529,
+              78410.41609671335,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144157",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106243.3812016529,
+              78457.79769696498,
+              0.0
+          ],
+          "end": [
+              106275.8834654725,
+              78457.79769696498,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144158",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106238.679415958,
+              78453.79561474772,
+              0.0
+          ],
+          "end": [
+              106275.945201653,
+              78453.79561474771,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144159",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106295.9045833979,
+              78227.79563558228,
+              0.0
+          ],
+          "end": [
+              106289.2045833979,
+              78227.79563558228,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14415A",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106289.2045833979,
+              78223.79561474756,
+              0.0
+          ],
+          "end": [
+              106295.9045833979,
+              78223.79561474756,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14415B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.945201653,
+              78410.41609671335,
+              0.0
+          ],
+          "end": [
+              106275.945201653,
+              78407.44055128838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14415C",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.945201653,
+              78403.74055128839,
+              0.0
+          ],
+          "end": [
+              106275.945201653,
+              78397.99955128838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14415D",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106280.4452016529,
+              78397.9995512884,
+              0.0
+          ],
+          "end": [
+              106280.4452016529,
+              78403.74055128839,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14415E",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106280.4452016529,
+              78407.4405512884,
+              0.0
+          ],
+          "end": [
+              106280.4452016529,
+              78410.41609671335,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144162",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106246.7012016529,
+              78407.44055128841,
+              0.0
+          ],
+          "end": [
+              106246.7012016529,
+              78426.2455512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144163",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106250.7012016529,
+              78407.4405512884,
+              0.0
+          ],
+          "end": [
+              106250.7012016529,
+              78426.2455512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144164",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106284.256201653,
+              78403.74055128839,
+              0.0
+          ],
+          "end": [
+              106243.2012016529,
+              78403.74055128839,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144165",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106284.256201653,
+              78407.4405512884,
+              0.0
+          ],
+          "end": [
+              106250.7012016529,
+              78407.4405512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144166",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106246.7012016529,
+              78407.44055128841,
+              0.0
+          ],
+          "end": [
+              106243.2012016529,
+              78407.4405512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144167",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654724,
+              78277.76610228838,
+              0.0
+          ],
+          "end": [
+              106255.2962016529,
+              78277.76610228838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144168",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654724,
+              78273.76610228838,
+              0.0
+          ],
+          "end": [
+              106238.6413221585,
+              78273.76610228838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144176",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.945201653,
+              78453.79561474771,
+              0.0
+          ],
+          "end": [
+              106275.9452016529,
+              78415.41609671335,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144177",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106280.4452016529,
+              78223.79561474756,
+              0.0
+          ],
+          "end": [
+              106289.2045833979,
+              78223.79561474756,
+              0.0
+          ],
+          "linetype": "ACAD_ISO02W100"
+      }
+  },
+  {
+      "handle": "144178",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106280.4452016529,
+              78397.9995512884,
+              0.0
+          ],
+          "end": [
+              106280.445201653,
+              78377.49554701487,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144179",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106280.445201653,
+              78377.49554701487,
+              0.0
+          ],
+          "end": [
+              106280.445201653,
+              78339.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14417A",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106280.4452016529,
+              78335.13017648117,
+              0.0
+          ],
+          "end": [
+              106280.4452016529,
+              78304.8205512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14417B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106280.4452016529,
+              78304.8205512884,
+              0.0
+          ],
+          "end": [
+              106280.4452016529,
+              78227.79561474756,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14417C",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.945201653,
+              78397.99955128838,
+              0.0
+          ],
+          "end": [
+              106275.9452016533,
+              78307.5875512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14417D",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.9452016533,
+              78303.5875512884,
+              0.0
+          ],
+          "end": [
+              106275.9452016536,
+              78223.79561474756,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14417E",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106289.2045833979,
+              78227.79561474756,
+              0.0
+          ],
+          "end": [
+              106280.4452016529,
+              78227.79561474756,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14417F",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106289.2045833979,
+              78223.79561474756,
+              0.0
+          ],
+          "end": [
+              106279.9452016536,
+              78223.79561474756,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144180",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106255.2962016529,
+              78277.76610228838,
+              0.0
+          ],
+          "end": [
+              106238.679415958,
+              78277.76610228838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144182",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106243.2012016529,
+              78407.4405512884,
+              0.0
+          ],
+          "end": [
+              106238.679415958,
+              78407.4405512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144183",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106243.2012016529,
+              78403.74055128839,
+              0.0
+          ],
+          "end": [
+              106238.679415958,
+              78403.74055128839,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144184",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106246.7012016529,
+              78443.04555128842,
+              0.0
+          ],
+          "end": [
+              106250.7012016529,
+              78443.04555128842,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144185",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106250.7012016529,
+              78426.2455512884,
+              0.0
+          ],
+          "end": [
+              106250.7012016529,
+              78443.04555128842,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144186",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106246.7012016529,
+              78426.2455512884,
+              0.0
+          ],
+          "end": [
+              106246.7012016529,
+              78443.04555128842,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14419B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106341.1446367706,
+              78457.79769696503,
+              0.0
+          ],
+          "end": [
+              106341.1446367706,
+              78464.20055128839,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14419C",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106337.1362016529,
+              78476.37301295553,
+              0.0
+          ],
+          "end": [
+              106337.1362016529,
+              78469.17107048945,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441A8",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.9452016533,
+              78303.5875512884,
+              0.0
+          ],
+          "end": [
+              106255.9242016529,
+              78303.5875512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441A9",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.9452016533,
+              78307.5875512884,
+              0.0
+          ],
+          "end": [
+              106255.9242016529,
+              78307.5875512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441AA",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106317.9480203071,
+              78490.1301764812,
+              0.0
+          ],
+          "end": [
+              106337.1446367706,
+              78490.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441AC",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106341.1446367706,
+              78476.37301295553,
+              0.0
+          ],
+          "end": [
+              106341.1446367706,
+              78489.0005512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441AD",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106337.1362016529,
+              78476.37301295553,
+              0.0
+          ],
+          "end": [
+              106337.1446367706,
+              78490.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441B6",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106279.8834654726,
+              78494.13017648115,
+              0.0
+          ],
+          "end": [
+              106312.568436121,
+              78494.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441B7",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106279.8834654726,
+              78490.13017648117,
+              0.0
+          ],
+          "end": [
+              106313.1074371939,
+              78490.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441B8",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106280.445201653,
+              78339.13017648117,
+              0.0
+          ],
+          "end": [
+              106300.445201653,
+              78339.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441B9",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106304.445201653,
+              78339.13017648117,
+              0.0
+          ],
+          "end": [
+              106322.445201653,
+              78339.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441BA",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106322.445201653,
+              78335.13017648117,
+              0.0
+          ],
+          "end": [
+              106280.4452016529,
+              78335.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441C0",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106322.445201653,
+              78339.13017648117,
+              0.0
+          ],
+          "end": [
+              106381.8882016529,
+              78339.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441C1",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106381.8882016529,
+              78335.13017648117,
+              0.0
+          ],
+          "end": [
+              106322.445201653,
+              78335.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441D9",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106361.8882016529,
+              78469.17107048945,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78472.79561474742,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441DB",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106255.9242016529,
+              78303.5875512884,
+              0.0
+          ],
+          "end": [
+              106238.679415958,
+              78303.5875512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441DC",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106255.9242016529,
+              78307.5875512884,
+              0.0
+          ],
+          "end": [
+              106238.679415958,
+              78307.5875512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441DD",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106382.3496717004,
+              78335.13017648117,
+              0.0
+          ],
+          "end": [
+              106385.4701508454,
+              78329.72534805811,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441DE",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106386.9684738539,
+              78335.13017648117,
+              0.0
+          ],
+          "end": [
+              106388.9342524605,
+              78331.72534805813,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441DF",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106389.5022016529,
+              78339.13017648117,
+              0.0
+          ],
+          "end": [
+              106389.5022016529,
+              78335.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441E0",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106381.8882016529,
+              78339.13017648117,
+              0.0
+          ],
+          "end": [
+              106389.5022016529,
+              78339.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441E1",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106381.8882016529,
+              78335.13017648117,
+              0.0
+          ],
+          "end": [
+              106382.3496717004,
+              78335.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441E2",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106386.9684738539,
+              78335.13017648117,
+              0.0
+          ],
+          "end": [
+              106389.5022016529,
+              78335.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441E3",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106385.4701508454,
+              78329.72534805811,
+              0.0
+          ],
+          "end": [
+              106388.9342524605,
+              78331.72534805811,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441E4",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.3262767208,
+              78314.1301764812,
+              0.0
+          ],
+          "end": [
+              106323.3262767208,
+              78314.1301764812,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441E5",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106323.3262767208,
+              78310.13017648117,
+              0.0
+          ],
+          "end": [
+              106320.3262767208,
+              78310.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441EC",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106299.8834654726,
+              78400.75372793972,
+              0.0
+          ],
+          "end": [
+              106299.8834654726,
+              78402.65510483577,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441ED",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106299.8834654726,
+              78406.77755935314,
+              0.0
+          ],
+          "end": [
+              106299.8834654726,
+              78446.99561474747,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441EE",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106303.7620402338,
+              78403.62214213486,
+              0.0
+          ],
+          "end": [
+              106299.8834654726,
+              78402.65510483577,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441EF",
+      "type": "LINE",
+      "layer": "90",
+      "attributes": {
+          "start": [
+              106302.7943526515,
+              78407.50332503994,
+              0.0
+          ],
+          "end": [
+              106299.8834654726,
+              78406.77755935314,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441F1",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106323.3262767208,
+              78314.13017648117,
+              0.0
+          ],
+          "end": [
+              106362.9942016529,
+              78314.13017648115,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441F2",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106330.2942016529,
+              78310.13017648117,
+              0.0
+          ],
+          "end": [
+              106362.9942016529,
+              78310.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441F3",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106323.3262767208,
+              78310.13017648121,
+              0.0
+          ],
+          "end": [
+              106362.9942016529,
+              78310.1301764812,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441F4",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106305.7026316864,
+              78404.10598592604,
+              0.0
+          ],
+          "end": [
+              106303.7620402338,
+              78403.62214213486,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441F5",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106304.734944104,
+              78407.98716883113,
+              0.0
+          ],
+          "end": [
+              106302.7943526515,
+              78407.50332503994,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441FE",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106304.734944104,
+              78407.98716883113,
+              0.0
+          ],
+          "end": [
+              106335.4487286452,
+              78415.64497539037,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1441FF",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106336.4164162276,
+              78411.76379248528,
+              0.0
+          ],
+          "end": [
+              106305.7026316864,
+              78404.1059859259,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144200",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106370.5412016529,
+              78314.13017648115,
+              0.0
+          ],
+          "end": [
+              106370.5412016529,
+              78310.1301764812,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144201",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106362.9942016529,
+              78314.13017648115,
+              0.0
+          ],
+          "end": [
+              106370.5412016529,
+              78314.13017648115,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144202",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106362.9942016529,
+              78310.13017648117,
+              0.0
+          ],
+          "end": [
+              106370.5412016529,
+              78310.1301764812,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144203",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3496391184,
+              78223.79561474756,
+              0.0
+          ],
+          "end": [
+              106316.3496391184,
+              78220.49561474756,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144204",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.3496391184,
+              78220.49561474756,
+              0.0
+          ],
+          "end": [
+              106320.3496391184,
+              78223.79561474756,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144208",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3730015159,
+              78220.49561474756,
+              0.0
+          ],
+          "end": [
+              106316.3707923798,
+              78209.99561474756,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144209",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.3496391184,
+              78220.49561474756,
+              0.0
+          ],
+          "end": [
+              106320.3496391184,
+              78209.99561474755,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144262",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.3730015159,
+              78209.99561474756,
+              0.0
+          ],
+          "end": [
+              106320.5211193927,
+              78191.04355447585,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144263",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3707923798,
+              78209.99561474756,
+              0.0
+          ],
+          "end": [
+              106316.5191546984,
+              78191.0122775326,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144264",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.9452016536,
+              78105.6715512884,
+              0.0
+          ],
+          "end": [
+              106279.9452016536,
+              78105.6715512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144265",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.5191546984,
+              78168.0271662744,
+              0.0
+          ],
+          "end": [
+              106320.5211193927,
+              78168.03071872349,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144266",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.5191546984,
+              78191.0122775326,
+              0.0
+          ],
+          "end": [
+              106316.5191546984,
+              78168.0271662744,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144267",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.5211193927,
+              78191.04355447585,
+              0.0
+          ],
+          "end": [
+              106320.5211193927,
+              78168.03071872349,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144268",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.9452016536,
+              78223.79561474756,
+              0.0
+          ],
+          "end": [
+              106275.9452016536,
+              78105.6715512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144269",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106279.9452016536,
+              78223.79561474756,
+              0.0
+          ],
+          "end": [
+              106279.9452016536,
+              78105.6715512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144273",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106245.4322734,
+              78432.48855128839,
+              0.0
+          ],
+          "end": [
+              106238.679415958,
+              78432.48855128839,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144276",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106332.9912016529,
+              78494.0005512884,
+              0.0
+          ],
+          "end": [
+              106332.9912016529,
+              78499.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144277",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106329.9912016529,
+              78494.13017648117,
+              0.0
+          ],
+          "end": [
+              106329.9912016529,
+              78499.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14428D",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106242.0217884077,
+              78436.48855128836,
+              0.0
+          ],
+          "end": [
+              106238.679415958,
+              78436.48855128836,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14428E",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106329.9912016529,
+              78499.13017648117,
+              0.0
+          ],
+          "end": [
+              106329.9912016529,
+              78515.33017648116,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14428F",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106333.9912016529,
+              78499.13017648117,
+              0.0
+          ],
+          "end": [
+              106333.9912016529,
+              78571.22417312606,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144290",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106333.9912016529,
+              78499.13017648117,
+              0.0
+          ],
+          "end": [
+              106332.9912016529,
+              78499.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144291",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106329.9912016529,
+              78494.13017648117,
+              0.0
+          ],
+          "end": [
+              106329.9912016529,
+              78541.92707048942,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144292",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106622.1503838354,
+              78583.96555128839,
+              0.0
+          ],
+          "end": [
+              106581.6975972865,
+              78583.96555128838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144298",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654727,
+              78591.64014388388,
+              0.0
+          ],
+          "end": [
+              106275.8834654726,
+              78535.29705595129,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1442E5",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106403.0882016529,
+              78494.00055128838,
+              0.0
+          ],
+          "end": [
+              106403.0882016529,
+              78514.00055128838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1442E6",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106399.0882016529,
+              78494.00055128838,
+              0.0
+          ],
+          "end": [
+              106399.0882016529,
+              78514.00055128838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1442E7",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106333.9912016529,
+              78571.22417312606,
+              0.0
+          ],
+          "end": [
+              106348.6167472534,
+              78574.59297994463,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1442E8",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106348.6167472534,
+              78574.59297994463,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78576.68247310071,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1442E9",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106333.9912016529,
+              78574.3027274811,
+              0.0
+          ],
+          "end": [
+              106347.9433680265,
+              78577.51643003259,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1442EA",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106347.9433680265,
+              78577.51643003259,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78579.76102745572,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1442EB",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106329.991201653,
+              78573.38137879144,
+              0.0
+          ],
+          "end": [
+              106329.991201653,
+              78576.38137879147,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1442EC",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106329.991201653,
+              78576.38137879147,
+              0.0
+          ],
+          "end": [
+              106333.9912016529,
+              78576.38137879147,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1442ED",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106333.9912016529,
+              78574.3027274811,
+              0.0
+          ],
+          "end": [
+              106333.9912016529,
+              78576.38137879147,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1442EF",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106652.8894973742,
+              78494.00055128835,
+              0.0
+          ],
+          "end": [
+              106403.0882016529,
+              78494.00055128838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1442F0",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106399.0882016529,
+              78494.00055128838,
+              0.0
+          ],
+          "end": [
+              106332.9912016529,
+              78494.0005512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1442F1",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106652.8894973743,
+              78489.00055128835,
+              0.0
+          ],
+          "end": [
+              106341.1446367706,
+              78489.0005512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1442F5",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106269.8684014187,
+                  78168.39976306134,
+                  2.799999999999998,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106269.8684014187,
+                  78163.36400678285,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 0,
+          "linetype": "推测陷落柱2000(0.3)",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "1442F6",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106269.8684014187,
+              78168.39976306134,
+              0.0
+          ],
+          "end": [
+              106269.8684014187,
+              78178.76974479889,
+              0.0
+          ],
+          "linetype": "推测陷落柱2000(0.3)"
+      }
+  },
+  {
+      "handle": "1442F7",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106269.8684014187,
+              78178.76974479889,
+              0.0
+          ],
+          "end": [
+              106278.6397005174,
+              78178.76974479889,
+              0.0
+          ],
+          "linetype": "推测陷落柱2000(0.3)"
+      }
+  },
+  {
+      "handle": "1442FA",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106309.4207479156,
+                  78203.117789335,
+                  2.799999999999998,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106309.4207479156,
+                  78198.08203305652,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 0,
+          "linetype": "推测陷落柱2000(0.3)",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "1442FB",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106309.4207479156,
+              78203.117789335,
+              0.0
+          ],
+          "end": [
+              106309.4207479156,
+              78213.48777107256,
+              0.0
+          ],
+          "linetype": "推测陷落柱2000(0.3)"
+      }
+  },
+  {
+      "handle": "1442FC",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106309.4207479156,
+              78213.48777107256,
+              0.0
+          ],
+          "end": [
+              106318.1920470142,
+              78213.48777107256,
+              0.0
+          ],
+          "linetype": "推测陷落柱2000(0.3)"
+      }
+  },
+  {
+      "handle": "144312",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106403.0882016529,
+              78514.00055128838,
+              0.0
+          ],
+          "end": [
+              106403.0882016529,
+              78521.13245337362,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144313",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106399.0882016529,
+              78514.00055128838,
+              0.0
+          ],
+          "end": [
+              106399.0882016529,
+              78521.7765339965,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144314",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106403.0882016529,
+              78525.13245337362,
+              0.0
+          ],
+          "end": [
+              106626.7622016529,
+              78525.50564322191,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144315",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106626.7622016529,
+              78521.50564322193,
+              0.0
+          ],
+          "end": [
+              106403.0882016529,
+              78521.13245337362,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14431B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106399.0882016529,
+              78521.7765339965,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78528.34129059485,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14431C",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106403.0882016529,
+              78525.13245337362,
+              0.0
+          ],
+          "end": [
+              106361.8882016529,
+              78532.40309777824,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144354",
+      "type": "CIRCLE",
+      "layer": "巷道",
+      "attributes": {
+          "center": [
+              106525.4780766856,
+              78292.19604607545,
+              0.0
+          ],
+          "radius": 5.911886876919622
+      }
+  },
+  {
+      "handle": "144367",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3504806941,
+              78503.5405512884,
+              0.0
+          ],
+          "end": [
+              106316.1416587722,
+              78503.5405512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144368",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654726,
+              78503.54055128843,
+              0.0
+          ],
+          "end": [
+              106238.679415958,
+              78503.54055128843,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144369",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3504806941,
+              78507.70254578779,
+              0.0
+          ],
+          "end": [
+              106315.5810430637,
+              78507.70254578778,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14436A",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106296.6012016529,
+              78507.70254578763,
+              0.0
+          ],
+          "end": [
+              106279.8834654725,
+              78507.70254578754,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14436B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654726,
+              78507.70254578754,
+              0.0
+          ],
+          "end": [
+              106238.679415958,
+              78507.70254578735,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14436C",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106296.6012016529,
+              78507.70254578763,
+              0.0
+          ],
+          "end": [
+              106296.6012016529,
+              78525.0835512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14436D",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106300.6012016529,
+              78521.08355128841,
+              0.0
+          ],
+          "end": [
+              106300.6012016529,
+              78507.70254578763,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14436E",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106314.3120740173,
+              78534.85052584668,
+              0.0
+          ],
+          "end": [
+              106285.2422254518,
+              78534.85052584668,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144370",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106313.9049065818,
+              78534.85052584668,
+              0.0
+          ],
+          "end": [
+              106328.1447016529,
+              78522.99824125227,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144371",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106314.6489110098,
+              78478.69069041451,
+              0.0
+          ],
+          "end": [
+              106279.8834654726,
+              78478.69069041492,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144372",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654726,
+              78478.690690415,
+              0.0
+          ],
+          "end": [
+              106238.679415958,
+              78478.69069041537,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144374",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106275.8834654725,
+              78482.69069041451,
+              0.0
+          ],
+          "end": [
+              106238.679415958,
+              78482.69069041451,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144375",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106652.8894973742,
+              78494.00055128835,
+              0.0
+          ],
+          "end": [
+              106730.5881589623,
+              78494.00055128835,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144376",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106735.6962122702,
+              78494.00055128838,
+              0.0
+          ],
+          "end": [
+              106856.120601123,
+              78494.00055128838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14437B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106652.8894973743,
+              78489.00055128835,
+              0.0
+          ],
+          "end": [
+              106803.5711308695,
+              78489.0005512883,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14438C",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106300.6012016529,
+              78521.08355128841,
+              0.0
+          ],
+          "end": [
+              106308.9364616359,
+              78521.08355128841,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14438D",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78521.08355128841,
+              0.0
+          ],
+          "end": [
+              106329.9912016529,
+              78521.08355128841,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14438E",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106333.9912016529,
+              78521.0835512884,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78521.0835512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14438F",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106296.6012016529,
+              78525.0835512884,
+              0.0
+          ],
+          "end": [
+              106308.397460563,
+              78525.0835512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144390",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78525.0835512884,
+              0.0
+          ],
+          "end": [
+              106329.9912016529,
+              78525.08355128838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144391",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106333.9912016529,
+              78525.0835512884,
+              0.0
+          ],
+          "end": [
+              106357.6882016529,
+              78525.0835512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1443A0",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106626.7622016529,
+              78521.50564322193,
+              0.0
+          ],
+          "end": [
+              106687.8687829272,
+              78521.50564322193,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1443A1",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106687.8687829272,
+              78521.50564322193,
+              0.0
+          ],
+          "end": [
+              106720.5771242077,
+              78521.50564322193,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1443A2",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106626.7622016529,
+              78525.50564322191,
+              0.0
+          ],
+          "end": [
+              106687.8687829272,
+              78525.50564322193,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1443A3",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106687.8687829272,
+              78525.50564322193,
+              0.0
+          ],
+          "end": [
+              106724.2292965785,
+              78525.50564322191,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1443C4",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106261.034201653,
+              78529.7885512884,
+              0.0
+          ],
+          "end": [
+              106238.679415958,
+              78529.7885512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1443C5",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106257.5342016533,
+              78533.2885512884,
+              0.0
+          ],
+          "end": [
+              106238.679415958,
+              78533.2885512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1443E1",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106730.5881589623,
+              78494.00055128837,
+              0.0
+          ],
+          "end": [
+              106720.5771242077,
+              78521.50564322193,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1443E2",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106735.6962122702,
+              78494.00055128838,
+              0.0
+          ],
+          "end": [
+              106725.6844584459,
+              78521.50761884973,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1443EA",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106724.2292965785,
+              78525.50564322191,
+              0.0
+          ],
+          "end": [
+              106894.6831699774,
+              78525.80764640022,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14442F",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106335.4487286452,
+              78415.64497539037,
+              0.0
+          ],
+          "end": [
+              106336.3894112451,
+              78411.77314263266,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "144662",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106832.155527593,
+              78592.18471943845,
+              0.0
+          ],
+          "end": [
+              106832.155527593,
+              78589.7228842884,
+              0.0
+          ],
+          "linetype": "Continuous"
+      }
+  },
+  {
+      "handle": "1447B1",
+      "type": "LWPOLYLINE",
+      "layer": "积水线探水线",
+      "attributes": {
+          "points": [
+              [
+                  106238.679415958,
+                  78591.64014388388,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106238.679415958,
+                  78263.76610228838,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "积水线探水线",
+          "color": 0,
+          "linetype": "BYLAYER",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "1447C4",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78591.64014388388,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78558.7956147474,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1447C5",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3504806941,
+              78591.64014388388,
+              0.0
+          ],
+          "end": [
+              106316.3504806941,
+              78558.7956147474,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1447CC",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106261.034201653,
+              78591.64014388388,
+              0.0
+          ],
+          "end": [
+              106261.034201653,
+              78529.7885512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1447CD",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106257.5342016532,
+              78591.64014388388,
+              0.0
+          ],
+          "end": [
+              106257.5342016533,
+              78533.2885512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1447D3",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106740.4235638846,
+                  78592.12072299479,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106740.4225346529,
+                  78592.0935512884,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "1447D6",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106697.4249411966,
+                  78592.75657893397,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106697.7505346529,
+                  78583.96555128839,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "1447E4",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106581.6753253985,
+                  78591.64014388388,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106581.6975972865,
+                  78583.96555128838,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "1447E7",
+      "type": "LWPOLYLINE",
+      "layer": "巷道",
+      "attributes": {
+          "points": [
+              [
+                  106620.3219594275,
+                  78591.64014388388,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106624.8708921319,
+                  78583.96555128839,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "巷道",
+          "color": 7,
+          "linetype": "Continuous",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "1470F9",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106329.9912016529,
+              78541.92707048942,
+              0.0
+          ],
+          "end": [
+              106310.9710402962,
+              78541.92707048942,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1470FA",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106329.991201653,
+              78544.92707048942,
+              0.0
+          ],
+          "end": [
+              106310.5669438646,
+              78544.92707048943,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1470FC",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106299.4289418581,
+              78591.64014388388,
+              0.0
+          ],
+          "end": [
+              106316.6083576376,
+              78464.14937147294,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "1470FE",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106310.9710402962,
+              78541.92707048943,
+              0.0
+          ],
+          "end": [
+              106320.7711869535,
+              78469.17107048945,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "147108",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106856.5292523578,
+              78469.17107048945,
+              0.0
+          ],
+          "end": [
+              106815.0196869465,
+              78469.17107048944,
+              0.0
+          ],
+          "linetype": "ByBlock"
+      }
+  },
+  {
+      "handle": "14711B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106341.1446367706,
+              78469.17107048945,
+              0.0
+          ],
+          "end": [
+              106341.1446367706,
+              78476.37301295553,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14711C",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106337.1362016529,
+              78464.20055128839,
+              0.0
+          ],
+          "end": [
+              106337.1362016529,
+              78457.79769696503,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14711D",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106304.2747484433,
+              78591.64014388388,
+              0.0
+          ],
+          "end": [
+              106310.5669438646,
+              78544.92707048942,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14711E",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106329.991201653,
+              78544.92707048942,
+              0.0
+          ],
+          "end": [
+              106329.991201653,
+              78573.38137879144,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14711F",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78541.92707048943,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78531.2235512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "147120",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106316.3504806941,
+              78541.92707048943,
+              0.0
+          ],
+          "end": [
+              106316.3504806941,
+              78531.2235512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "147121",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106313.7786375394,
+              78521.0835512884,
+              0.0
+          ],
+          "end": [
+              106316.350480694,
+              78521.0835512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "147122",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106313.2398422974,
+              78525.0835512884,
+              0.0
+          ],
+          "end": [
+              106316.350480694,
+              78525.08355128838,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "147123",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106310.7395557164,
+              78507.70254578773,
+              0.0
+          ],
+          "end": [
+              106300.6012016529,
+              78507.70254578763,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "147124",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106311.3003855915,
+              78503.5405512884,
+              0.0
+          ],
+          "end": [
+              106279.8834654726,
+              78503.5405512884,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "147125",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106320.326276721,
+              78464.20055128838,
+              0.0
+          ],
+          "end": [
+              106320.326276721,
+              78457.797696965,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "147127",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106314.1099099369,
+              78482.69069041451,
+              0.0
+          ],
+          "end": [
+              106279.8834654726,
+              78482.69069041451,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "147128",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106317.4092250651,
+              78494.13017648117,
+              0.0
+          ],
+          "end": [
+              106329.9912016529,
+              78494.13017648117,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14712B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106894.6673995457,
+              78464.17107048942,
+              0.0
+          ],
+          "end": [
+              106817.9064382925,
+              78464.17107048942,
+              0.0
+          ],
+          "linetype": "ByBlock"
+      }
+  },
+  {
+      "handle": "14712C",
+      "type": "LWPOLYLINE",
+      "layer": "积水线探水线",
+      "attributes": {
+          "points": [
+              [
+                  106856.5292523578,
+                  78469.17107048945,
+                  0.0,
+                  0.0,
+                  0.0
+              ],
+              [
+                  106856.5292555411,
+                  78468.99907671256,
+                  0.0,
+                  0.0,
+                  0.0
+              ]
+          ],
+          "closed": false,
+          "elevation": 0,
+          "const_width": 0.0,
+          "extrusion": [
+              0.0,
+              0.0,
+              1.0
+          ],
+          "layer": "积水线探水线",
+          "color": 0,
+          "linetype": "BYLAYER",
+          "lineweight": 30,
+          "plinegen": false
+      }
+  },
+  {
+      "handle": "14748D",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106803.5711308695,
+              78489.0005512883,
+              0.0
+          ],
+          "end": [
+              106883.4971735565,
+              78489.00055128826,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14748E",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106815.0196869465,
+              78469.17107048944,
+              0.0
+          ],
+          "end": [
+              106320.7711869535,
+              78469.17107048945,
+              0.0
+          ],
+          "linetype": "ByBlock"
+      }
+  },
+  {
+      "handle": "14748F",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106817.9064382925,
+              78464.17107048942,
+              0.0
+          ],
+          "end": [
+              106316.350480694,
+              78464.17107048942,
+              0.0
+          ],
+          "linetype": "ByBlock"
+      }
+  },
+  {
+      "handle": "14749B",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106935.5554838399,
+              78521.54865940563,
+              0.0
+          ],
+          "end": [
+              106725.6844584459,
+              78521.50761884973,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  },
+  {
+      "handle": "14756F",
+      "type": "LINE",
+      "layer": "巷道",
+      "attributes": {
+          "start": [
+              106735.6962122702,
+              78494.00055128838,
+              0.0
+          ],
+          "end": [
+              106725.6851775156,
+              78521.50564322191,
+              0.0
+          ],
+          "linetype": "BYLAYER"
+      }
+  }
+]

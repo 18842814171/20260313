@@ -41,6 +41,13 @@ inline int handle_syscall(CPU& cpu, uint32_t syscall_num, uint32_t arg0, uint32_
    int ret = 0;
 
     switch (syscall_num) {
+        case 1001: { // get_mul_count (nonstandard)
+            const uint64_t c = cpu.mul_completed_count();
+            cpu.reg[10] = static_cast<uint32_t>(c & 0xFFFFFFFFu);          // a0 low
+            cpu.reg[11] = static_cast<uint32_t>((c >> 32) & 0xFFFFFFFFu);  // a1 high
+            ret = 0;
+            break;
+        }
         case 93: { // exit
             LOG("SYSCALL: exit(" + std::to_string(arg0) + ")");
             cpu.halt = true;

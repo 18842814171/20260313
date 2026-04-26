@@ -39,6 +39,8 @@ static bool inst_reads_rs2(uint32_t inst_id) {
         case INST_XOR:
         case INST_OR:
         case INST_AND:
+        case INST_MUL:
+        case INST_MULH:
         case INST_BEQ:
         case INST_BNE:
         case INST_BLT:
@@ -56,11 +58,74 @@ static bool inst_reads_rs2(uint32_t inst_id) {
     }
 }
 
+static bool inst_is_simple_alu(uint32_t inst_id) {
+    switch (inst_id) {
+        case INST_ADD:
+        case INST_SUB:
+        case INST_ADDI:
+        case INST_ANDI:
+        case INST_XORI:
+        case INST_LUI:
+        case INST_AUIPC:
+        case INST_SLL:
+        case INST_SLLI:
+        case INST_SRL:
+        case INST_SRLI:
+        case INST_SRA:
+        case INST_SRAI:
+        case INST_XOR:
+        case INST_OR:
+        case INST_AND:
+            return true;
+        default:
+            return false;
+    }
+}
+
+static bool inst_writes_rd(uint32_t inst_id) {
+    switch (inst_id) {
+        case INST_ADD:
+        case INST_SUB:
+        case INST_MUL:
+        case INST_MULH:
+        case INST_ADDI:
+        case INST_ANDI:
+        case INST_XORI:
+        case INST_LUI:
+        case INST_AUIPC:
+        case INST_SLL:
+        case INST_SLLI:
+        case INST_SRL:
+        case INST_SRLI:
+        case INST_SRA:
+        case INST_SRAI:
+        case INST_XOR:
+        case INST_OR:
+        case INST_AND:
+        case INST_LW:
+        case INST_LBU:
+        case INST_LB:
+        case INST_JAL:
+        case INST_JALR:
+        case INST_CSRRW:
+        case INST_CSRRS:
+        case INST_CSRRC:
+        case INST_CSRRWI:
+        case INST_CSRRSI:
+        case INST_CSRRCI:
+            return true;
+        default:
+            return false;
+    }
+}
+
 void CPU::reset_instruction_statistics() {
     for (int i = 0; i < 32; ++i) {
         gpr_read_count_[i] = 0;
         gpr_write_count_[i] = 0;
     }
+    mul_issued_count_ = 0;
+    mul_completed_count_ = 0;
 }
 
 void CPU::dump_instruction_statistics(std::ostream& os) const {
@@ -137,6 +202,23 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
             }
         }
 
+        if (mul_unit_.has_pending_write()) {
+            const uint32_t pending_rd = mul_unit_.pending_rd();
+            const uint32_t next_id = in.inst.inst_id();
+            const bool reads_pending =
+                (pending_rd != 0) &&
+                ((inst_reads_rs1(next_id) && in.inst.rs1() == pending_rd) ||
+                 (inst_reads_rs2(next_id) && in.inst.rs2() == pending_rd));
+            const bool writes_pending =
+                (pending_rd != 0) && inst_writes_rd(next_id) && (in.inst.rd() == pending_rd);
+            const bool mul_port_busy = (next_id == INST_MUL) && !mul_unit_.can_issue();
+            if (reads_pending || writes_pending || mul_port_busy) {
+                stall = true;
+                LOG("MUL scoreboard stall: pending x" + DEC(pending_rd) +
+                    " next=" + get_inst_name(next_id));
+            }
+        }
+
         if (stall) {
             LOG("STALL inserted");
             out.valid = false;
@@ -190,6 +272,16 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
                 out.reg_write = true;
                 out.alu_src = false;
                 out.alu_op = ALUOp::SUB;
+                break;
+            case INST_MUL: // MUL (RV32M low 32-bit result)
+                out.reg_write = true;
+                out.alu_src = false;
+                out.alu_op = ALUOp::ADD;
+                break;
+            case INST_MULH: // MULH (RV32M signed high 32-bit result)
+                out.reg_write = true;
+                out.alu_src = false;
+                out.alu_op = ALUOp::ADD;
                 break;
             case INST_ADDI: // ADDI
                 out.reg_write = true;
@@ -324,18 +416,33 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
 
 void CPU::execute(Pipe_ID_EX& in, const Pipe_EX_MEM& prev_ex_mem, Pipe_EX_MEM& out) {
     SCOPE;
-    if (!in.valid) {
-        out.valid = false;
-        return;
-    }
-
-    out.valid   = true;
-    out.pc      = in.pc;
-    out.rd      = in.rd;
-    out.pc_modified = false;
+    out.valid = false;
 
     // Forwarding: use youngest result first (MEM/WB then EX/MEM).
     // IMPORTANT: use prev_ex_mem (the prior cycle's EX/MEM latch).
+    if (mul_unit_.result_ready()) {
+        uint32_t m_rd = 0, m_pc = 0, m_prod = 0;
+        mul_unit_.consume_result(m_rd, m_pc, m_prod);
+        mul_completed_count_++;
+        out.valid = true;
+        out.pc = m_pc;
+        out.rd = m_rd;
+        out.alu_result = m_prod;
+        out.val_rs2 = 0;
+        out.reg_write = true;
+        out.mem_read = false;
+        out.mem_write = false;
+        out.is_byte = false;
+        out.is_unsigned = false;
+        out.pc_modified = false;
+        LOG("MUL (multiplier): complete, rd=x" + DEC(m_rd) + " prod=" + HEX(m_prod));
+        return;
+    }
+
+    if (!in.valid) {
+        return;
+    }
+
     uint32_t rs1_val = reg[in.rs1];
     uint32_t rs2_val = reg[in.rs2];
     if (mem_wb.valid && mem_wb.reg_write && mem_wb.rd != 0) {
@@ -349,6 +456,37 @@ void CPU::execute(Pipe_ID_EX& in, const Pipe_EX_MEM& prev_ex_mem, Pipe_EX_MEM& o
     }
     in.val_rs1 = rs1_val;
     in.val_rs2 = rs2_val;
+
+    if (in.inst_id == INST_MUL) {
+        mul_unit_.issue(rs1_val, rs2_val, in.rd, in.pc);
+        mul_issued_count_++;
+        LOG("MUL (multiplier): issue, latency=" + DEC(MultiplierUnit::kLatency) +
+            " rs1=" + HEX(rs1_val) + " rs2=" + HEX(rs2_val));
+        return;
+    }
+
+    if (in.inst_id == INST_MULH) {
+        const int64_t prod =
+            static_cast<int64_t>(static_cast<int32_t>(rs1_val)) *
+            static_cast<int64_t>(static_cast<int32_t>(rs2_val));
+        out.valid = true;
+        out.pc = in.pc;
+        out.rd = in.rd;
+        out.alu_result = static_cast<uint32_t>((static_cast<uint64_t>(prod) >> 32) & 0xFFFFFFFFu);
+        out.val_rs2 = in.val_rs2;
+        out.reg_write = true;
+        out.mem_read = false;
+        out.mem_write = false;
+        out.is_byte = false;
+        out.is_unsigned = false;
+        out.pc_modified = false;
+        return;
+    }
+
+    out.valid   = true;
+    out.pc      = in.pc;
+    out.rd      = in.rd;
+    out.pc_modified = false;
 
     // Use forwarded values for logging
     LOG("EXEC: " + get_inst_name(in.inst_id) +
@@ -668,6 +806,8 @@ bool CPU::step()
     if (halt) return false;
     writeback(mem_wb);
     memory_access(ex_mem, mem_wb);
+    mul_unit_.tick();
+    const bool mul_result_occupies_ex_this_cycle = mul_unit_.result_ready();
     Pipe_EX_MEM prev_ex_mem = ex_mem;
     execute(id_ex, prev_ex_mem, ex_mem);
     // ECALL/EBREAK set halt in execute; do not decode/fetch this cycle or we may
@@ -677,6 +817,7 @@ bool CPU::step()
     // 控制流重定向：仅冲刷比 EX 更年轻的流水级（IF/ID、ID/EX）。
     // 本周期 EX/MEM 已是产生跳转的那条指令的结果（如 JAL 的 link），必须保留，不得清空 ex_mem。
     if (ex_mem.pc_modified) {
+        mul_unit_.cancel();
         // 越界哨兵：若跳转目标不在任何已加载 ELF 段范围内，通常表示返回地址/跳转目标被破坏。
         const auto& elf = loaded_elf_last_info();
         if (!loaded_elf_contains(elf, ex_mem.target_pc)) {
@@ -719,6 +860,10 @@ bool CPU::step()
         id_ex.valid = false;
         ex_mem.pc_modified = false;
         LOG("FLUSH: branch/jump taken, PC -> " + HEX(pc));
+    }
+    if (mul_result_occupies_ex_this_cycle) {
+        tick_mmio_and_irq_sources();
+        return true;
     }
     decode(if_id, id_ex);
     fetch(if_id);
@@ -776,6 +921,12 @@ void CPU::dump_registers() const {
 
 
 std::string CPU::get_inst_name(uint32_t opcode) const {
+        if (opcode == INST_MUL) {
+            return "MUL";
+        }
+        if (opcode == INST_MULH) {
+            return "MULH";
+        }
         return inst_manager.get_name(opcode);
     }
 

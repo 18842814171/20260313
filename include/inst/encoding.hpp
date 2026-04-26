@@ -8,6 +8,8 @@ constexpr uint32_t make_inst_id(uint32_t opcode, uint32_t funct3, uint32_t funct
 // ADD and SUB (R-type)
 constexpr uint32_t INST_ADD =make_inst_id(0x33, 0b000, 0b0000000);
 constexpr uint32_t INST_SUB =make_inst_id(0x33, 0b000, 0b0100000);
+constexpr uint32_t INST_MUL =make_inst_id(0x33, 0b000, 0b0000001);
+constexpr uint32_t INST_MULH =make_inst_id(0x33, 0b001, 0b0000001);
 constexpr uint32_t INST_SLL =make_inst_id(0x33, 0b001, 0b0000000);
 constexpr uint32_t INST_XOR =make_inst_id(0x33, 0b100, 0b0000000);
 constexpr uint32_t INST_SRA =make_inst_id(0x33, 0b101, 0b0100000);
