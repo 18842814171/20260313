@@ -28,7 +28,7 @@
 
 int main(void) {
     // Name requested by guest for host output image.
-    // Device will auto-prefix with "out/" if no slash is present.
+    // Device will auto-prefix with "plot/" if no slash is present.
     static const char kOutName[] = "maploader_sample_render.ppm";
     volatile uint8_t* out_name_mem = (volatile uint8_t*)OUT_NAME_ADDR;
     for (uint32_t i = 0; i < (uint32_t)sizeof(kOutName); ++i) {

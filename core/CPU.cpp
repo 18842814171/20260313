@@ -882,6 +882,8 @@ void CPU::run(size_t max_steps) {
         ? std::min(max_steps, kHardAbsoluteRunStepLimit)
         : kDefaultRunStepLimit;
 
+    SimLogConfig::step_scope_enabled = true;
+    SimLogConfig::current_step = 0;
     while (!halt) {
         if (step_count >= effective_limit) {
             if (!halt) {
@@ -892,6 +894,7 @@ void CPU::run(size_t max_steps) {
             }
             break;
         }
+        SimLogConfig::current_step = step_count;
         GAP;
         LOG("Step: " + DEC(step_count));
         GAP;
@@ -900,6 +903,7 @@ void CPU::run(size_t max_steps) {
         }
         step_count++;
     }
+    SimLogConfig::step_scope_enabled = false;
 
     if (halt) {
         LOG("Halted (ECALL/EBREAK).");

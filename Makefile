@@ -23,9 +23,10 @@ SOURCES_OBJS = $(addprefix $(BUILD_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
 DEP_FILES = $(SOURCES_OBJS:.o=.d) 
 # 主程式目標
 TARGET = $(BUILD_DIR)/test
+WAVE_TOOL = $(BUILD_DIR)/waveform
 
 # 預設目標：編譯測試程式
-all: $(TARGET)
+all: $(TARGET) $(WAVE_TOOL)
 
 # 測試程式
 $(TARGET): $(SOURCES_OBJS) test.cpp
@@ -36,6 +37,12 @@ $(TARGET): $(SOURCES_OBJS) test.cpp
 		build/simulator.o build/simulator_api.o build/loader.o build/maploader.o \
 		-lpthread $(LDFLAGS) -o $@
 	@echo "Run: ./$(TARGET)"
+
+$(WAVE_TOOL): tools/waveform.cpp
+	@echo "Compiling tools/waveform.cpp ..."
+	@mkdir -p $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) tools/waveform.cpp -o $@
+	@echo "Run: ./$(WAVE_TOOL) -<elf>.txt wave.json"
 
 # Clean only object files, keep simulator.o for main build
 clean_objs:

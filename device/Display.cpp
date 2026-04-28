@@ -1,6 +1,7 @@
 #include "device/Display.hpp"
 #include "device/Memory.hpp"
 #include "utils/utils.hpp"
+#include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <sstream>
@@ -20,7 +21,7 @@ void DisplayDevice::rgb332_to_rgb888(uint8_t p, uint8_t& r, uint8_t& g, uint8_t&
 std::string DisplayDevice::resolve_output_filename() const {
     if (out_name_len_ == 0 || out_name_addr_ == 0 || out_name_len_ > 120) {
         std::ostringstream fallback;
-        fallback << "out/display_frame_" << std::setw(6) << std::setfill('0') << frame_count_ << ".ppm";
+        fallback << "plot/display_frame_" << std::setw(6) << std::setfill('0') << frame_count_ << ".ppm";
         return fallback.str();
     }
 
@@ -46,11 +47,11 @@ std::string DisplayDevice::resolve_output_filename() const {
 
     if (name.empty()) {
         std::ostringstream fallback;
-        fallback << "out/display_frame_" << std::setw(6) << std::setfill('0') << frame_count_ << ".ppm";
+        fallback << "plot/display_frame_" << std::setw(6) << std::setfill('0') << frame_count_ << ".ppm";
         return fallback.str();
     }
     if (name.find('/') == std::string::npos) {
-        name = "out/" + name;
+        name = "plot/" + name;
     }
     if (name.size() < 4 || name.substr(name.size() - 4) != ".ppm") {
         name += ".ppm";
@@ -72,6 +73,10 @@ void DisplayDevice::dump_frame_to_ppm() {
     }
 
     const std::string filename = resolve_output_filename();
+    const std::filesystem::path output_path(filename);
+    if (!output_path.parent_path().empty()) {
+        std::filesystem::create_directories(output_path.parent_path());
+    }
     std::ofstream out(filename, std::ios::binary);
     if (!out.is_open()) {
         status_ |= STATUS_ERROR;

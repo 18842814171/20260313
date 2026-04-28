@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "source_log": "log/-circle.txt",
+    "step_count": 20,
+    "timescale": "1step"
+  },
+  "steps": [
+    {
+      "step": 0,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 1,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 2,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 3,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 4,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 5,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 6,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 7,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 8,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 9,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 10,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 11,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 12,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 13,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 14,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 15,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 16,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 17,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 18,
+      "inst": "",
+      "reg_writes": []
+    },
+    {
+      "step": 19,
+      "inst": "",
+      "reg_writes": []
+    }
+  ],
+  "tracks": [
+  ]
+}

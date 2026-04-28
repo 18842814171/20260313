@@ -6,6 +6,7 @@
 #include <fstream>
 #include <cstring>
 #include <ctime>
+#include <limits>
 #ifndef DEBUG
 #define DEBUG 1
 #endif
@@ -18,6 +19,18 @@ inline bool& sim_debug_runtime_enabled() {
     static bool enabled = true;
     return enabled;
 }
+
+/**
+ * 由测试入口与 CPU::run 协作维护：
+ * - log_step_limit: 仅记录前 N 个 step 的 LOG（不影响实际运行步数）
+ * - current_step / step_scope_enabled: CPU 运行时更新
+ */
+struct SimLogConfig {
+    static inline bool suppress_uart_mmio_logs = false;
+    static inline size_t log_step_limit = std::numeric_limits<size_t>::max();
+    static inline size_t current_step = 0;
+    static inline bool step_scope_enabled = false;
+};
 
 #if DEBUG == 1
 #include <iostream>
@@ -45,18 +58,27 @@ namespace
 		{
 			if (!sim_debug_runtime_enabled() || !cond)
 				return;
+            if (SimLogConfig::step_scope_enabled &&
+                SimLogConfig::current_step >= SimLogConfig::log_step_limit)
+                return;
 			std::cout << tab_counts << str << '\n';
 		}
 
 		void _0__log_func(const std::string& str)
 		{
 			if (!sim_debug_runtime_enabled()) return;
+            if (SimLogConfig::step_scope_enabled &&
+                SimLogConfig::current_step >= SimLogConfig::log_step_limit)
+                return;
 			std::cout << tab_counts << str << '\n';
 		}
 
 		void _0__gap_func()
 		{
 			if (!sim_debug_runtime_enabled()) return;
+            if (SimLogConfig::step_scope_enabled &&
+                SimLogConfig::current_step >= SimLogConfig::log_step_limit)
+                return;
 			std::cout << "==============================\n";
 		}
 
@@ -138,13 +160,6 @@ class Streambuf : public std::streambuf {
 		}
 		return n;
 	}
-};
-
-/**
- * 由测试入口 LogRedirector 管理：写日志文件时抑制 UART 寄存器级 LOG（串口字符仍由 putchar 输出，不进 cout）。
- */
-struct SimLogConfig {
-    static inline bool suppress_uart_mmio_logs = false;
 };
 
 class LogRedirector {

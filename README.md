@@ -27,8 +27,8 @@ make
 # Entry
 
 ```bash
-./build/test out/hello              # 运行 ELF（Timer+UART；日志见 log/）
-./build/test out/hello 2000      # 同上，最多 100000 周期
+./build/test hello                 # 自动尝试 ./hello、out/hello、tests/hello
+./build/test hello 2000            # 同上，可加运行步数上限
 ```
 
 汇编等可先编成 ELF 再运行。
@@ -37,5 +37,13 @@ make
 ```bash
 ./compile.sh c tests/map_device_caller_test.c
 
-./build/test out/map_device_caller_test --map=tests/maploader_sample.json
+./build/test map_device_caller_test --map=maploader_sample
 ```
+# New: to waveform
+./build/test xxx --debug=1 --log-steps=2000
+
+# 转波形 JSON
+./build/waveform xxx wave.json --max-wave-steps=2000
+```
+
+maps and waveforms will be generated under plot/.

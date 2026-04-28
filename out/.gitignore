@@ -12,7 +12,7 @@ build/
 bin/
 obj/
 cmake-build-*/
-
+web/
 # IDE 相关
 .vscode/
 .idea/

@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulator Control Panel</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #fafafa; }
+    h1 { margin-bottom: 12px; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+    .card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 12px; min-width: 300px; }
+    .card h2 { margin: 0 0 10px; font-size: 18px; }
+    .btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    button { padding: 8px 12px; border-radius: 6px; border: 1px solid #999; background: #f4f4f4; cursor: pointer; }
+    button:hover { background: #e9e9e9; }
+    select, input { padding: 8px; border: 1px solid #bbb; border-radius: 6px; width: 100%; margin: 6px 0; box-sizing: border-box; }
+    pre { background: #111; color: #e8ffe8; padding: 12px; border-radius: 8px; max-height: 360px; overflow: auto; }
+    .wave-wrap { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-top: 12px; }
+    #waveCanvas { width: 100%; border: 1px solid #bbb; background: #0f1117; border-radius: 6px; }
+    .muted { color: #666; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h1>Command-to-Button 控制台</h1>
+  <p class="muted">只执行后端白名单动作，不接受任意命令。</p>
+
+  <div class="row">
+    <div class="card">
+      <h2>Connection</h2>
+      <label>API Base URL（VM 后端地址）</label>
+      <input id="apiBase" type="text" placeholder="如 http://100.x.x.x:5000 或留空使用同源" />
+      <div class="btns">
+        <button onclick="saveApiBase()">保存连接配置</button>
+      </div>
+      <p class="muted">HTML 放在 Windows 时，请填 VM 地址；同源部署可留空。</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <h2>Build</h2>
+      <p class="muted">对应 README: <code>make</code></p>
+      <div class="btns">
+        <button onclick="runAction('build','make')">make</button>
+        <button onclick="runAction('build','clean')">make clean</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Compile</h2>
+      <label>tests/ 文件</label>
+      <select id="testsFile"></select>
+      <div class="btns">
+        <button onclick="runAction('compile','c')">c</button>
+        <button onclick="runAction('compile','asm')">asm</button>
+        <button onclick="runAction('compile','dump')">dump</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Run Program</h2>
+      <p class="muted">对应 README: <code>./build/test ...</code> 与 <code>./build/waveform ...</code></p>
+      <label>out/ ELF</label>
+      <select id="outFile"></select>
+      <label>log steps</label>
+      <input id="logSteps" type="number" value="2000" min="1" />
+      <label>max steps (0=默认)</label>
+      <input id="maxSteps" type="number" value="0" min="0" />
+      <label>map 名称（可空）</label>
+      <input id="mapName" type="text" placeholder="如 maploader_sample" />
+      <label>log/ 文件（Run+Wave 用；留空按 ELF 推断）</label>
+      <select id="runLogFile"></select>
+      <label>wave 输出文件名（写入 plot/）</label>
+      <input id="runWaveOutput" type="text" value="wave.json" />
+      <label>max wave steps</label>
+      <input id="runWaveSteps" type="number" value="2000" min="1" />
+      <div class="btns">
+        <button onclick="runAction('simulate','run')">Run Only</button>
+        <button onclick="runAction('simulate','run_and_wave')">Run + Wave</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Waveform</h2>
+      <label>log/ 文件</label>
+      <select id="logFile"></select>
+      <label>max wave steps</label>
+      <input id="waveSteps" type="number" value="2000" min="1" />
+      <label>输出文件名（写入 plot/）</label>
+      <input id="waveOutput" type="text" value="wave.json" />
+      <div class="btns">
+        <button onclick="runAction('waveform','build')">Generate wave.json</button>
+        <button onclick="openWave()">Open plot/wave.json</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <button onclick="refreshFiles()">刷新文件列表</button>
+  </div>
+
+  <h2>执行结果</h2>
+  <pre id="output">等待操作...</pre>
+
+  <div class="wave-wrap">
+    <h2>Wave 可视化（分页）</h2>
+    <div class="row">
+      <div class="card">
+        <label>波形 JSON 文件（plot/ 下）</label>
+        <input id="waveJsonFile" type="text" value="wave.json" />
+        <label>每页 step 数</label>
+        <input id="pageSize" type="number" value="20" min="1" />
+        <div class="btns">
+          <button onclick="loadWave()">加载波形</button>
+          <button onclick="prevPage()">上一页</button>
+          <button onclick="nextPage()">下一页</button>
+        </div>
+        <p id="wavePageInfo" class="muted">未加载</p>
+      </div>
+    </div>
+    <canvas id="waveCanvas" width="1400" height="520"></canvas>
+  </div>
+
+  <script>
+    let waveData = null;
+    let currentPage = 0;
+
+    function currentApiBase() {
+      return (localStorage.getItem('SIM_API_BASE') || '').trim().replace(/\/+$/, '');
+    }
+
+    function apiUrl(path) {
+      const base = currentApiBase();
+      return base ? (base + path) : path;
+    }
+
+    function saveApiBase() {
+      const v = (document.getElementById('apiBase').value || '').trim();
+      localStorage.setItem('SIM_API_BASE', v);
+      document.getElementById('output').textContent = '已保存 API Base: ' + (v || '(same-origin)');
+      refreshFiles();
+    }
+
+    async function refreshFiles() {
+      const res = await fetch(apiUrl('/api/files'));
+      const data = await res.json();
+      fillSelect('testsFile', data.tests || []);
+      fillSelect('outFile', data.out || []);
+      fillSelect('logFile', data.log || []);
+      fillSelect('runLogFile', data.log || []);
+    }
+
+    function fillSelect(id, items) {
+      const sel = document.getElementById(id);
+      sel.innerHTML = '';
+      for (const item of items) {
+        const opt = document.createElement('option');
+        opt.value = item;
+        opt.textContent = item;
+        sel.appendChild(opt);
+      }
+    }
+
+    function printResult(data) {
+      document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function runAction(category, action) {
+      const payload = { category, action };
+      if (category === 'compile') {
+        payload.file = document.getElementById('testsFile').value;
+      } else if (category === 'simulate') {
+        payload.file = document.getElementById('outFile').value;
+        payload.log_steps = Number(document.getElementById('logSteps').value || 2000);
+        payload.max_steps = Number(document.getElementById('maxSteps').value || 0);
+        payload.map = document.getElementById('mapName').value.trim();
+        payload.log_file = document.getElementById('runLogFile').value;
+        payload.wave_output = document.getElementById('runWaveOutput').value.trim() || 'wave.json';
+        payload.max_wave_steps = Number(document.getElementById('runWaveSteps').value || 2000);
+      } else if (category === 'waveform') {
+        payload.file = document.getElementById('logFile').value;
+        payload.max_wave_steps = Number(document.getElementById('waveSteps').value || 2000);
+        payload.output = document.getElementById('waveOutput').value.trim() || 'wave.json';
+      }
+
+      const res = await fetch(apiUrl('/api/action'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      printResult(data);
+      await refreshFiles();
+    }
+
+    function openWave() {
+      window.open(apiUrl('/plot/wave.json'), '_blank');
+    }
+
+    function drawText(ctx, text, x, y, color = '#e6e6e6') {
+      ctx.fillStyle = color;
+      ctx.fillText(text, x, y);
+    }
+
+    function getStepValue(samples, step) {
+      let value = '-';
+      for (const s of samples) {
+        if (Number(s.step) <= step) {
+          value = s.value;
+        } else {
+          break;
+        }
+      }
+      return value;
+    }
+
+    function valueToLevel(v) {
+      if (v === '-' || v === '' || v == null) return 1;
+      if (/^0x0+$/i.test(v) || v === '0') return 0;
+      return 2;
+    }
+
+    function renderWavePage() {
+      const canvas = document.getElementById('waveCanvas');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#0f1117';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = '12px Arial';
+
+      if (!waveData || !Array.isArray(waveData.tracks)) {
+        drawText(ctx, '请先加载 wave.json', 20, 30);
+        return;
+      }
+
+      const pageSize = Math.max(1, Number(document.getElementById('pageSize').value || 20));
+      const startStep = currentPage * pageSize;
+      const endStep = startStep + pageSize - 1;
+      const tracks = waveData.tracks.slice(0, 8);
+
+      const left = 120;
+      const top = 50;
+      const rowH = 50;
+      const stepW = Math.max(20, Math.floor((canvas.width - left - 20) / pageSize));
+
+      // vertical step grid
+      ctx.strokeStyle = '#2d3440';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= pageSize; i += 1) {
+        const x = left + i * stepW;
+        ctx.beginPath();
+        ctx.moveTo(x, top - 20);
+        ctx.lineTo(x, top + tracks.length * rowH);
+        ctx.stroke();
+      }
+
+      for (let i = 0; i <= pageSize; i += 5) {
+        const step = startStep + i;
+        drawText(ctx, String(step), left + i * stepW + 2, top - 25, '#9fb3c8');
+      }
+
+      tracks.forEach((track, idx) => {
+        const baseY = top + idx * rowH;
+        drawText(ctx, track.name || `track${idx}`, 10, baseY + 18, '#e6e6e6');
+
+        let prevY = null;
+        let prevX = null;
+        for (let s = startStep; s <= endStep; s += 1) {
+          const v = getStepValue(track.samples || [], s);
+          const level = valueToLevel(v); // 0=low 1=mid(unknown) 2=high
+          const y = baseY + (level === 2 ? 8 : (level === 1 ? 20 : 32));
+          const x = left + (s - startStep) * stepW;
+
+          if (prevX !== null) {
+            ctx.strokeStyle = '#55d6be';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(prevX, prevY);
+            ctx.lineTo(x, prevY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+          }
+          prevX = x;
+          prevY = y;
+        }
+      });
+
+      const maxPages = Math.max(1, Math.ceil((Number(waveData.meta?.step_count || 0)) / pageSize));
+      document.getElementById('wavePageInfo').textContent =
+        `第 ${currentPage + 1}/${maxPages} 页，step ${startStep}-${endStep}`;
+    }
+
+    async function loadWave() {
+      const name = (document.getElementById('waveJsonFile').value || 'wave.json').trim();
+      const res = await fetch(apiUrl('/plot/' + encodeURIComponent(name)));
+      if (!res.ok) {
+        document.getElementById('wavePageInfo').textContent = `加载失败: ${res.status}`;
+        return;
+      }
+      waveData = await res.json();
+      currentPage = 0;
+      renderWavePage();
+    }
+
+    function prevPage() {
+      if (!waveData) return;
+      currentPage = Math.max(0, currentPage - 1);
+      renderWavePage();
+    }
+
+    function nextPage() {
+      if (!waveData) return;
+      const pageSize = Math.max(1, Number(document.getElementById('pageSize').value || 20));
+      const maxPages = Math.max(1, Math.ceil((Number(waveData.meta?.step_count || 0)) / pageSize));
+      currentPage = Math.min(maxPages - 1, currentPage + 1);
+      renderWavePage();
+    }
+
+    document.getElementById('apiBase').value = localStorage.getItem('SIM_API_BASE') || '';
+    refreshFiles();
+    renderWavePage();
+  </script>
+</body>
+</html>
