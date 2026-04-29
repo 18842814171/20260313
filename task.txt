@@ -1,12 +1,5 @@
-=================Important notes=======================
-compile program without ".o" or ".elf"
-clarify argument functions
-=====================
-uart
-3. device & test program
-
-4. extension template: devices and instructions
-
-5. enable single step inspect: run each step at keyboard strike
-
-6. virtual clock/timing function in test.cpp: for efficiency evaluation
+问题
+1.波形图都是直线，如果一个信号位数大于1，应该是像vivado那样每个周期都有一个像小格子那样的显示，数值在小格子里面
+2.pipe.hpp里面配置仍然未同步到前端页面，前端下拉菜单中仍然无法显示所有流水线寄存器变量
+3.如果运行交互式串口程序，需要在终端卡片（右侧）输入与串口交互的内容。每个带有串口功能的程序都设置了最长等待时间。
+如果进行串口交互成功，需要在程序结束后提示波形图中有哪些变量可以指示串口收发数据

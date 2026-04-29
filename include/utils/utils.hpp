@@ -24,12 +24,14 @@ inline bool& sim_debug_runtime_enabled() {
  * 由测试入口与 CPU::run 协作维护：
  * - log_step_limit: 仅记录前 N 个 step 的 LOG（不影响实际运行步数）
  * - current_step / step_scope_enabled: CPU 运行时更新
+ * - log_pipe_signals: 输出流水线寄存器字段日志（字段清单见 include/Pipe.hpp）
  */
 struct SimLogConfig {
     static inline bool suppress_uart_mmio_logs = false;
     static inline size_t log_step_limit = std::numeric_limits<size_t>::max();
     static inline size_t current_step = 0;
     static inline bool step_scope_enabled = false;
+    static inline bool log_pipe_signals = true;
 };
 
 #if DEBUG == 1

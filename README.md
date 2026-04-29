@@ -47,3 +47,5 @@ make
 ```
 
 maps and waveforms will be generated under plot/.
+
+linda@000000:~/shared/share$ cp /home/linda/3.8/my_sim/web/index.html index_0429.html

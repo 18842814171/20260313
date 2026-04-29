@@ -1,0 +1,834 @@
+{
+  "meta": {
+    "source_log": "log/-circle.txt",
+    "step_count": 40,
+    "halted": false,
+    "exit_code": -1,
+    "ran_steps": 0,
+    "timescale": "1step"
+  },
+  "steps": [
+    {
+      "step": 0,
+      "if": {"pc": "0x100f8", "raw_inst": "0x4197"},
+      "id": {"opcode": "", "pc": "", "rs1": "", "rs2": "", "rd": "", "imm": "", "rs1_val": "", "rs2_val": ""},
+      "pipe": {
+        "if_id": {"inst_raw": "0x4197", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x100f8", "valid": "1"},
+        "id_ex": {"alu_src": "0", "imm": "0", "inst_id": "0x0", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x0", "rd": "0x0", "reg_write": "0", "rs1": "0x0", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "0"},
+        "ex_mem": {"alu_result": "0x0", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x0", "pc_modified": "0", "rd": "0x0", "reg_write": "0", "target_pc": "0x0", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "0"},
+        "mem_wb": {"alu_result": "0x0", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x0", "reg_write": "0", "trap_cause": "0x0", "valid": "0"}
+      },
+      "ex": {"exec": "", "result": ""},
+      "wb": [],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 1,
+      "if": {"pc": "0x100fc", "raw_inst": "0xa0818193"},
+      "id": {"opcode": "AUIPC", "pc": "0x100f8", "rs1": "x0", "rs2": "x0", "rd": "x3", "imm": "0x4000", "rs1_val": "0x0", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xa0818193", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x100fc", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "16384", "inst_id": "0x17", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x100f8", "rd": "0x3", "reg_write": "1", "rs1": "0x0", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x0", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x0", "pc_modified": "0", "rd": "0x0", "reg_write": "0", "target_pc": "0x0", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "0"},
+        "mem_wb": {"alu_result": "0x0", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x0", "reg_write": "0", "trap_cause": "0x0", "valid": "0"}
+      },
+      "ex": {"exec": "", "result": ""},
+      "wb": [],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 2,
+      "if": {"pc": "0x10100", "raw_inst": "0x513"},
+      "id": {"opcode": "ADDI", "pc": "0x100fc", "rs1": "x3", "rs2": "x8", "rd": "x3", "imm": "0xfffffa08", "rs1_val": "0x13b00", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x513", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10100", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "-1528", "inst_id": "0x13", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x100fc", "rd": "0x3", "reg_write": "1", "rs1": "0x3", "rs2": "0x8", "trap_cause": "0x0", "val_rs1": "0x13b00", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x140f8", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x100f8", "pc_modified": "0", "rd": "0x3", "reg_write": "1", "target_pc": "0x0", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x0", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x0", "reg_write": "0", "trap_cause": "0x0", "valid": "0"}
+      },
+      "ex": {"exec": "AUIPC rd=x3 rs1=x0 rs2=x0 | x0=0x0 x0=0x0 imm=0x4000", "result": "0x140f8"},
+      "wb": [],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 3,
+      "if": {"pc": "0x10104", "raw_inst": "0x50463"},
+      "id": {"opcode": "ADDI", "pc": "0x10100", "rs1": "x0", "rs2": "x0", "rd": "x10", "imm": "", "rs1_val": "0x0", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x50463", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10104", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "0", "inst_id": "0x13", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10100", "rd": "0xa", "reg_write": "1", "rs1": "0x0", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x13b00", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x100fc", "pc_modified": "0", "rd": "0x3", "reg_write": "1", "target_pc": "0x0", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x140f8", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x3", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "ADDI rd=x3 rs1=x3 rs2=x8 | x3=0x140f8 x8=0x0 imm=0xfffffa08", "result": "0x13b00"},
+      "wb": [],
+      "mem": [],
+      "events": ["FWD: x3 <- MEM/WB", "FWD: x3 <- EX/MEM"]
+    },
+    {
+      "step": 4,
+      "if": {"pc": "0x10108", "raw_inst": "0x1751073"},
+      "id": {"opcode": "BEQ", "pc": "0x10104", "rs1": "x10", "rs2": "x0", "rd": "x8", "imm": "0x8", "rs1_val": "0x1", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x1751073", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10108", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "8", "inst_id": "0x63", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10104", "rd": "0x8", "reg_write": "0", "rs1": "0xa", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x1", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x0", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10100", "pc_modified": "0", "rd": "0xa", "reg_write": "1", "target_pc": "0x0", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x13b00", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x3", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "ADDI rd=x10 rs1=x0 rs2=x0 | x0=0x0 x0=0x0", "result": "0x0"},
+      "wb": [{"reg": "r3", "value": "0x140f8", "from": "ALU"}],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 5,
+      "if": {"pc": "0x1010c", "raw_inst": "0x3517"},
+      "id": {"opcode": "", "pc": "", "rs1": "", "rs2": "", "rd": "", "imm": "", "rs1_val": "", "rs2_val": ""},
+      "pipe": {
+        "if_id": {"inst_raw": "0x3517", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x1010c", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "8", "inst_id": "0x63", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10104", "rd": "0x8", "reg_write": "0", "rs1": "0xa", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "0"},
+        "ex_mem": {"alu_result": "0x0", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10104", "pc_modified": "0", "rd": "0x8", "reg_write": "0", "target_pc": "0x1010c", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x0", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0xa", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "BEQ rd=x8 rs1=x10 rs2=x0 | x10=0x0 x0=0x0 imm=0x8", "result": ""},
+      "wb": [{"reg": "r3", "value": "0x13b00", "from": "ALU"}],
+      "mem": [],
+      "events": ["FWD: x10 <- MEM/WB", "FWD: x10 <- EX/MEM", "FLUSH: branch/jump taken, PC -> 0x1010c"]
+    },
+    {
+      "step": 6,
+      "if": {"pc": "0x10110", "raw_inst": "0x75c50513"},
+      "id": {"opcode": "AUIPC", "pc": "0x1010c", "rs1": "x0", "rs2": "x0", "rd": "x10", "imm": "0x3000", "rs1_val": "0x0", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x75c50513", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10110", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "12288", "inst_id": "0x17", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x1010c", "rd": "0xa", "reg_write": "1", "rs1": "0x0", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x0", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10104", "pc_modified": "0", "rd": "0x8", "reg_write": "0", "target_pc": "0x1010c", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "0"},
+        "mem_wb": {"alu_result": "0x0", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x8", "reg_write": "0", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "", "result": ""},
+      "wb": [{"reg": "r10", "value": "0x0", "from": "ALU"}],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 7,
+      "if": {"pc": "0x10114", "raw_inst": "0x4617"},
+      "id": {"opcode": "ADDI", "pc": "0x10110", "rs1": "x10", "rs2": "x28", "rd": "x10", "imm": "0x75c", "rs1_val": "0x0", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x4617", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10114", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "1884", "inst_id": "0x13", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10110", "rd": "0xa", "reg_write": "1", "rs1": "0xa", "rs2": "0x1c", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x1310c", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x1010c", "pc_modified": "0", "rd": "0xa", "reg_write": "1", "target_pc": "0x1010c", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x0", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x8", "reg_write": "0", "trap_cause": "0x0", "valid": "0"}
+      },
+      "ex": {"exec": "AUIPC rd=x10 rs1=x0 rs2=x0 | x0=0x0 x0=0x0 imm=0x3000", "result": "0x1310c"},
+      "wb": [],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 8,
+      "if": {"pc": "0x10118", "raw_inst": "0xa7c60613"},
+      "id": {"opcode": "AUIPC", "pc": "0x10114", "rs1": "x0", "rs2": "x0", "rd": "x12", "imm": "0x4000", "rs1_val": "0x0", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xa7c60613", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10118", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "16384", "inst_id": "0x17", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10114", "rd": "0xc", "reg_write": "1", "rs1": "0x0", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x13868", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10110", "pc_modified": "0", "rd": "0xa", "reg_write": "1", "target_pc": "0x1010c", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x1310c", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0xa", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "ADDI rd=x10 rs1=x10 rs2=x28 | x10=0x1310c x28=0x0 imm=0x75c", "result": "0x13868"},
+      "wb": [],
+      "mem": [],
+      "events": ["FWD: x10 <- MEM/WB", "FWD: x10 <- EX/MEM"]
+    },
+    {
+      "step": 9,
+      "if": {"pc": "0x1011c", "raw_inst": "0x40a60633"},
+      "id": {"opcode": "ADDI", "pc": "0x10118", "rs1": "x12", "rs2": "x28", "rd": "x12", "imm": "0xfffffa7c", "rs1_val": "0x0", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x40a60633", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x1011c", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "-1412", "inst_id": "0x13", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10118", "rd": "0xc", "reg_write": "1", "rs1": "0xc", "rs2": "0x1c", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x14114", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10114", "pc_modified": "0", "rd": "0xc", "reg_write": "1", "target_pc": "0x1010c", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x13868", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0xa", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "AUIPC rd=x12 rs1=x0 rs2=x0 | x0=0x0 x0=0x0 imm=0x4000", "result": "0x14114"},
+      "wb": [{"reg": "r10", "value": "0x1310c", "from": "ALU"}],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 10,
+      "if": {"pc": "0x10120", "raw_inst": "0x593"},
+      "id": {"opcode": "SUB", "pc": "0x1011c", "rs1": "x12", "rs2": "x10", "rd": "x12", "imm": "", "rs1_val": "0x0", "rs2_val": "0x13868"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x593", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10120", "valid": "1"},
+        "id_ex": {"alu_src": "0", "imm": "0", "inst_id": "0x8033", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x1011c", "rd": "0xc", "reg_write": "1", "rs1": "0xc", "rs2": "0xa", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x13868", "valid": "1"},
+        "ex_mem": {"alu_result": "0x13b90", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10118", "pc_modified": "0", "rd": "0xc", "reg_write": "1", "target_pc": "0x1010c", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x14114", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0xc", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "ADDI rd=x12 rs1=x12 rs2=x28 | x12=0x14114 x28=0x0 imm=0xfffffa7c", "result": "0x13b90"},
+      "wb": [{"reg": "r10", "value": "0x13868", "from": "ALU"}],
+      "mem": [],
+      "events": ["FWD: x12 <- MEM/WB", "FWD: x12 <- EX/MEM"]
+    },
+    {
+      "step": 11,
+      "if": {"pc": "0x10124", "raw_inst": "0x37d000ef"},
+      "id": {"opcode": "ADDI", "pc": "0x10120", "rs1": "x0", "rs2": "x0", "rd": "x11", "imm": "", "rs1_val": "0x0", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x37d000ef", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10124", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "0", "inst_id": "0x13", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10120", "rd": "0xb", "reg_write": "1", "rs1": "0x0", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x328", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x1011c", "pc_modified": "0", "rd": "0xc", "reg_write": "1", "target_pc": "0x1010c", "trap_cause": "0x0", "val_rs2": "0x13868", "valid": "1"},
+        "mem_wb": {"alu_result": "0x13b90", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0xc", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "SUB rd=x12 rs1=x12 rs2=x10 | x12=0x13b90 x10=0x13868", "result": "0x328"},
+      "wb": [{"reg": "r12", "value": "0x14114", "from": "ALU"}],
+      "mem": [],
+      "events": ["FWD: x12 <- MEM/WB", "FWD: x12 <- EX/MEM"]
+    },
+    {
+      "step": 12,
+      "if": {"pc": "0x10128", "raw_inst": "0x1517"},
+      "id": {"opcode": "JAL", "pc": "0x10124", "rs1": "x0", "rs2": "x29", "rd": "x1", "imm": "0xb7c", "rs1_val": "0x0", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x1517", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10128", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "2940", "inst_id": "0x6f", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10124", "rd": "0x1", "reg_write": "1", "rs1": "0x0", "rs2": "0x1d", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x0", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10120", "pc_modified": "0", "rd": "0xb", "reg_write": "1", "target_pc": "0x1010c", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x328", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0xc", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "ADDI rd=x11 rs1=x0 rs2=x0 | x0=0x0 x0=0x0", "result": "0x0"},
+      "wb": [{"reg": "r12", "value": "0x13b90", "from": "ALU"}],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 13,
+      "if": {"pc": "0x10ca0", "raw_inst": "0xf00313"},
+      "id": {"opcode": "", "pc": "", "rs1": "", "rs2": "", "rd": "", "imm": "", "rs1_val": "", "rs2_val": ""},
+      "pipe": {
+        "if_id": {"inst_raw": "0xf00313", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10ca0", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "2940", "inst_id": "0x6f", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10124", "rd": "0x1", "reg_write": "1", "rs1": "0x0", "rs2": "0x1d", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "0"},
+        "ex_mem": {"alu_result": "0x10128", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10124", "pc_modified": "0", "rd": "0x1", "reg_write": "1", "target_pc": "0x10ca0", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x0", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0xb", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "JAL rd=x1 rs1=x0 rs2=x29 | x0=0x0 x29=0x0 imm=0xb7c", "result": ""},
+      "wb": [{"reg": "r12", "value": "0x328", "from": "ALU"}],
+      "mem": [],
+      "events": ["FLUSH: branch/jump taken, PC -> 0x10ca0"]
+    },
+    {
+      "step": 14,
+      "if": {"pc": "0x10ca4", "raw_inst": "0x50713"},
+      "id": {"opcode": "ADDI", "pc": "0x10ca0", "rs1": "x0", "rs2": "x15", "rd": "x6", "imm": "0xf", "rs1_val": "0x0", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x50713", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10ca4", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "15", "inst_id": "0x13", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10ca0", "rd": "0x6", "reg_write": "1", "rs1": "0x0", "rs2": "0xf", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x10128", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10124", "pc_modified": "0", "rd": "0x1", "reg_write": "1", "target_pc": "0x10ca0", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "0"},
+        "mem_wb": {"alu_result": "0x10128", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x1", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "", "result": ""},
+      "wb": [{"reg": "r11", "value": "0x0", "from": "ALU"}],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 15,
+      "if": {"pc": "0x10ca8", "raw_inst": "0x2c37e63"},
+      "id": {"opcode": "ADDI", "pc": "0x10ca4", "rs1": "x10", "rs2": "x0", "rd": "x14", "imm": "", "rs1_val": "0x13868", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x2c37e63", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10ca8", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "0", "inst_id": "0x13", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10ca4", "rd": "0xe", "reg_write": "1", "rs1": "0xa", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x13868", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0xf", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10ca0", "pc_modified": "0", "rd": "0x6", "reg_write": "1", "target_pc": "0x10ca0", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x10128", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x1", "reg_write": "1", "trap_cause": "0x0", "valid": "0"}
+      },
+      "ex": {"exec": "ADDI rd=x6 rs1=x0 rs2=x15 | x0=0x0 x15=0x0 imm=0xf", "result": "0xf"},
+      "wb": [{"reg": "r1", "value": "0x10128", "from": "ALU"}],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 16,
+      "if": {"pc": "0x10cac", "raw_inst": "0xf77793"},
+      "id": {"opcode": "BGEU", "pc": "0x10ca8", "rs1": "x6", "rs2": "x12", "rd": "x28", "imm": "0x3c", "rs1_val": "0x0", "rs2_val": "0x328"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xf77793", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10cac", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "60", "inst_id": "0x3e3", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10ca8", "rd": "0x1c", "reg_write": "0", "rs1": "0x6", "rs2": "0xc", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x328", "valid": "1"},
+        "ex_mem": {"alu_result": "0x13868", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10ca4", "pc_modified": "0", "rd": "0xe", "reg_write": "1", "target_pc": "0x10ca0", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0xf", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x6", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "ADDI rd=x14 rs1=x10 rs2=x0 | x10=0x13868 x0=0x0", "result": "0x13868"},
+      "wb": [],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 17,
+      "if": {"pc": "0x10cb0", "raw_inst": "0xa079063"},
+      "id": {"opcode": "ANDI", "pc": "0x10cac", "rs1": "x14", "rs2": "x15", "rd": "x15", "imm": "0xf", "rs1_val": "0x0", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xa079063", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10cb0", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "15", "inst_id": "0x393", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10cac", "rd": "0xf", "reg_write": "1", "rs1": "0xe", "rs2": "0xf", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x13868", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10ca8", "pc_modified": "0", "rd": "0x1c", "reg_write": "0", "target_pc": "0x10ce4", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x13868", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0xe", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "BGEU rd=x28 rs1=x6 rs2=x12 | x6=0xf x12=0x328 imm=0x3c", "result": ""},
+      "wb": [{"reg": "r6", "value": "0xf", "from": "ALU"}],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 18,
+      "if": {"pc": "0x10cb4", "raw_inst": "0x8059263"},
+      "id": {"opcode": "BNE", "pc": "0x10cb0", "rs1": "x15", "rs2": "x0", "rd": "x0", "imm": "0xa0", "rs1_val": "0x0", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x8059263", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10cb4", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "160", "inst_id": "0xe3", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10cb0", "rd": "0x0", "reg_write": "0", "rs1": "0xf", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x8", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10cac", "pc_modified": "0", "rd": "0xf", "reg_write": "1", "target_pc": "0x10ce4", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x13868", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x1c", "reg_write": "0", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "ANDI rd=x15 rs1=x14 rs2=x15 | x14=0x13868 x15=0x0 imm=0xf", "result": "0x8"},
+      "wb": [{"reg": "r14", "value": "0x13868", "from": "ALU"}],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 19,
+      "if": {"pc": "0x10d50", "raw_inst": "0x279693"},
+      "id": {"opcode": "", "pc": "", "rs1": "", "rs2": "", "rd": "", "imm": "", "rs1_val": "", "rs2_val": ""},
+      "pipe": {
+        "if_id": {"inst_raw": "0x279693", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d50", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "160", "inst_id": "0xe3", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10cb0", "rd": "0x0", "reg_write": "0", "rs1": "0xf", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x8", "val_rs2": "0x0", "valid": "0"},
+        "ex_mem": {"alu_result": "0x8", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10cb0", "pc_modified": "0", "rd": "0x0", "reg_write": "0", "target_pc": "0x10d50", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x8", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0xf", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "BNE rd=x0 rs1=x15 rs2=x0 | x15=0x8 x0=0x0 imm=0xa0", "result": ""},
+      "wb": [],
+      "mem": [],
+      "events": ["FWD: x15 <- MEM/WB", "FWD: x15 <- EX/MEM", "FLUSH: branch/jump taken, PC -> 0x10d50"]
+    },
+    {
+      "step": 20,
+      "if": {"pc": "0x10d54", "raw_inst": "0x297"},
+      "id": {"opcode": "SLLI", "pc": "0x10d50", "rs1": "x15", "rs2": "x2", "rd": "x13", "imm": "0x2", "rs1_val": "0x8", "rs2_val": "0x20010"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x297", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d54", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "2", "inst_id": "0x93", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d50", "rd": "0xd", "reg_write": "1", "rs1": "0xf", "rs2": "0x2", "trap_cause": "0x0", "val_rs1": "0x8", "val_rs2": "0x20010", "valid": "1"},
+        "ex_mem": {"alu_result": "0x8", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10cb0", "pc_modified": "0", "rd": "0x0", "reg_write": "0", "target_pc": "0x10d50", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "0"},
+        "mem_wb": {"alu_result": "0x8", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x0", "reg_write": "0", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "", "result": ""},
+      "wb": [{"reg": "r15", "value": "0x8", "from": "ALU"}],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 21,
+      "if": {"pc": "0x10d58", "raw_inst": "0x5686b3"},
+      "id": {"opcode": "AUIPC", "pc": "0x10d54", "rs1": "x0", "rs2": "x0", "rd": "x5", "imm": "", "rs1_val": "0x0", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x5686b3", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d58", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "0", "inst_id": "0x17", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d54", "rd": "0x5", "reg_write": "1", "rs1": "0x0", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x20", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d50", "pc_modified": "0", "rd": "0xd", "reg_write": "1", "target_pc": "0x10d50", "trap_cause": "0x0", "val_rs2": "0x20010", "valid": "1"},
+        "mem_wb": {"alu_result": "0x8", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x0", "reg_write": "0", "trap_cause": "0x0", "valid": "0"}
+      },
+      "ex": {"exec": "SLLI rd=x13 rs1=x15 rs2=x2 | x15=0x8 x2=0x20010 imm=0x2", "result": "0x20"},
+      "wb": [],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 22,
+      "if": {"pc": "0x10d5c", "raw_inst": "0x8293"},
+      "id": {"opcode": "ADD", "pc": "0x10d58", "rs1": "x13", "rs2": "x5", "rd": "x13", "imm": "", "rs1_val": "0x0", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x8293", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d5c", "valid": "1"},
+        "id_ex": {"alu_src": "0", "imm": "0", "inst_id": "0x33", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d58", "rd": "0xd", "reg_write": "1", "rs1": "0xd", "rs2": "0x5", "trap_cause": "0x0", "val_rs1": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x10d54", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d54", "pc_modified": "0", "rd": "0x5", "reg_write": "1", "target_pc": "0x10d50", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x20", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0xd", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "AUIPC rd=x5 rs1=x0 rs2=x0 | x0=0x0 x0=0x0", "result": "0x10d54"},
+      "wb": [],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 23,
+      "if": {"pc": "0x10d60", "raw_inst": "0xfa0680e7"},
+      "id": {"opcode": "ADDI", "pc": "0x10d5c", "rs1": "x1", "rs2": "x0", "rd": "x5", "imm": "", "rs1_val": "0x10128", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xfa0680e7", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d60", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "0", "inst_id": "0x13", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d5c", "rd": "0x5", "reg_write": "1", "rs1": "0x1", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x10128", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x10d74", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d58", "pc_modified": "0", "rd": "0xd", "reg_write": "1", "target_pc": "0x10d50", "trap_cause": "0x0", "val_rs2": "0x10d54", "valid": "1"},
+        "mem_wb": {"alu_result": "0x10d54", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x5", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "ADD rd=x13 rs1=x13 rs2=x5 | x13=0x20 x5=0x10d54", "result": "0x10d74"},
+      "wb": [{"reg": "r13", "value": "0x20", "from": "ALU"}],
+      "mem": [],
+      "events": ["FWD: x5 <- MEM/WB", "FWD: x5 <- EX/MEM"]
+    },
+    {
+      "step": 24,
+      "if": {"pc": "0x10d64", "raw_inst": "0x28093"},
+      "id": {"opcode": "JALR", "pc": "0x10d60", "rs1": "x13", "rs2": "x0", "rd": "x1", "imm": "0xffffffa0", "rs1_val": "0x20", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x28093", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d64", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "-96", "inst_id": "0x67", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d60", "rd": "0x1", "reg_write": "1", "rs1": "0xd", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x20", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x10128", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d5c", "pc_modified": "0", "rd": "0x5", "reg_write": "1", "target_pc": "0x10d50", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x10d74", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0xd", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "ADDI rd=x5 rs1=x1 rs2=x0 | x1=0x10128 x0=0x0", "result": "0x10128"},
+      "wb": [{"reg": "r5", "value": "0x10d54", "from": "ALU"}],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 25,
+      "if": {"pc": "0x10d14", "raw_inst": "0xb703a3"},
+      "id": {"opcode": "", "pc": "", "rs1": "", "rs2": "", "rd": "", "imm": "", "rs1_val": "", "rs2_val": ""},
+      "pipe": {
+        "if_id": {"inst_raw": "0xb703a3", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d14", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "-96", "inst_id": "0x67", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d60", "rd": "0x1", "reg_write": "1", "rs1": "0xd", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x10d74", "val_rs2": "0x0", "valid": "0"},
+        "ex_mem": {"alu_result": "0x10d64", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d60", "pc_modified": "0", "rd": "0x1", "reg_write": "1", "target_pc": "0x10d14", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x10128", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x5", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "JALR rd=x1 rs1=x13 rs2=x0 | x13=0x10d74 x0=0x0 imm=0xffffffa0", "result": ""},
+      "wb": [{"reg": "r13", "value": "0x10d74", "from": "ALU"}],
+      "mem": [],
+      "events": ["FLUSH: branch/jump taken, PC -> 0x10d14"]
+    },
+    {
+      "step": 26,
+      "if": {"pc": "0x10d18", "raw_inst": "0xb70323"},
+      "id": {"opcode": "SB", "pc": "0x10d14", "rs1": "x14", "rs2": "x11", "rd": "x7", "imm": "0x7", "rs1_val": "0x13868", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xb70323", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d18", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "7", "inst_id": "0x23", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d14", "rd": "0x7", "reg_write": "0", "rs1": "0xe", "rs2": "0xb", "trap_cause": "0x0", "val_rs1": "0x13868", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x10d64", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d60", "pc_modified": "0", "rd": "0x1", "reg_write": "1", "target_pc": "0x10d14", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "0"},
+        "mem_wb": {"alu_result": "0x10d64", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x1", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "", "result": ""},
+      "wb": [{"reg": "r5", "value": "0x10128", "from": "ALU"}],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 27,
+      "if": {"pc": "0x10d1c", "raw_inst": "0xb702a3"},
+      "id": {"opcode": "SB", "pc": "0x10d18", "rs1": "x14", "rs2": "x11", "rd": "x6", "imm": "0x6", "rs1_val": "0x13868", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xb702a3", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d1c", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "6", "inst_id": "0x23", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d18", "rd": "0x6", "reg_write": "0", "rs1": "0xe", "rs2": "0xb", "trap_cause": "0x0", "val_rs1": "0x13868", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x1386f", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d14", "pc_modified": "0", "rd": "0x7", "reg_write": "0", "target_pc": "0x10d14", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x10d64", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x1", "reg_write": "1", "trap_cause": "0x0", "valid": "0"}
+      },
+      "ex": {"exec": "SB rd=x7 rs1=x14 rs2=x11 | x14=0x13868 x11=0x0 imm=0x7", "result": "0x1386f"},
+      "wb": [{"reg": "r1", "value": "0x10d64", "from": "ALU"}],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 28,
+      "if": {"pc": "0x10d20", "raw_inst": "0xb70223"},
+      "id": {"opcode": "SB", "pc": "0x10d1c", "rs1": "x14", "rs2": "x11", "rd": "x5", "imm": "0x5", "rs1_val": "0x13868", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xb70223", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d20", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "5", "inst_id": "0x23", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d1c", "rd": "0x5", "reg_write": "0", "rs1": "0xe", "rs2": "0xb", "trap_cause": "0x0", "val_rs1": "0x13868", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x1386e", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d18", "pc_modified": "0", "rd": "0x6", "reg_write": "0", "target_pc": "0x10d14", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x1386f", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x7", "reg_write": "0", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "SB rd=x6 rs1=x14 rs2=x11 | x14=0x13868 x11=0x0 imm=0x6", "result": "0x1386e"},
+      "wb": [],
+      "mem": [{"kind": "store", "addr": "0x1386f", "data": "", "width": 1}],
+      "events": []
+    },
+    {
+      "step": 29,
+      "if": {"pc": "0x10d24", "raw_inst": "0xb701a3"},
+      "id": {"opcode": "SB", "pc": "0x10d20", "rs1": "x14", "rs2": "x11", "rd": "x4", "imm": "0x4", "rs1_val": "0x13868", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xb701a3", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d24", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "4", "inst_id": "0x23", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d20", "rd": "0x4", "reg_write": "0", "rs1": "0xe", "rs2": "0xb", "trap_cause": "0x0", "val_rs1": "0x13868", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x1386d", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d1c", "pc_modified": "0", "rd": "0x5", "reg_write": "0", "target_pc": "0x10d14", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x1386e", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x6", "reg_write": "0", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "SB rd=x5 rs1=x14 rs2=x11 | x14=0x13868 x11=0x0 imm=0x5", "result": "0x1386d"},
+      "wb": [],
+      "mem": [{"kind": "store", "addr": "0x1386e", "data": "", "width": 1}],
+      "events": []
+    },
+    {
+      "step": 30,
+      "if": {"pc": "0x10d28", "raw_inst": "0xb70123"},
+      "id": {"opcode": "SB", "pc": "0x10d24", "rs1": "x14", "rs2": "x11", "rd": "x3", "imm": "0x3", "rs1_val": "0x13868", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xb70123", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d28", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "3", "inst_id": "0x23", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d24", "rd": "0x3", "reg_write": "0", "rs1": "0xe", "rs2": "0xb", "trap_cause": "0x0", "val_rs1": "0x13868", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x1386c", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d20", "pc_modified": "0", "rd": "0x4", "reg_write": "0", "target_pc": "0x10d14", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x1386d", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x5", "reg_write": "0", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "SB rd=x4 rs1=x14 rs2=x11 | x14=0x13868 x11=0x0 imm=0x4", "result": "0x1386c"},
+      "wb": [],
+      "mem": [{"kind": "store", "addr": "0x1386d", "data": "", "width": 1}],
+      "events": []
+    },
+    {
+      "step": 31,
+      "if": {"pc": "0x10d2c", "raw_inst": "0xb700a3"},
+      "id": {"opcode": "SB", "pc": "0x10d28", "rs1": "x14", "rs2": "x11", "rd": "x2", "imm": "0x2", "rs1_val": "0x13868", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xb700a3", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d2c", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "2", "inst_id": "0x23", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d28", "rd": "0x2", "reg_write": "0", "rs1": "0xe", "rs2": "0xb", "trap_cause": "0x0", "val_rs1": "0x13868", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x1386b", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d24", "pc_modified": "0", "rd": "0x3", "reg_write": "0", "target_pc": "0x10d14", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x1386c", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x4", "reg_write": "0", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "SB rd=x3 rs1=x14 rs2=x11 | x14=0x13868 x11=0x0 imm=0x3", "result": "0x1386b"},
+      "wb": [],
+      "mem": [{"kind": "store", "addr": "0x1386c", "data": "", "width": 1}],
+      "events": []
+    },
+    {
+      "step": 32,
+      "if": {"pc": "0x10d30", "raw_inst": "0xb70023"},
+      "id": {"opcode": "SB", "pc": "0x10d2c", "rs1": "x14", "rs2": "x11", "rd": "x1", "imm": "0x1", "rs1_val": "0x13868", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xb70023", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d30", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "1", "inst_id": "0x23", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d2c", "rd": "0x1", "reg_write": "0", "rs1": "0xe", "rs2": "0xb", "trap_cause": "0x0", "val_rs1": "0x13868", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x1386a", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d28", "pc_modified": "0", "rd": "0x2", "reg_write": "0", "target_pc": "0x10d14", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x1386b", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x3", "reg_write": "0", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "SB rd=x2 rs1=x14 rs2=x11 | x14=0x13868 x11=0x0 imm=0x2", "result": "0x1386a"},
+      "wb": [],
+      "mem": [{"kind": "store", "addr": "0x1386b", "data": "", "width": 1}],
+      "events": []
+    },
+    {
+      "step": 33,
+      "if": {"pc": "0x10d34", "raw_inst": "0x8067"},
+      "id": {"opcode": "SB", "pc": "0x10d30", "rs1": "x14", "rs2": "x11", "rd": "x0", "imm": "", "rs1_val": "0x13868", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x8067", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d34", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "0", "inst_id": "0x23", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d30", "rd": "0x0", "reg_write": "0", "rs1": "0xe", "rs2": "0xb", "trap_cause": "0x0", "val_rs1": "0x13868", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x13869", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d2c", "pc_modified": "0", "rd": "0x1", "reg_write": "0", "target_pc": "0x10d14", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x1386a", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x2", "reg_write": "0", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "SB rd=x1 rs1=x14 rs2=x11 | x14=0x13868 x11=0x0 imm=0x1", "result": "0x13869"},
+      "wb": [],
+      "mem": [{"kind": "store", "addr": "0x1386a", "data": "", "width": 1}],
+      "events": []
+    },
+    {
+      "step": 34,
+      "if": {"pc": "0x10d38", "raw_inst": "0xff5f593"},
+      "id": {"opcode": "JALR", "pc": "0x10d34", "rs1": "x1", "rs2": "x0", "rd": "x0", "imm": "", "rs1_val": "0x10d64", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xff5f593", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d38", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "0", "inst_id": "0x67", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d34", "rd": "0x0", "reg_write": "1", "rs1": "0x1", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x10d64", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x13868", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "1", "pc": "0x10d30", "pc_modified": "0", "rd": "0x0", "reg_write": "0", "target_pc": "0x10d14", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x13869", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x1", "reg_write": "0", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "SB rd=x0 rs1=x14 rs2=x11 | x14=0x13868 x11=0x0", "result": "0x13868"},
+      "wb": [],
+      "mem": [{"kind": "store", "addr": "0x13869", "data": "", "width": 1}],
+      "events": []
+    },
+    {
+      "step": 35,
+      "if": {"pc": "0x10d64", "raw_inst": "0x28093"},
+      "id": {"opcode": "", "pc": "", "rs1": "", "rs2": "", "rd": "", "imm": "", "rs1_val": "", "rs2_val": ""},
+      "pipe": {
+        "if_id": {"inst_raw": "0x28093", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d64", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "0", "inst_id": "0x67", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d34", "rd": "0x0", "reg_write": "1", "rs1": "0x1", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x10d64", "val_rs2": "0x0", "valid": "0"},
+        "ex_mem": {"alu_result": "0x10d38", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d34", "pc_modified": "0", "rd": "0x0", "reg_write": "1", "target_pc": "0x10d64", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x13868", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x0", "reg_write": "0", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "JALR rd=x0 rs1=x1 rs2=x0 | x1=0x10d64 x0=0x0", "result": ""},
+      "wb": [],
+      "mem": [{"kind": "store", "addr": "0x13868", "data": "", "width": 1}],
+      "events": ["FLUSH: branch/jump taken, PC -> 0x10d64"]
+    },
+    {
+      "step": 36,
+      "if": {"pc": "0x10d68", "raw_inst": "0xff078793"},
+      "id": {"opcode": "ADDI", "pc": "0x10d64", "rs1": "x5", "rs2": "x0", "rd": "x1", "imm": "", "rs1_val": "0x10128", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xff078793", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d68", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "0", "inst_id": "0x13", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d64", "rd": "0x1", "reg_write": "1", "rs1": "0x5", "rs2": "0x0", "trap_cause": "0x0", "val_rs1": "0x10128", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x10d38", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d34", "pc_modified": "0", "rd": "0x0", "reg_write": "1", "target_pc": "0x10d64", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "0"},
+        "mem_wb": {"alu_result": "0x10d38", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x0", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "", "result": ""},
+      "wb": [],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 37,
+      "if": {"pc": "0x10d6c", "raw_inst": "0x40f70733"},
+      "id": {"opcode": "ADDI", "pc": "0x10d68", "rs1": "x15", "rs2": "x16", "rd": "x15", "imm": "0xfffffff0", "rs1_val": "0x8", "rs2_val": "0x0"},
+      "pipe": {
+        "if_id": {"inst_raw": "0x40f70733", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d6c", "valid": "1"},
+        "id_ex": {"alu_src": "1", "imm": "-16", "inst_id": "0x13", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d68", "rd": "0xf", "reg_write": "1", "rs1": "0xf", "rs2": "0x10", "trap_cause": "0x0", "val_rs1": "0x8", "val_rs2": "0x0", "valid": "1"},
+        "ex_mem": {"alu_result": "0x10128", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d64", "pc_modified": "0", "rd": "0x1", "reg_write": "1", "target_pc": "0x10d64", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x10d38", "is_byte": "1", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x0", "reg_write": "1", "trap_cause": "0x0", "valid": "0"}
+      },
+      "ex": {"exec": "ADDI rd=x1 rs1=x5 rs2=x0 | x5=0x10128 x0=0x0", "result": "0x10128"},
+      "wb": [],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 38,
+      "if": {"pc": "0x10d70", "raw_inst": "0xf60633"},
+      "id": {"opcode": "SUB", "pc": "0x10d6c", "rs1": "x14", "rs2": "x15", "rd": "x14", "imm": "", "rs1_val": "0x13868", "rs2_val": "0x8"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xf60633", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d70", "valid": "1"},
+        "id_ex": {"alu_src": "0", "imm": "0", "inst_id": "0x8033", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d6c", "rd": "0xe", "reg_write": "1", "rs1": "0xe", "rs2": "0xf", "trap_cause": "0x0", "val_rs1": "0x13868", "val_rs2": "0x8", "valid": "1"},
+        "ex_mem": {"alu_result": "0xfffffff8", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d68", "pc_modified": "0", "rd": "0xf", "reg_write": "1", "target_pc": "0x10d64", "trap_cause": "0x0", "val_rs2": "0x0", "valid": "1"},
+        "mem_wb": {"alu_result": "0x10128", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0x1", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "ADDI rd=x15 rs1=x15 rs2=x16 | x15=0x8 x16=0x0 imm=0xfffffff0", "result": "0xfffffff8"},
+      "wb": [],
+      "mem": [],
+      "events": []
+    },
+    {
+      "step": 39,
+      "if": {"pc": "0x10d74", "raw_inst": "0xf6c378e3"},
+      "id": {"opcode": "ADD", "pc": "0x10d70", "rs1": "x12", "rs2": "x15", "rd": "x12", "imm": "", "rs1_val": "0x328", "rs2_val": "0x8"},
+      "pipe": {
+        "if_id": {"inst_raw": "0xf6c378e3", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10d74", "valid": "1"},
+        "id_ex": {"alu_src": "0", "imm": "0", "inst_id": "0x33", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d70", "rd": "0xc", "reg_write": "1", "rs1": "0xc", "rs2": "0xf", "trap_cause": "0x0", "val_rs1": "0x328", "val_rs2": "0x8", "valid": "1"},
+        "ex_mem": {"alu_result": "0x13870", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10d6c", "pc_modified": "0", "rd": "0xe", "reg_write": "1", "target_pc": "0x10d64", "trap_cause": "0x0", "val_rs2": "0xfffffff8", "valid": "1"},
+        "mem_wb": {"alu_result": "0xfffffff8", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_data": "0x0", "mem_read": "0", "rd": "0xf", "reg_write": "1", "trap_cause": "0x0", "valid": "1"}
+      },
+      "ex": {"exec": "SUB rd=x14 rs1=x14 rs2=x15 | x14=0x13868 x15=0xfffffff8", "result": "0x13870"},
+      "wb": [{"reg": "r1", "value": "0x10128", "from": "ALU"}],
+      "mem": [],
+      "events": ["FWD: x15 <- MEM/WB", "FWD: x15 <- EX/MEM"]
+    }
+  ],
+  "tracks": [
+    {
+      "name": "control",
+      "samples": [{"step": 3, "value": "FWD: x3 <- MEM/WB"}, {"step": 5, "value": "FWD: x10 <- MEM/WB"}, {"step": 8, "value": "FWD: x10 <- MEM/WB"}, {"step": 10, "value": "FWD: x12 <- MEM/WB"}, {"step": 11, "value": "FWD: x12 <- MEM/WB"}, {"step": 13, "value": "FLUSH: branch/jump taken, PC -> 0x10ca0"}, {"step": 19, "value": "FWD: x15 <- MEM/WB"}, {"step": 23, "value": "FWD: x5 <- MEM/WB"}, {"step": 25, "value": "FLUSH: branch/jump taken, PC -> 0x10d14"}, {"step": 35, "value": "FLUSH: branch/jump taken, PC -> 0x10d64"}, {"step": 39, "value": "FWD: x15 <- MEM/WB"}]
+    },
+    {
+      "name": "ex_result",
+      "samples": [{"step": 2, "value": "0x140f8"}, {"step": 3, "value": "0x13b00"}, {"step": 4, "value": "0x0"}, {"step": 7, "value": "0x1310c"}, {"step": 8, "value": "0x13868"}, {"step": 9, "value": "0x14114"}, {"step": 10, "value": "0x13b90"}, {"step": 11, "value": "0x328"}, {"step": 12, "value": "0x0"}, {"step": 15, "value": "0xf"}, {"step": 16, "value": "0x13868"}, {"step": 18, "value": "0x8"}, {"step": 21, "value": "0x20"}, {"step": 22, "value": "0x10d54"}, {"step": 23, "value": "0x10d74"}, {"step": 24, "value": "0x10128"}, {"step": 27, "value": "0x1386f"}, {"step": 28, "value": "0x1386e"}, {"step": 29, "value": "0x1386d"}, {"step": 30, "value": "0x1386c"}, {"step": 31, "value": "0x1386b"}, {"step": 32, "value": "0x1386a"}, {"step": 33, "value": "0x13869"}, {"step": 34, "value": "0x13868"}, {"step": 37, "value": "0x10128"}, {"step": 38, "value": "0xfffffff8"}, {"step": 39, "value": "0x13870"}]
+    },
+    {
+      "name": "mem_addr",
+      "samples": [{"step": 28, "value": "0x1386f"}, {"step": 29, "value": "0x1386e"}, {"step": 30, "value": "0x1386d"}, {"step": 31, "value": "0x1386c"}, {"step": 32, "value": "0x1386b"}, {"step": 33, "value": "0x1386a"}, {"step": 34, "value": "0x13869"}, {"step": 35, "value": "0x13868"}]
+    },
+    {
+      "name": "mem_rw",
+      "samples": [{"step": 28, "value": "store"}, {"step": 29, "value": "store"}, {"step": 30, "value": "store"}, {"step": 31, "value": "store"}, {"step": 32, "value": "store"}, {"step": 33, "value": "store"}, {"step": 34, "value": "store"}, {"step": 35, "value": "store"}]
+    },
+    {
+      "name": "opcode",
+      "samples": [{"step": 1, "value": "AUIPC"}, {"step": 2, "value": "ADDI"}, {"step": 3, "value": "ADDI"}, {"step": 4, "value": "BEQ"}, {"step": 6, "value": "AUIPC"}, {"step": 7, "value": "ADDI"}, {"step": 8, "value": "AUIPC"}, {"step": 9, "value": "ADDI"}, {"step": 10, "value": "SUB"}, {"step": 11, "value": "ADDI"}, {"step": 12, "value": "JAL"}, {"step": 14, "value": "ADDI"}, {"step": 15, "value": "ADDI"}, {"step": 16, "value": "BGEU"}, {"step": 17, "value": "ANDI"}, {"step": 18, "value": "BNE"}, {"step": 20, "value": "SLLI"}, {"step": 21, "value": "AUIPC"}, {"step": 22, "value": "ADD"}, {"step": 23, "value": "ADDI"}, {"step": 24, "value": "JALR"}, {"step": 26, "value": "SB"}, {"step": 27, "value": "SB"}, {"step": 28, "value": "SB"}, {"step": 29, "value": "SB"}, {"step": 30, "value": "SB"}, {"step": 31, "value": "SB"}, {"step": 32, "value": "SB"}, {"step": 33, "value": "SB"}, {"step": 34, "value": "JALR"}, {"step": 36, "value": "ADDI"}, {"step": 37, "value": "ADDI"}, {"step": 38, "value": "SUB"}, {"step": 39, "value": "ADD"}]
+    },
+    {
+      "name": "pc_id",
+      "samples": [{"step": 1, "value": "0x100f8"}, {"step": 2, "value": "0x100fc"}, {"step": 3, "value": "0x10100"}, {"step": 4, "value": "0x10104"}, {"step": 6, "value": "0x1010c"}, {"step": 7, "value": "0x10110"}, {"step": 8, "value": "0x10114"}, {"step": 9, "value": "0x10118"}, {"step": 10, "value": "0x1011c"}, {"step": 11, "value": "0x10120"}, {"step": 12, "value": "0x10124"}, {"step": 14, "value": "0x10ca0"}, {"step": 15, "value": "0x10ca4"}, {"step": 16, "value": "0x10ca8"}, {"step": 17, "value": "0x10cac"}, {"step": 18, "value": "0x10cb0"}, {"step": 20, "value": "0x10d50"}, {"step": 21, "value": "0x10d54"}, {"step": 22, "value": "0x10d58"}, {"step": 23, "value": "0x10d5c"}, {"step": 24, "value": "0x10d60"}, {"step": 26, "value": "0x10d14"}, {"step": 27, "value": "0x10d18"}, {"step": 28, "value": "0x10d1c"}, {"step": 29, "value": "0x10d20"}, {"step": 30, "value": "0x10d24"}, {"step": 31, "value": "0x10d28"}, {"step": 32, "value": "0x10d2c"}, {"step": 33, "value": "0x10d30"}, {"step": 34, "value": "0x10d34"}, {"step": 36, "value": "0x10d64"}, {"step": 37, "value": "0x10d68"}, {"step": 38, "value": "0x10d6c"}, {"step": 39, "value": "0x10d70"}]
+    },
+    {
+      "name": "pc_if",
+      "samples": [{"step": 0, "value": "0x100f8"}, {"step": 1, "value": "0x100fc"}, {"step": 2, "value": "0x10100"}, {"step": 3, "value": "0x10104"}, {"step": 4, "value": "0x10108"}, {"step": 5, "value": "0x1010c"}, {"step": 6, "value": "0x10110"}, {"step": 7, "value": "0x10114"}, {"step": 8, "value": "0x10118"}, {"step": 9, "value": "0x1011c"}, {"step": 10, "value": "0x10120"}, {"step": 11, "value": "0x10124"}, {"step": 12, "value": "0x10128"}, {"step": 13, "value": "0x10ca0"}, {"step": 14, "value": "0x10ca4"}, {"step": 15, "value": "0x10ca8"}, {"step": 16, "value": "0x10cac"}, {"step": 17, "value": "0x10cb0"}, {"step": 18, "value": "0x10cb4"}, {"step": 19, "value": "0x10d50"}, {"step": 20, "value": "0x10d54"}, {"step": 21, "value": "0x10d58"}, {"step": 22, "value": "0x10d5c"}, {"step": 23, "value": "0x10d60"}, {"step": 24, "value": "0x10d64"}, {"step": 25, "value": "0x10d14"}, {"step": 26, "value": "0x10d18"}, {"step": 27, "value": "0x10d1c"}, {"step": 28, "value": "0x10d20"}, {"step": 29, "value": "0x10d24"}, {"step": 30, "value": "0x10d28"}, {"step": 31, "value": "0x10d2c"}, {"step": 32, "value": "0x10d30"}, {"step": 33, "value": "0x10d34"}, {"step": 34, "value": "0x10d38"}, {"step": 35, "value": "0x10d64"}, {"step": 36, "value": "0x10d68"}, {"step": 37, "value": "0x10d6c"}, {"step": 38, "value": "0x10d70"}, {"step": 39, "value": "0x10d74"}]
+    },
+    {
+      "name": "pipe_ex_mem.alu_result",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x140f8"}, {"step": 3, "value": "0x13b00"}, {"step": 4, "value": "0x0"}, {"step": 5, "value": "0x0"}, {"step": 6, "value": "0x0"}, {"step": 7, "value": "0x1310c"}, {"step": 8, "value": "0x13868"}, {"step": 9, "value": "0x14114"}, {"step": 10, "value": "0x13b90"}, {"step": 11, "value": "0x328"}, {"step": 12, "value": "0x0"}, {"step": 13, "value": "0x10128"}, {"step": 14, "value": "0x10128"}, {"step": 15, "value": "0xf"}, {"step": 16, "value": "0x13868"}, {"step": 17, "value": "0x13868"}, {"step": 18, "value": "0x8"}, {"step": 19, "value": "0x8"}, {"step": 20, "value": "0x8"}, {"step": 21, "value": "0x20"}, {"step": 22, "value": "0x10d54"}, {"step": 23, "value": "0x10d74"}, {"step": 24, "value": "0x10128"}, {"step": 25, "value": "0x10d64"}, {"step": 26, "value": "0x10d64"}, {"step": 27, "value": "0x1386f"}, {"step": 28, "value": "0x1386e"}, {"step": 29, "value": "0x1386d"}, {"step": 30, "value": "0x1386c"}, {"step": 31, "value": "0x1386b"}, {"step": 32, "value": "0x1386a"}, {"step": 33, "value": "0x13869"}, {"step": 34, "value": "0x13868"}, {"step": 35, "value": "0x10d38"}, {"step": 36, "value": "0x10d38"}, {"step": 37, "value": "0x10128"}, {"step": 38, "value": "0xfffffff8"}, {"step": 39, "value": "0x13870"}]
+    },
+    {
+      "name": "pipe_ex_mem.is_byte",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "0"}, {"step": 27, "value": "1"}, {"step": 28, "value": "1"}, {"step": 29, "value": "1"}, {"step": 30, "value": "1"}, {"step": 31, "value": "1"}, {"step": 32, "value": "1"}, {"step": 33, "value": "1"}, {"step": 34, "value": "1"}, {"step": 35, "value": "1"}, {"step": 36, "value": "1"}, {"step": 37, "value": "0"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_ex_mem.is_trap",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "0"}, {"step": 27, "value": "0"}, {"step": 28, "value": "0"}, {"step": 29, "value": "0"}, {"step": 30, "value": "0"}, {"step": 31, "value": "0"}, {"step": 32, "value": "0"}, {"step": 33, "value": "0"}, {"step": 34, "value": "0"}, {"step": 35, "value": "0"}, {"step": 36, "value": "0"}, {"step": 37, "value": "0"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_ex_mem.is_unsigned",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "0"}, {"step": 27, "value": "0"}, {"step": 28, "value": "0"}, {"step": 29, "value": "0"}, {"step": 30, "value": "0"}, {"step": 31, "value": "0"}, {"step": 32, "value": "0"}, {"step": 33, "value": "0"}, {"step": 34, "value": "0"}, {"step": 35, "value": "0"}, {"step": 36, "value": "0"}, {"step": 37, "value": "0"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_ex_mem.mem_read",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "0"}, {"step": 27, "value": "0"}, {"step": 28, "value": "0"}, {"step": 29, "value": "0"}, {"step": 30, "value": "0"}, {"step": 31, "value": "0"}, {"step": 32, "value": "0"}, {"step": 33, "value": "0"}, {"step": 34, "value": "0"}, {"step": 35, "value": "0"}, {"step": 36, "value": "0"}, {"step": 37, "value": "0"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_ex_mem.mem_write",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "0"}, {"step": 27, "value": "1"}, {"step": 28, "value": "1"}, {"step": 29, "value": "1"}, {"step": 30, "value": "1"}, {"step": 31, "value": "1"}, {"step": 32, "value": "1"}, {"step": 33, "value": "1"}, {"step": 34, "value": "1"}, {"step": 35, "value": "0"}, {"step": 36, "value": "0"}, {"step": 37, "value": "0"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_ex_mem.pc",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x100f8"}, {"step": 3, "value": "0x100fc"}, {"step": 4, "value": "0x10100"}, {"step": 5, "value": "0x10104"}, {"step": 6, "value": "0x10104"}, {"step": 7, "value": "0x1010c"}, {"step": 8, "value": "0x10110"}, {"step": 9, "value": "0x10114"}, {"step": 10, "value": "0x10118"}, {"step": 11, "value": "0x1011c"}, {"step": 12, "value": "0x10120"}, {"step": 13, "value": "0x10124"}, {"step": 14, "value": "0x10124"}, {"step": 15, "value": "0x10ca0"}, {"step": 16, "value": "0x10ca4"}, {"step": 17, "value": "0x10ca8"}, {"step": 18, "value": "0x10cac"}, {"step": 19, "value": "0x10cb0"}, {"step": 20, "value": "0x10cb0"}, {"step": 21, "value": "0x10d50"}, {"step": 22, "value": "0x10d54"}, {"step": 23, "value": "0x10d58"}, {"step": 24, "value": "0x10d5c"}, {"step": 25, "value": "0x10d60"}, {"step": 26, "value": "0x10d60"}, {"step": 27, "value": "0x10d14"}, {"step": 28, "value": "0x10d18"}, {"step": 29, "value": "0x10d1c"}, {"step": 30, "value": "0x10d20"}, {"step": 31, "value": "0x10d24"}, {"step": 32, "value": "0x10d28"}, {"step": 33, "value": "0x10d2c"}, {"step": 34, "value": "0x10d30"}, {"step": 35, "value": "0x10d34"}, {"step": 36, "value": "0x10d34"}, {"step": 37, "value": "0x10d64"}, {"step": 38, "value": "0x10d68"}, {"step": 39, "value": "0x10d6c"}]
+    },
+    {
+      "name": "pipe_ex_mem.pc_modified",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "0"}, {"step": 27, "value": "0"}, {"step": 28, "value": "0"}, {"step": 29, "value": "0"}, {"step": 30, "value": "0"}, {"step": 31, "value": "0"}, {"step": 32, "value": "0"}, {"step": 33, "value": "0"}, {"step": 34, "value": "0"}, {"step": 35, "value": "0"}, {"step": 36, "value": "0"}, {"step": 37, "value": "0"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_ex_mem.rd",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x3"}, {"step": 3, "value": "0x3"}, {"step": 4, "value": "0xa"}, {"step": 5, "value": "0x8"}, {"step": 6, "value": "0x8"}, {"step": 7, "value": "0xa"}, {"step": 8, "value": "0xa"}, {"step": 9, "value": "0xc"}, {"step": 10, "value": "0xc"}, {"step": 11, "value": "0xc"}, {"step": 12, "value": "0xb"}, {"step": 13, "value": "0x1"}, {"step": 14, "value": "0x1"}, {"step": 15, "value": "0x6"}, {"step": 16, "value": "0xe"}, {"step": 17, "value": "0x1c"}, {"step": 18, "value": "0xf"}, {"step": 19, "value": "0x0"}, {"step": 20, "value": "0x0"}, {"step": 21, "value": "0xd"}, {"step": 22, "value": "0x5"}, {"step": 23, "value": "0xd"}, {"step": 24, "value": "0x5"}, {"step": 25, "value": "0x1"}, {"step": 26, "value": "0x1"}, {"step": 27, "value": "0x7"}, {"step": 28, "value": "0x6"}, {"step": 29, "value": "0x5"}, {"step": 30, "value": "0x4"}, {"step": 31, "value": "0x3"}, {"step": 32, "value": "0x2"}, {"step": 33, "value": "0x1"}, {"step": 34, "value": "0x0"}, {"step": 35, "value": "0x0"}, {"step": 36, "value": "0x0"}, {"step": 37, "value": "0x1"}, {"step": 38, "value": "0xf"}, {"step": 39, "value": "0xe"}]
+    },
+    {
+      "name": "pipe_ex_mem.reg_write",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "1"}, {"step": 3, "value": "1"}, {"step": 4, "value": "1"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "1"}, {"step": 8, "value": "1"}, {"step": 9, "value": "1"}, {"step": 10, "value": "1"}, {"step": 11, "value": "1"}, {"step": 12, "value": "1"}, {"step": 13, "value": "1"}, {"step": 14, "value": "1"}, {"step": 15, "value": "1"}, {"step": 16, "value": "1"}, {"step": 17, "value": "0"}, {"step": 18, "value": "1"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "1"}, {"step": 22, "value": "1"}, {"step": 23, "value": "1"}, {"step": 24, "value": "1"}, {"step": 25, "value": "1"}, {"step": 26, "value": "1"}, {"step": 27, "value": "0"}, {"step": 28, "value": "0"}, {"step": 29, "value": "0"}, {"step": 30, "value": "0"}, {"step": 31, "value": "0"}, {"step": 32, "value": "0"}, {"step": 33, "value": "0"}, {"step": 34, "value": "0"}, {"step": 35, "value": "1"}, {"step": 36, "value": "1"}, {"step": 37, "value": "1"}, {"step": 38, "value": "1"}, {"step": 39, "value": "1"}]
+    },
+    {
+      "name": "pipe_ex_mem.target_pc",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x0"}, {"step": 3, "value": "0x0"}, {"step": 4, "value": "0x0"}, {"step": 5, "value": "0x1010c"}, {"step": 6, "value": "0x1010c"}, {"step": 7, "value": "0x1010c"}, {"step": 8, "value": "0x1010c"}, {"step": 9, "value": "0x1010c"}, {"step": 10, "value": "0x1010c"}, {"step": 11, "value": "0x1010c"}, {"step": 12, "value": "0x1010c"}, {"step": 13, "value": "0x10ca0"}, {"step": 14, "value": "0x10ca0"}, {"step": 15, "value": "0x10ca0"}, {"step": 16, "value": "0x10ca0"}, {"step": 17, "value": "0x10ce4"}, {"step": 18, "value": "0x10ce4"}, {"step": 19, "value": "0x10d50"}, {"step": 20, "value": "0x10d50"}, {"step": 21, "value": "0x10d50"}, {"step": 22, "value": "0x10d50"}, {"step": 23, "value": "0x10d50"}, {"step": 24, "value": "0x10d50"}, {"step": 25, "value": "0x10d14"}, {"step": 26, "value": "0x10d14"}, {"step": 27, "value": "0x10d14"}, {"step": 28, "value": "0x10d14"}, {"step": 29, "value": "0x10d14"}, {"step": 30, "value": "0x10d14"}, {"step": 31, "value": "0x10d14"}, {"step": 32, "value": "0x10d14"}, {"step": 33, "value": "0x10d14"}, {"step": 34, "value": "0x10d14"}, {"step": 35, "value": "0x10d64"}, {"step": 36, "value": "0x10d64"}, {"step": 37, "value": "0x10d64"}, {"step": 38, "value": "0x10d64"}, {"step": 39, "value": "0x10d64"}]
+    },
+    {
+      "name": "pipe_ex_mem.trap_cause",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x0"}, {"step": 3, "value": "0x0"}, {"step": 4, "value": "0x0"}, {"step": 5, "value": "0x0"}, {"step": 6, "value": "0x0"}, {"step": 7, "value": "0x0"}, {"step": 8, "value": "0x0"}, {"step": 9, "value": "0x0"}, {"step": 10, "value": "0x0"}, {"step": 11, "value": "0x0"}, {"step": 12, "value": "0x0"}, {"step": 13, "value": "0x0"}, {"step": 14, "value": "0x0"}, {"step": 15, "value": "0x0"}, {"step": 16, "value": "0x0"}, {"step": 17, "value": "0x0"}, {"step": 18, "value": "0x0"}, {"step": 19, "value": "0x0"}, {"step": 20, "value": "0x0"}, {"step": 21, "value": "0x0"}, {"step": 22, "value": "0x0"}, {"step": 23, "value": "0x0"}, {"step": 24, "value": "0x0"}, {"step": 25, "value": "0x0"}, {"step": 26, "value": "0x0"}, {"step": 27, "value": "0x0"}, {"step": 28, "value": "0x0"}, {"step": 29, "value": "0x0"}, {"step": 30, "value": "0x0"}, {"step": 31, "value": "0x0"}, {"step": 32, "value": "0x0"}, {"step": 33, "value": "0x0"}, {"step": 34, "value": "0x0"}, {"step": 35, "value": "0x0"}, {"step": 36, "value": "0x0"}, {"step": 37, "value": "0x0"}, {"step": 38, "value": "0x0"}, {"step": 39, "value": "0x0"}]
+    },
+    {
+      "name": "pipe_ex_mem.val_rs2",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x0"}, {"step": 3, "value": "0x0"}, {"step": 4, "value": "0x0"}, {"step": 5, "value": "0x0"}, {"step": 6, "value": "0x0"}, {"step": 7, "value": "0x0"}, {"step": 8, "value": "0x0"}, {"step": 9, "value": "0x0"}, {"step": 10, "value": "0x0"}, {"step": 11, "value": "0x13868"}, {"step": 12, "value": "0x0"}, {"step": 13, "value": "0x0"}, {"step": 14, "value": "0x0"}, {"step": 15, "value": "0x0"}, {"step": 16, "value": "0x0"}, {"step": 17, "value": "0x0"}, {"step": 18, "value": "0x0"}, {"step": 19, "value": "0x0"}, {"step": 20, "value": "0x0"}, {"step": 21, "value": "0x20010"}, {"step": 22, "value": "0x0"}, {"step": 23, "value": "0x10d54"}, {"step": 24, "value": "0x0"}, {"step": 25, "value": "0x0"}, {"step": 26, "value": "0x0"}, {"step": 27, "value": "0x0"}, {"step": 28, "value": "0x0"}, {"step": 29, "value": "0x0"}, {"step": 30, "value": "0x0"}, {"step": 31, "value": "0x0"}, {"step": 32, "value": "0x0"}, {"step": 33, "value": "0x0"}, {"step": 34, "value": "0x0"}, {"step": 35, "value": "0x0"}, {"step": 36, "value": "0x0"}, {"step": 37, "value": "0x0"}, {"step": 38, "value": "0x0"}, {"step": 39, "value": "0xfffffff8"}]
+    },
+    {
+      "name": "pipe_ex_mem.valid",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "1"}, {"step": 3, "value": "1"}, {"step": 4, "value": "1"}, {"step": 5, "value": "1"}, {"step": 6, "value": "0"}, {"step": 7, "value": "1"}, {"step": 8, "value": "1"}, {"step": 9, "value": "1"}, {"step": 10, "value": "1"}, {"step": 11, "value": "1"}, {"step": 12, "value": "1"}, {"step": 13, "value": "1"}, {"step": 14, "value": "0"}, {"step": 15, "value": "1"}, {"step": 16, "value": "1"}, {"step": 17, "value": "1"}, {"step": 18, "value": "1"}, {"step": 19, "value": "1"}, {"step": 20, "value": "0"}, {"step": 21, "value": "1"}, {"step": 22, "value": "1"}, {"step": 23, "value": "1"}, {"step": 24, "value": "1"}, {"step": 25, "value": "1"}, {"step": 26, "value": "0"}, {"step": 27, "value": "1"}, {"step": 28, "value": "1"}, {"step": 29, "value": "1"}, {"step": 30, "value": "1"}, {"step": 31, "value": "1"}, {"step": 32, "value": "1"}, {"step": 33, "value": "1"}, {"step": 34, "value": "1"}, {"step": 35, "value": "1"}, {"step": 36, "value": "0"}, {"step": 37, "value": "1"}, {"step": 38, "value": "1"}, {"step": 39, "value": "1"}]
+    },
+    {
+      "name": "pipe_id_ex.alu_src",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "1"}, {"step": 2, "value": "1"}, {"step": 3, "value": "1"}, {"step": 4, "value": "1"}, {"step": 5, "value": "1"}, {"step": 6, "value": "1"}, {"step": 7, "value": "1"}, {"step": 8, "value": "1"}, {"step": 9, "value": "1"}, {"step": 10, "value": "0"}, {"step": 11, "value": "1"}, {"step": 12, "value": "1"}, {"step": 13, "value": "1"}, {"step": 14, "value": "1"}, {"step": 15, "value": "1"}, {"step": 16, "value": "1"}, {"step": 17, "value": "1"}, {"step": 18, "value": "1"}, {"step": 19, "value": "1"}, {"step": 20, "value": "1"}, {"step": 21, "value": "1"}, {"step": 22, "value": "0"}, {"step": 23, "value": "1"}, {"step": 24, "value": "1"}, {"step": 25, "value": "1"}, {"step": 26, "value": "1"}, {"step": 27, "value": "1"}, {"step": 28, "value": "1"}, {"step": 29, "value": "1"}, {"step": 30, "value": "1"}, {"step": 31, "value": "1"}, {"step": 32, "value": "1"}, {"step": 33, "value": "1"}, {"step": 34, "value": "1"}, {"step": 35, "value": "1"}, {"step": 36, "value": "1"}, {"step": 37, "value": "1"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_id_ex.imm",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "16384"}, {"step": 2, "value": "-1528"}, {"step": 3, "value": "0"}, {"step": 4, "value": "8"}, {"step": 5, "value": "8"}, {"step": 6, "value": "12288"}, {"step": 7, "value": "1884"}, {"step": 8, "value": "16384"}, {"step": 9, "value": "-1412"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "2940"}, {"step": 13, "value": "2940"}, {"step": 14, "value": "15"}, {"step": 15, "value": "0"}, {"step": 16, "value": "60"}, {"step": 17, "value": "15"}, {"step": 18, "value": "160"}, {"step": 19, "value": "160"}, {"step": 20, "value": "2"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "-96"}, {"step": 25, "value": "-96"}, {"step": 26, "value": "7"}, {"step": 27, "value": "6"}, {"step": 28, "value": "5"}, {"step": 29, "value": "4"}, {"step": 30, "value": "3"}, {"step": 31, "value": "2"}, {"step": 32, "value": "1"}, {"step": 33, "value": "0"}, {"step": 34, "value": "0"}, {"step": 35, "value": "0"}, {"step": 36, "value": "0"}, {"step": 37, "value": "-16"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_id_ex.inst_id",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x17"}, {"step": 2, "value": "0x13"}, {"step": 3, "value": "0x13"}, {"step": 4, "value": "0x63"}, {"step": 5, "value": "0x63"}, {"step": 6, "value": "0x17"}, {"step": 7, "value": "0x13"}, {"step": 8, "value": "0x17"}, {"step": 9, "value": "0x13"}, {"step": 10, "value": "0x8033"}, {"step": 11, "value": "0x13"}, {"step": 12, "value": "0x6f"}, {"step": 13, "value": "0x6f"}, {"step": 14, "value": "0x13"}, {"step": 15, "value": "0x13"}, {"step": 16, "value": "0x3e3"}, {"step": 17, "value": "0x393"}, {"step": 18, "value": "0xe3"}, {"step": 19, "value": "0xe3"}, {"step": 20, "value": "0x93"}, {"step": 21, "value": "0x17"}, {"step": 22, "value": "0x33"}, {"step": 23, "value": "0x13"}, {"step": 24, "value": "0x67"}, {"step": 25, "value": "0x67"}, {"step": 26, "value": "0x23"}, {"step": 27, "value": "0x23"}, {"step": 28, "value": "0x23"}, {"step": 29, "value": "0x23"}, {"step": 30, "value": "0x23"}, {"step": 31, "value": "0x23"}, {"step": 32, "value": "0x23"}, {"step": 33, "value": "0x23"}, {"step": 34, "value": "0x67"}, {"step": 35, "value": "0x67"}, {"step": 36, "value": "0x13"}, {"step": 37, "value": "0x13"}, {"step": 38, "value": "0x8033"}, {"step": 39, "value": "0x33"}]
+    },
+    {
+      "name": "pipe_id_ex.is_byte",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "1"}, {"step": 27, "value": "1"}, {"step": 28, "value": "1"}, {"step": 29, "value": "1"}, {"step": 30, "value": "1"}, {"step": 31, "value": "1"}, {"step": 32, "value": "1"}, {"step": 33, "value": "1"}, {"step": 34, "value": "0"}, {"step": 35, "value": "0"}, {"step": 36, "value": "0"}, {"step": 37, "value": "0"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_id_ex.is_trap",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "0"}, {"step": 27, "value": "0"}, {"step": 28, "value": "0"}, {"step": 29, "value": "0"}, {"step": 30, "value": "0"}, {"step": 31, "value": "0"}, {"step": 32, "value": "0"}, {"step": 33, "value": "0"}, {"step": 34, "value": "0"}, {"step": 35, "value": "0"}, {"step": 36, "value": "0"}, {"step": 37, "value": "0"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_id_ex.is_unsigned",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "0"}, {"step": 27, "value": "0"}, {"step": 28, "value": "0"}, {"step": 29, "value": "0"}, {"step": 30, "value": "0"}, {"step": 31, "value": "0"}, {"step": 32, "value": "0"}, {"step": 33, "value": "0"}, {"step": 34, "value": "0"}, {"step": 35, "value": "0"}, {"step": 36, "value": "0"}, {"step": 37, "value": "0"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_id_ex.mem_read",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "0"}, {"step": 27, "value": "0"}, {"step": 28, "value": "0"}, {"step": 29, "value": "0"}, {"step": 30, "value": "0"}, {"step": 31, "value": "0"}, {"step": 32, "value": "0"}, {"step": 33, "value": "0"}, {"step": 34, "value": "0"}, {"step": 35, "value": "0"}, {"step": 36, "value": "0"}, {"step": 37, "value": "0"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_id_ex.mem_write",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "1"}, {"step": 27, "value": "1"}, {"step": 28, "value": "1"}, {"step": 29, "value": "1"}, {"step": 30, "value": "1"}, {"step": 31, "value": "1"}, {"step": 32, "value": "1"}, {"step": 33, "value": "1"}, {"step": 34, "value": "0"}, {"step": 35, "value": "0"}, {"step": 36, "value": "0"}, {"step": 37, "value": "0"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_id_ex.pc",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x100f8"}, {"step": 2, "value": "0x100fc"}, {"step": 3, "value": "0x10100"}, {"step": 4, "value": "0x10104"}, {"step": 5, "value": "0x10104"}, {"step": 6, "value": "0x1010c"}, {"step": 7, "value": "0x10110"}, {"step": 8, "value": "0x10114"}, {"step": 9, "value": "0x10118"}, {"step": 10, "value": "0x1011c"}, {"step": 11, "value": "0x10120"}, {"step": 12, "value": "0x10124"}, {"step": 13, "value": "0x10124"}, {"step": 14, "value": "0x10ca0"}, {"step": 15, "value": "0x10ca4"}, {"step": 16, "value": "0x10ca8"}, {"step": 17, "value": "0x10cac"}, {"step": 18, "value": "0x10cb0"}, {"step": 19, "value": "0x10cb0"}, {"step": 20, "value": "0x10d50"}, {"step": 21, "value": "0x10d54"}, {"step": 22, "value": "0x10d58"}, {"step": 23, "value": "0x10d5c"}, {"step": 24, "value": "0x10d60"}, {"step": 25, "value": "0x10d60"}, {"step": 26, "value": "0x10d14"}, {"step": 27, "value": "0x10d18"}, {"step": 28, "value": "0x10d1c"}, {"step": 29, "value": "0x10d20"}, {"step": 30, "value": "0x10d24"}, {"step": 31, "value": "0x10d28"}, {"step": 32, "value": "0x10d2c"}, {"step": 33, "value": "0x10d30"}, {"step": 34, "value": "0x10d34"}, {"step": 35, "value": "0x10d34"}, {"step": 36, "value": "0x10d64"}, {"step": 37, "value": "0x10d68"}, {"step": 38, "value": "0x10d6c"}, {"step": 39, "value": "0x10d70"}]
+    },
+    {
+      "name": "pipe_id_ex.rd",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x3"}, {"step": 2, "value": "0x3"}, {"step": 3, "value": "0xa"}, {"step": 4, "value": "0x8"}, {"step": 5, "value": "0x8"}, {"step": 6, "value": "0xa"}, {"step": 7, "value": "0xa"}, {"step": 8, "value": "0xc"}, {"step": 9, "value": "0xc"}, {"step": 10, "value": "0xc"}, {"step": 11, "value": "0xb"}, {"step": 12, "value": "0x1"}, {"step": 13, "value": "0x1"}, {"step": 14, "value": "0x6"}, {"step": 15, "value": "0xe"}, {"step": 16, "value": "0x1c"}, {"step": 17, "value": "0xf"}, {"step": 18, "value": "0x0"}, {"step": 19, "value": "0x0"}, {"step": 20, "value": "0xd"}, {"step": 21, "value": "0x5"}, {"step": 22, "value": "0xd"}, {"step": 23, "value": "0x5"}, {"step": 24, "value": "0x1"}, {"step": 25, "value": "0x1"}, {"step": 26, "value": "0x7"}, {"step": 27, "value": "0x6"}, {"step": 28, "value": "0x5"}, {"step": 29, "value": "0x4"}, {"step": 30, "value": "0x3"}, {"step": 31, "value": "0x2"}, {"step": 32, "value": "0x1"}, {"step": 33, "value": "0x0"}, {"step": 34, "value": "0x0"}, {"step": 35, "value": "0x0"}, {"step": 36, "value": "0x1"}, {"step": 37, "value": "0xf"}, {"step": 38, "value": "0xe"}, {"step": 39, "value": "0xc"}]
+    },
+    {
+      "name": "pipe_id_ex.reg_write",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "1"}, {"step": 2, "value": "1"}, {"step": 3, "value": "1"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "1"}, {"step": 7, "value": "1"}, {"step": 8, "value": "1"}, {"step": 9, "value": "1"}, {"step": 10, "value": "1"}, {"step": 11, "value": "1"}, {"step": 12, "value": "1"}, {"step": 13, "value": "1"}, {"step": 14, "value": "1"}, {"step": 15, "value": "1"}, {"step": 16, "value": "0"}, {"step": 17, "value": "1"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "1"}, {"step": 21, "value": "1"}, {"step": 22, "value": "1"}, {"step": 23, "value": "1"}, {"step": 24, "value": "1"}, {"step": 25, "value": "1"}, {"step": 26, "value": "0"}, {"step": 27, "value": "0"}, {"step": 28, "value": "0"}, {"step": 29, "value": "0"}, {"step": 30, "value": "0"}, {"step": 31, "value": "0"}, {"step": 32, "value": "0"}, {"step": 33, "value": "0"}, {"step": 34, "value": "1"}, {"step": 35, "value": "1"}, {"step": 36, "value": "1"}, {"step": 37, "value": "1"}, {"step": 38, "value": "1"}, {"step": 39, "value": "1"}]
+    },
+    {
+      "name": "pipe_id_ex.rs1",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x3"}, {"step": 3, "value": "0x0"}, {"step": 4, "value": "0xa"}, {"step": 5, "value": "0xa"}, {"step": 6, "value": "0x0"}, {"step": 7, "value": "0xa"}, {"step": 8, "value": "0x0"}, {"step": 9, "value": "0xc"}, {"step": 10, "value": "0xc"}, {"step": 11, "value": "0x0"}, {"step": 12, "value": "0x0"}, {"step": 13, "value": "0x0"}, {"step": 14, "value": "0x0"}, {"step": 15, "value": "0xa"}, {"step": 16, "value": "0x6"}, {"step": 17, "value": "0xe"}, {"step": 18, "value": "0xf"}, {"step": 19, "value": "0xf"}, {"step": 20, "value": "0xf"}, {"step": 21, "value": "0x0"}, {"step": 22, "value": "0xd"}, {"step": 23, "value": "0x1"}, {"step": 24, "value": "0xd"}, {"step": 25, "value": "0xd"}, {"step": 26, "value": "0xe"}, {"step": 27, "value": "0xe"}, {"step": 28, "value": "0xe"}, {"step": 29, "value": "0xe"}, {"step": 30, "value": "0xe"}, {"step": 31, "value": "0xe"}, {"step": 32, "value": "0xe"}, {"step": 33, "value": "0xe"}, {"step": 34, "value": "0x1"}, {"step": 35, "value": "0x1"}, {"step": 36, "value": "0x5"}, {"step": 37, "value": "0xf"}, {"step": 38, "value": "0xe"}, {"step": 39, "value": "0xc"}]
+    },
+    {
+      "name": "pipe_id_ex.rs2",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x8"}, {"step": 3, "value": "0x0"}, {"step": 4, "value": "0x0"}, {"step": 5, "value": "0x0"}, {"step": 6, "value": "0x0"}, {"step": 7, "value": "0x1c"}, {"step": 8, "value": "0x0"}, {"step": 9, "value": "0x1c"}, {"step": 10, "value": "0xa"}, {"step": 11, "value": "0x0"}, {"step": 12, "value": "0x1d"}, {"step": 13, "value": "0x1d"}, {"step": 14, "value": "0xf"}, {"step": 15, "value": "0x0"}, {"step": 16, "value": "0xc"}, {"step": 17, "value": "0xf"}, {"step": 18, "value": "0x0"}, {"step": 19, "value": "0x0"}, {"step": 20, "value": "0x2"}, {"step": 21, "value": "0x0"}, {"step": 22, "value": "0x5"}, {"step": 23, "value": "0x0"}, {"step": 24, "value": "0x0"}, {"step": 25, "value": "0x0"}, {"step": 26, "value": "0xb"}, {"step": 27, "value": "0xb"}, {"step": 28, "value": "0xb"}, {"step": 29, "value": "0xb"}, {"step": 30, "value": "0xb"}, {"step": 31, "value": "0xb"}, {"step": 32, "value": "0xb"}, {"step": 33, "value": "0xb"}, {"step": 34, "value": "0x0"}, {"step": 35, "value": "0x0"}, {"step": 36, "value": "0x0"}, {"step": 37, "value": "0x10"}, {"step": 38, "value": "0xf"}, {"step": 39, "value": "0xf"}]
+    },
+    {
+      "name": "pipe_id_ex.trap_cause",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x0"}, {"step": 3, "value": "0x0"}, {"step": 4, "value": "0x0"}, {"step": 5, "value": "0x0"}, {"step": 6, "value": "0x0"}, {"step": 7, "value": "0x0"}, {"step": 8, "value": "0x0"}, {"step": 9, "value": "0x0"}, {"step": 10, "value": "0x0"}, {"step": 11, "value": "0x0"}, {"step": 12, "value": "0x0"}, {"step": 13, "value": "0x0"}, {"step": 14, "value": "0x0"}, {"step": 15, "value": "0x0"}, {"step": 16, "value": "0x0"}, {"step": 17, "value": "0x0"}, {"step": 18, "value": "0x0"}, {"step": 19, "value": "0x0"}, {"step": 20, "value": "0x0"}, {"step": 21, "value": "0x0"}, {"step": 22, "value": "0x0"}, {"step": 23, "value": "0x0"}, {"step": 24, "value": "0x0"}, {"step": 25, "value": "0x0"}, {"step": 26, "value": "0x0"}, {"step": 27, "value": "0x0"}, {"step": 28, "value": "0x0"}, {"step": 29, "value": "0x0"}, {"step": 30, "value": "0x0"}, {"step": 31, "value": "0x0"}, {"step": 32, "value": "0x0"}, {"step": 33, "value": "0x0"}, {"step": 34, "value": "0x0"}, {"step": 35, "value": "0x0"}, {"step": 36, "value": "0x0"}, {"step": 37, "value": "0x0"}, {"step": 38, "value": "0x0"}, {"step": 39, "value": "0x0"}]
+    },
+    {
+      "name": "pipe_id_ex.val_rs1",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x13b00"}, {"step": 3, "value": "0x0"}, {"step": 4, "value": "0x1"}, {"step": 5, "value": "0x0"}, {"step": 6, "value": "0x0"}, {"step": 7, "value": "0x0"}, {"step": 8, "value": "0x0"}, {"step": 9, "value": "0x0"}, {"step": 10, "value": "0x0"}, {"step": 11, "value": "0x0"}, {"step": 12, "value": "0x0"}, {"step": 13, "value": "0x0"}, {"step": 14, "value": "0x0"}, {"step": 15, "value": "0x13868"}, {"step": 16, "value": "0x0"}, {"step": 17, "value": "0x0"}, {"step": 18, "value": "0x0"}, {"step": 19, "value": "0x8"}, {"step": 20, "value": "0x8"}, {"step": 21, "value": "0x0"}, {"step": 22, "value": "0x0"}, {"step": 23, "value": "0x10128"}, {"step": 24, "value": "0x20"}, {"step": 25, "value": "0x10d74"}, {"step": 26, "value": "0x13868"}, {"step": 27, "value": "0x13868"}, {"step": 28, "value": "0x13868"}, {"step": 29, "value": "0x13868"}, {"step": 30, "value": "0x13868"}, {"step": 31, "value": "0x13868"}, {"step": 32, "value": "0x13868"}, {"step": 33, "value": "0x13868"}, {"step": 34, "value": "0x10d64"}, {"step": 35, "value": "0x10d64"}, {"step": 36, "value": "0x10128"}, {"step": 37, "value": "0x8"}, {"step": 38, "value": "0x13868"}, {"step": 39, "value": "0x328"}]
+    },
+    {
+      "name": "pipe_id_ex.val_rs2",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x0"}, {"step": 3, "value": "0x0"}, {"step": 4, "value": "0x0"}, {"step": 5, "value": "0x0"}, {"step": 6, "value": "0x0"}, {"step": 7, "value": "0x0"}, {"step": 8, "value": "0x0"}, {"step": 9, "value": "0x0"}, {"step": 10, "value": "0x13868"}, {"step": 11, "value": "0x0"}, {"step": 12, "value": "0x0"}, {"step": 13, "value": "0x0"}, {"step": 14, "value": "0x0"}, {"step": 15, "value": "0x0"}, {"step": 16, "value": "0x328"}, {"step": 17, "value": "0x0"}, {"step": 18, "value": "0x0"}, {"step": 19, "value": "0x0"}, {"step": 20, "value": "0x20010"}, {"step": 21, "value": "0x0"}, {"step": 22, "value": "0x0"}, {"step": 23, "value": "0x0"}, {"step": 24, "value": "0x0"}, {"step": 25, "value": "0x0"}, {"step": 26, "value": "0x0"}, {"step": 27, "value": "0x0"}, {"step": 28, "value": "0x0"}, {"step": 29, "value": "0x0"}, {"step": 30, "value": "0x0"}, {"step": 31, "value": "0x0"}, {"step": 32, "value": "0x0"}, {"step": 33, "value": "0x0"}, {"step": 34, "value": "0x0"}, {"step": 35, "value": "0x0"}, {"step": 36, "value": "0x0"}, {"step": 37, "value": "0x0"}, {"step": 38, "value": "0x8"}, {"step": 39, "value": "0x8"}]
+    },
+    {
+      "name": "pipe_id_ex.valid",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "1"}, {"step": 2, "value": "1"}, {"step": 3, "value": "1"}, {"step": 4, "value": "1"}, {"step": 5, "value": "0"}, {"step": 6, "value": "1"}, {"step": 7, "value": "1"}, {"step": 8, "value": "1"}, {"step": 9, "value": "1"}, {"step": 10, "value": "1"}, {"step": 11, "value": "1"}, {"step": 12, "value": "1"}, {"step": 13, "value": "0"}, {"step": 14, "value": "1"}, {"step": 15, "value": "1"}, {"step": 16, "value": "1"}, {"step": 17, "value": "1"}, {"step": 18, "value": "1"}, {"step": 19, "value": "0"}, {"step": 20, "value": "1"}, {"step": 21, "value": "1"}, {"step": 22, "value": "1"}, {"step": 23, "value": "1"}, {"step": 24, "value": "1"}, {"step": 25, "value": "0"}, {"step": 26, "value": "1"}, {"step": 27, "value": "1"}, {"step": 28, "value": "1"}, {"step": 29, "value": "1"}, {"step": 30, "value": "1"}, {"step": 31, "value": "1"}, {"step": 32, "value": "1"}, {"step": 33, "value": "1"}, {"step": 34, "value": "1"}, {"step": 35, "value": "0"}, {"step": 36, "value": "1"}, {"step": 37, "value": "1"}, {"step": 38, "value": "1"}, {"step": 39, "value": "1"}]
+    },
+    {
+      "name": "pipe_if_id.inst_raw",
+      "samples": [{"step": 0, "value": "0x4197"}, {"step": 1, "value": "0xa0818193"}, {"step": 2, "value": "0x513"}, {"step": 3, "value": "0x50463"}, {"step": 4, "value": "0x1751073"}, {"step": 5, "value": "0x3517"}, {"step": 6, "value": "0x75c50513"}, {"step": 7, "value": "0x4617"}, {"step": 8, "value": "0xa7c60613"}, {"step": 9, "value": "0x40a60633"}, {"step": 10, "value": "0x593"}, {"step": 11, "value": "0x37d000ef"}, {"step": 12, "value": "0x1517"}, {"step": 13, "value": "0xf00313"}, {"step": 14, "value": "0x50713"}, {"step": 15, "value": "0x2c37e63"}, {"step": 16, "value": "0xf77793"}, {"step": 17, "value": "0xa079063"}, {"step": 18, "value": "0x8059263"}, {"step": 19, "value": "0x279693"}, {"step": 20, "value": "0x297"}, {"step": 21, "value": "0x5686b3"}, {"step": 22, "value": "0x8293"}, {"step": 23, "value": "0xfa0680e7"}, {"step": 24, "value": "0x28093"}, {"step": 25, "value": "0xb703a3"}, {"step": 26, "value": "0xb70323"}, {"step": 27, "value": "0xb702a3"}, {"step": 28, "value": "0xb70223"}, {"step": 29, "value": "0xb701a3"}, {"step": 30, "value": "0xb70123"}, {"step": 31, "value": "0xb700a3"}, {"step": 32, "value": "0xb70023"}, {"step": 33, "value": "0x8067"}, {"step": 34, "value": "0xff5f593"}, {"step": 35, "value": "0x28093"}, {"step": 36, "value": "0xff078793"}, {"step": 37, "value": "0x40f70733"}, {"step": 38, "value": "0xf60633"}, {"step": 39, "value": "0xf6c378e3"}]
+    },
+    {
+      "name": "pipe_if_id.interrupt_pc",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x0"}, {"step": 3, "value": "0x0"}, {"step": 4, "value": "0x0"}, {"step": 5, "value": "0x0"}, {"step": 6, "value": "0x0"}, {"step": 7, "value": "0x0"}, {"step": 8, "value": "0x0"}, {"step": 9, "value": "0x0"}, {"step": 10, "value": "0x0"}, {"step": 11, "value": "0x0"}, {"step": 12, "value": "0x0"}, {"step": 13, "value": "0x0"}, {"step": 14, "value": "0x0"}, {"step": 15, "value": "0x0"}, {"step": 16, "value": "0x0"}, {"step": 17, "value": "0x0"}, {"step": 18, "value": "0x0"}, {"step": 19, "value": "0x0"}, {"step": 20, "value": "0x0"}, {"step": 21, "value": "0x0"}, {"step": 22, "value": "0x0"}, {"step": 23, "value": "0x0"}, {"step": 24, "value": "0x0"}, {"step": 25, "value": "0x0"}, {"step": 26, "value": "0x0"}, {"step": 27, "value": "0x0"}, {"step": 28, "value": "0x0"}, {"step": 29, "value": "0x0"}, {"step": 30, "value": "0x0"}, {"step": 31, "value": "0x0"}, {"step": 32, "value": "0x0"}, {"step": 33, "value": "0x0"}, {"step": 34, "value": "0x0"}, {"step": 35, "value": "0x0"}, {"step": 36, "value": "0x0"}, {"step": 37, "value": "0x0"}, {"step": 38, "value": "0x0"}, {"step": 39, "value": "0x0"}]
+    },
+    {
+      "name": "pipe_if_id.interrupt_taken",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "0"}, {"step": 27, "value": "0"}, {"step": 28, "value": "0"}, {"step": 29, "value": "0"}, {"step": 30, "value": "0"}, {"step": 31, "value": "0"}, {"step": 32, "value": "0"}, {"step": 33, "value": "0"}, {"step": 34, "value": "0"}, {"step": 35, "value": "0"}, {"step": 36, "value": "0"}, {"step": 37, "value": "0"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_if_id.pc",
+      "samples": [{"step": 0, "value": "0x100f8"}, {"step": 1, "value": "0x100fc"}, {"step": 2, "value": "0x10100"}, {"step": 3, "value": "0x10104"}, {"step": 4, "value": "0x10108"}, {"step": 5, "value": "0x1010c"}, {"step": 6, "value": "0x10110"}, {"step": 7, "value": "0x10114"}, {"step": 8, "value": "0x10118"}, {"step": 9, "value": "0x1011c"}, {"step": 10, "value": "0x10120"}, {"step": 11, "value": "0x10124"}, {"step": 12, "value": "0x10128"}, {"step": 13, "value": "0x10ca0"}, {"step": 14, "value": "0x10ca4"}, {"step": 15, "value": "0x10ca8"}, {"step": 16, "value": "0x10cac"}, {"step": 17, "value": "0x10cb0"}, {"step": 18, "value": "0x10cb4"}, {"step": 19, "value": "0x10d50"}, {"step": 20, "value": "0x10d54"}, {"step": 21, "value": "0x10d58"}, {"step": 22, "value": "0x10d5c"}, {"step": 23, "value": "0x10d60"}, {"step": 24, "value": "0x10d64"}, {"step": 25, "value": "0x10d14"}, {"step": 26, "value": "0x10d18"}, {"step": 27, "value": "0x10d1c"}, {"step": 28, "value": "0x10d20"}, {"step": 29, "value": "0x10d24"}, {"step": 30, "value": "0x10d28"}, {"step": 31, "value": "0x10d2c"}, {"step": 32, "value": "0x10d30"}, {"step": 33, "value": "0x10d34"}, {"step": 34, "value": "0x10d38"}, {"step": 35, "value": "0x10d64"}, {"step": 36, "value": "0x10d68"}, {"step": 37, "value": "0x10d6c"}, {"step": 38, "value": "0x10d70"}, {"step": 39, "value": "0x10d74"}]
+    },
+    {
+      "name": "pipe_if_id.valid",
+      "samples": [{"step": 0, "value": "1"}, {"step": 1, "value": "1"}, {"step": 2, "value": "1"}, {"step": 3, "value": "1"}, {"step": 4, "value": "1"}, {"step": 5, "value": "1"}, {"step": 6, "value": "1"}, {"step": 7, "value": "1"}, {"step": 8, "value": "1"}, {"step": 9, "value": "1"}, {"step": 10, "value": "1"}, {"step": 11, "value": "1"}, {"step": 12, "value": "1"}, {"step": 13, "value": "1"}, {"step": 14, "value": "1"}, {"step": 15, "value": "1"}, {"step": 16, "value": "1"}, {"step": 17, "value": "1"}, {"step": 18, "value": "1"}, {"step": 19, "value": "1"}, {"step": 20, "value": "1"}, {"step": 21, "value": "1"}, {"step": 22, "value": "1"}, {"step": 23, "value": "1"}, {"step": 24, "value": "1"}, {"step": 25, "value": "1"}, {"step": 26, "value": "1"}, {"step": 27, "value": "1"}, {"step": 28, "value": "1"}, {"step": 29, "value": "1"}, {"step": 30, "value": "1"}, {"step": 31, "value": "1"}, {"step": 32, "value": "1"}, {"step": 33, "value": "1"}, {"step": 34, "value": "1"}, {"step": 35, "value": "1"}, {"step": 36, "value": "1"}, {"step": 37, "value": "1"}, {"step": 38, "value": "1"}, {"step": 39, "value": "1"}]
+    },
+    {
+      "name": "pipe_mem_wb.alu_result",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x0"}, {"step": 3, "value": "0x140f8"}, {"step": 4, "value": "0x13b00"}, {"step": 5, "value": "0x0"}, {"step": 6, "value": "0x0"}, {"step": 7, "value": "0x0"}, {"step": 8, "value": "0x1310c"}, {"step": 9, "value": "0x13868"}, {"step": 10, "value": "0x14114"}, {"step": 11, "value": "0x13b90"}, {"step": 12, "value": "0x328"}, {"step": 13, "value": "0x0"}, {"step": 14, "value": "0x10128"}, {"step": 15, "value": "0x10128"}, {"step": 16, "value": "0xf"}, {"step": 17, "value": "0x13868"}, {"step": 18, "value": "0x13868"}, {"step": 19, "value": "0x8"}, {"step": 20, "value": "0x8"}, {"step": 21, "value": "0x8"}, {"step": 22, "value": "0x20"}, {"step": 23, "value": "0x10d54"}, {"step": 24, "value": "0x10d74"}, {"step": 25, "value": "0x10128"}, {"step": 26, "value": "0x10d64"}, {"step": 27, "value": "0x10d64"}, {"step": 28, "value": "0x1386f"}, {"step": 29, "value": "0x1386e"}, {"step": 30, "value": "0x1386d"}, {"step": 31, "value": "0x1386c"}, {"step": 32, "value": "0x1386b"}, {"step": 33, "value": "0x1386a"}, {"step": 34, "value": "0x13869"}, {"step": 35, "value": "0x13868"}, {"step": 36, "value": "0x10d38"}, {"step": 37, "value": "0x10d38"}, {"step": 38, "value": "0x10128"}, {"step": 39, "value": "0xfffffff8"}]
+    },
+    {
+      "name": "pipe_mem_wb.is_byte",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "0"}, {"step": 27, "value": "0"}, {"step": 28, "value": "1"}, {"step": 29, "value": "1"}, {"step": 30, "value": "1"}, {"step": 31, "value": "1"}, {"step": 32, "value": "1"}, {"step": 33, "value": "1"}, {"step": 34, "value": "1"}, {"step": 35, "value": "1"}, {"step": 36, "value": "1"}, {"step": 37, "value": "1"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_mem_wb.is_trap",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "0"}, {"step": 27, "value": "0"}, {"step": 28, "value": "0"}, {"step": 29, "value": "0"}, {"step": 30, "value": "0"}, {"step": 31, "value": "0"}, {"step": 32, "value": "0"}, {"step": 33, "value": "0"}, {"step": 34, "value": "0"}, {"step": 35, "value": "0"}, {"step": 36, "value": "0"}, {"step": 37, "value": "0"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_mem_wb.is_unsigned",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "0"}, {"step": 27, "value": "0"}, {"step": 28, "value": "0"}, {"step": 29, "value": "0"}, {"step": 30, "value": "0"}, {"step": 31, "value": "0"}, {"step": 32, "value": "0"}, {"step": 33, "value": "0"}, {"step": 34, "value": "0"}, {"step": 35, "value": "0"}, {"step": 36, "value": "0"}, {"step": 37, "value": "0"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_mem_wb.mem_data",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x0"}, {"step": 3, "value": "0x0"}, {"step": 4, "value": "0x0"}, {"step": 5, "value": "0x0"}, {"step": 6, "value": "0x0"}, {"step": 7, "value": "0x0"}, {"step": 8, "value": "0x0"}, {"step": 9, "value": "0x0"}, {"step": 10, "value": "0x0"}, {"step": 11, "value": "0x0"}, {"step": 12, "value": "0x0"}, {"step": 13, "value": "0x0"}, {"step": 14, "value": "0x0"}, {"step": 15, "value": "0x0"}, {"step": 16, "value": "0x0"}, {"step": 17, "value": "0x0"}, {"step": 18, "value": "0x0"}, {"step": 19, "value": "0x0"}, {"step": 20, "value": "0x0"}, {"step": 21, "value": "0x0"}, {"step": 22, "value": "0x0"}, {"step": 23, "value": "0x0"}, {"step": 24, "value": "0x0"}, {"step": 25, "value": "0x0"}, {"step": 26, "value": "0x0"}, {"step": 27, "value": "0x0"}, {"step": 28, "value": "0x0"}, {"step": 29, "value": "0x0"}, {"step": 30, "value": "0x0"}, {"step": 31, "value": "0x0"}, {"step": 32, "value": "0x0"}, {"step": 33, "value": "0x0"}, {"step": 34, "value": "0x0"}, {"step": 35, "value": "0x0"}, {"step": 36, "value": "0x0"}, {"step": 37, "value": "0x0"}, {"step": 38, "value": "0x0"}, {"step": 39, "value": "0x0"}]
+    },
+    {
+      "name": "pipe_mem_wb.mem_read",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "0"}, {"step": 4, "value": "0"}, {"step": 5, "value": "0"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "0"}, {"step": 9, "value": "0"}, {"step": 10, "value": "0"}, {"step": 11, "value": "0"}, {"step": 12, "value": "0"}, {"step": 13, "value": "0"}, {"step": 14, "value": "0"}, {"step": 15, "value": "0"}, {"step": 16, "value": "0"}, {"step": 17, "value": "0"}, {"step": 18, "value": "0"}, {"step": 19, "value": "0"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "0"}, {"step": 23, "value": "0"}, {"step": 24, "value": "0"}, {"step": 25, "value": "0"}, {"step": 26, "value": "0"}, {"step": 27, "value": "0"}, {"step": 28, "value": "0"}, {"step": 29, "value": "0"}, {"step": 30, "value": "0"}, {"step": 31, "value": "0"}, {"step": 32, "value": "0"}, {"step": 33, "value": "0"}, {"step": 34, "value": "0"}, {"step": 35, "value": "0"}, {"step": 36, "value": "0"}, {"step": 37, "value": "0"}, {"step": 38, "value": "0"}, {"step": 39, "value": "0"}]
+    },
+    {
+      "name": "pipe_mem_wb.rd",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x0"}, {"step": 3, "value": "0x3"}, {"step": 4, "value": "0x3"}, {"step": 5, "value": "0xa"}, {"step": 6, "value": "0x8"}, {"step": 7, "value": "0x8"}, {"step": 8, "value": "0xa"}, {"step": 9, "value": "0xa"}, {"step": 10, "value": "0xc"}, {"step": 11, "value": "0xc"}, {"step": 12, "value": "0xc"}, {"step": 13, "value": "0xb"}, {"step": 14, "value": "0x1"}, {"step": 15, "value": "0x1"}, {"step": 16, "value": "0x6"}, {"step": 17, "value": "0xe"}, {"step": 18, "value": "0x1c"}, {"step": 19, "value": "0xf"}, {"step": 20, "value": "0x0"}, {"step": 21, "value": "0x0"}, {"step": 22, "value": "0xd"}, {"step": 23, "value": "0x5"}, {"step": 24, "value": "0xd"}, {"step": 25, "value": "0x5"}, {"step": 26, "value": "0x1"}, {"step": 27, "value": "0x1"}, {"step": 28, "value": "0x7"}, {"step": 29, "value": "0x6"}, {"step": 30, "value": "0x5"}, {"step": 31, "value": "0x4"}, {"step": 32, "value": "0x3"}, {"step": 33, "value": "0x2"}, {"step": 34, "value": "0x1"}, {"step": 35, "value": "0x0"}, {"step": 36, "value": "0x0"}, {"step": 37, "value": "0x0"}, {"step": 38, "value": "0x1"}, {"step": 39, "value": "0xf"}]
+    },
+    {
+      "name": "pipe_mem_wb.reg_write",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "1"}, {"step": 4, "value": "1"}, {"step": 5, "value": "1"}, {"step": 6, "value": "0"}, {"step": 7, "value": "0"}, {"step": 8, "value": "1"}, {"step": 9, "value": "1"}, {"step": 10, "value": "1"}, {"step": 11, "value": "1"}, {"step": 12, "value": "1"}, {"step": 13, "value": "1"}, {"step": 14, "value": "1"}, {"step": 15, "value": "1"}, {"step": 16, "value": "1"}, {"step": 17, "value": "1"}, {"step": 18, "value": "0"}, {"step": 19, "value": "1"}, {"step": 20, "value": "0"}, {"step": 21, "value": "0"}, {"step": 22, "value": "1"}, {"step": 23, "value": "1"}, {"step": 24, "value": "1"}, {"step": 25, "value": "1"}, {"step": 26, "value": "1"}, {"step": 27, "value": "1"}, {"step": 28, "value": "0"}, {"step": 29, "value": "0"}, {"step": 30, "value": "0"}, {"step": 31, "value": "0"}, {"step": 32, "value": "0"}, {"step": 33, "value": "0"}, {"step": 34, "value": "0"}, {"step": 35, "value": "0"}, {"step": 36, "value": "1"}, {"step": 37, "value": "1"}, {"step": 38, "value": "1"}, {"step": 39, "value": "1"}]
+    },
+    {
+      "name": "pipe_mem_wb.trap_cause",
+      "samples": [{"step": 0, "value": "0x0"}, {"step": 1, "value": "0x0"}, {"step": 2, "value": "0x0"}, {"step": 3, "value": "0x0"}, {"step": 4, "value": "0x0"}, {"step": 5, "value": "0x0"}, {"step": 6, "value": "0x0"}, {"step": 7, "value": "0x0"}, {"step": 8, "value": "0x0"}, {"step": 9, "value": "0x0"}, {"step": 10, "value": "0x0"}, {"step": 11, "value": "0x0"}, {"step": 12, "value": "0x0"}, {"step": 13, "value": "0x0"}, {"step": 14, "value": "0x0"}, {"step": 15, "value": "0x0"}, {"step": 16, "value": "0x0"}, {"step": 17, "value": "0x0"}, {"step": 18, "value": "0x0"}, {"step": 19, "value": "0x0"}, {"step": 20, "value": "0x0"}, {"step": 21, "value": "0x0"}, {"step": 22, "value": "0x0"}, {"step": 23, "value": "0x0"}, {"step": 24, "value": "0x0"}, {"step": 25, "value": "0x0"}, {"step": 26, "value": "0x0"}, {"step": 27, "value": "0x0"}, {"step": 28, "value": "0x0"}, {"step": 29, "value": "0x0"}, {"step": 30, "value": "0x0"}, {"step": 31, "value": "0x0"}, {"step": 32, "value": "0x0"}, {"step": 33, "value": "0x0"}, {"step": 34, "value": "0x0"}, {"step": 35, "value": "0x0"}, {"step": 36, "value": "0x0"}, {"step": 37, "value": "0x0"}, {"step": 38, "value": "0x0"}, {"step": 39, "value": "0x0"}]
+    },
+    {
+      "name": "pipe_mem_wb.valid",
+      "samples": [{"step": 0, "value": "0"}, {"step": 1, "value": "0"}, {"step": 2, "value": "0"}, {"step": 3, "value": "1"}, {"step": 4, "value": "1"}, {"step": 5, "value": "1"}, {"step": 6, "value": "1"}, {"step": 7, "value": "0"}, {"step": 8, "value": "1"}, {"step": 9, "value": "1"}, {"step": 10, "value": "1"}, {"step": 11, "value": "1"}, {"step": 12, "value": "1"}, {"step": 13, "value": "1"}, {"step": 14, "value": "1"}, {"step": 15, "value": "0"}, {"step": 16, "value": "1"}, {"step": 17, "value": "1"}, {"step": 18, "value": "1"}, {"step": 19, "value": "1"}, {"step": 20, "value": "1"}, {"step": 21, "value": "0"}, {"step": 22, "value": "1"}, {"step": 23, "value": "1"}, {"step": 24, "value": "1"}, {"step": 25, "value": "1"}, {"step": 26, "value": "1"}, {"step": 27, "value": "0"}, {"step": 28, "value": "1"}, {"step": 29, "value": "1"}, {"step": 30, "value": "1"}, {"step": 31, "value": "1"}, {"step": 32, "value": "1"}, {"step": 33, "value": "1"}, {"step": 34, "value": "1"}, {"step": 35, "value": "1"}, {"step": 36, "value": "1"}, {"step": 37, "value": "0"}, {"step": 38, "value": "1"}, {"step": 39, "value": "1"}]
+    },
+    {
+      "name": "wb_reg",
+      "samples": [{"step": 4, "value": "r3"}, {"step": 5, "value": "r3"}, {"step": 6, "value": "r10"}, {"step": 9, "value": "r10"}, {"step": 10, "value": "r10"}, {"step": 11, "value": "r12"}, {"step": 12, "value": "r12"}, {"step": 13, "value": "r12"}, {"step": 14, "value": "r11"}, {"step": 15, "value": "r1"}, {"step": 17, "value": "r6"}, {"step": 18, "value": "r14"}, {"step": 20, "value": "r15"}, {"step": 23, "value": "r13"}, {"step": 24, "value": "r5"}, {"step": 25, "value": "r13"}, {"step": 26, "value": "r5"}, {"step": 27, "value": "r1"}, {"step": 39, "value": "r1"}]
+    },
+    {
+      "name": "wb_val",
+      "samples": [{"step": 4, "value": "0x140f8"}, {"step": 5, "value": "0x13b00"}, {"step": 6, "value": "0x0"}, {"step": 9, "value": "0x1310c"}, {"step": 10, "value": "0x13868"}, {"step": 11, "value": "0x14114"}, {"step": 12, "value": "0x13b90"}, {"step": 13, "value": "0x328"}, {"step": 14, "value": "0x0"}, {"step": 15, "value": "0x10128"}, {"step": 17, "value": "0xf"}, {"step": 18, "value": "0x13868"}, {"step": 20, "value": "0x8"}, {"step": 23, "value": "0x20"}, {"step": 24, "value": "0x10d54"}, {"step": 25, "value": "0x10d74"}, {"step": 26, "value": "0x10128"}, {"step": 27, "value": "0x10d64"}, {"step": 39, "value": "0x10128"}]
+    }
+  ]
+}

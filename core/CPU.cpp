@@ -14,6 +14,7 @@
 #include <cstring>
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 CPU::CPU(Memory& mem_ref, InstManager& im_ref)
@@ -117,6 +118,72 @@ static bool inst_writes_rd(uint32_t inst_id) {
         default:
             return false;
     }
+}
+
+static std::string as_hex_u32(uint32_t v) {
+    std::ostringstream oss;
+    oss << "0x" << std::hex << v;
+    return oss.str();
+}
+
+static std::string pipe_value(bool v) {
+    return v ? "1" : "0";
+}
+
+static std::string pipe_value(uint32_t v) {
+    return as_hex_u32(v);
+}
+
+static std::string pipe_value(int32_t v) {
+    return std::to_string(v);
+}
+
+template <typename T>
+static void append_pipe_field(std::ostringstream& oss, bool& first, const char* key, const T& value) {
+    if (!first) oss << " ";
+    first = false;
+    oss << key << "=" << pipe_value(value);
+}
+
+static std::string format_pipe_if_id_log(const Pipe_IF_ID& p) {
+    std::ostringstream oss;
+    oss << "[PIPE_IF_ID] ";
+    bool first = true;
+#define APPEND_F(name) append_pipe_field(oss, first, #name, p.name);
+    PIPE_IF_ID_LOG_FIELDS(APPEND_F);
+#undef APPEND_F
+    append_pipe_field(oss, first, "inst_raw", p.inst.raw);
+    return oss.str();
+}
+
+static std::string format_pipe_id_ex_log(const Pipe_ID_EX& p) {
+    std::ostringstream oss;
+    oss << "[PIPE_ID_EX] ";
+    bool first = true;
+#define APPEND_F(name) append_pipe_field(oss, first, #name, p.name);
+    PIPE_ID_EX_LOG_FIELDS(APPEND_F);
+#undef APPEND_F
+    return oss.str();
+}
+
+static std::string format_pipe_ex_mem_log(const Pipe_EX_MEM& p) {
+    std::ostringstream oss;
+    oss << "[PIPE_EX_MEM] ";
+    bool first = true;
+#define APPEND_F(name) append_pipe_field(oss, first, #name, p.name);
+    PIPE_EX_MEM_LOG_FIELDS(APPEND_F);
+#undef APPEND_F
+    return oss.str();
+}
+
+static std::string format_pipe_mem_wb_log(const Pipe_MEM_WB& p) {
+    std::ostringstream oss;
+    oss << "[PIPE_MEM_WB] ";
+    bool first = true;
+#define APPEND_F(name) append_pipe_field(oss, first, #name, p.name);
+    PIPE_MEM_WB_LOG_FIELDS(APPEND_F);
+#undef APPEND_F
+    return oss.str();
 }
 
 void CPU::reset_instruction_statistics() {
@@ -867,6 +934,12 @@ bool CPU::step()
     }
     decode(if_id, id_ex);
     fetch(if_id);
+    if (SimLogConfig::log_pipe_signals) {
+        LOG(format_pipe_if_id_log(if_id));
+        LOG(format_pipe_id_ex_log(id_ex));
+        LOG(format_pipe_ex_mem_log(ex_mem));
+        LOG(format_pipe_mem_wb_log(mem_wb));
+    }
     
     tick_mmio_and_irq_sources();
     //dump_registers();
