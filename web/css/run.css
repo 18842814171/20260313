@@ -1,0 +1,320 @@
+/* 运行程序页面专用样式 */
+
+/* 导航栏 */
+.nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 20px;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #1a73e8;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.back-btn:hover {
+    background: #f0f7ff;
+}
+
+.placeholder {
+    width: 80px;
+}
+
+/* 主要内容区 */
+.run-main {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 代码编辑区 */
+.code-section {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.section-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.code-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.secondary-btn {
+    background: white;
+    border: 1px solid #1a73e8;
+    color: #1a73e8;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.secondary-btn:hover {
+    background: #1a73e8;
+    color: white;
+}
+
+.code-editor-wrapper {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.code-editor {
+    width: 100%;
+    min-height: 400px;
+    padding: 20px;
+    font-family: 'Courier New', 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    border: none;
+    resize: vertical;
+    background: #fafafa;
+    color: #333;
+}
+
+.code-editor:focus {
+    outline: none;
+    background: white;
+}
+
+/* 操作按钮区 */
+.action-buttons {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.primary-btn {
+    background: #1a73e8;
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.primary-btn:hover {
+    background: #1557b0;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+}
+
+/* 状态区域 */
+.status-section {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+    border-left: 4px solid #28a745;
+}
+
+.status-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.status-header h3 {
+    margin: 0;
+    color: #28a745;
+}
+
+.status-messages {
+    font-family: monospace;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.status-messages .success {
+    color: #28a745;
+}
+
+.status-messages .error {
+    color: #dc3545;
+}
+
+.status-messages .info {
+    color: #17a2b8;
+}
+
+/* 下载区域 */
+.download-section {
+    margin-bottom: 24px;
+}
+
+.download-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.file-icon {
+    font-size: 24px;
+}
+
+.file-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.file-size {
+    color: #666;
+    font-size: 13px;
+}
+
+.download-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.download-btn:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+/* 执行区域 */
+.execution-section {
+    text-align: center;
+    margin-top: 16px;
+    margin-bottom: 40px;
+}
+
+.execute-btn {
+    background: #ff6b35;
+    color: white;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.execute-btn:hover {
+    background: #e55a2b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+.execution-hint {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #888;
+}
+
+/* 加载遮罩 */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #1a73e8;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-overlay p {
+    color: white;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .code-editor {
+        min-height: 300px;
+        font-size: 12px;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .download-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .nav-bar {
+        flex-wrap: wrap;
+    }
+    
+    .placeholder {
+        display: none;
+    }
+}

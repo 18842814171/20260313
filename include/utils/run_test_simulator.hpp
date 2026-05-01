@@ -66,11 +66,11 @@ inline std::string parse_map_json_path_from_argv(int argc, char** argv) {
     for (int i = 2; i < argc; ++i) {
         std::string a(argv[i]);
         if (a.size() > plen && a.compare(0, plen, kPrefix) == 0) {
-            return resolve_input_path_with_defaults(a.substr(plen), {"tests", "out"}, {"", ".json"});
+            return resolve_input_path_with_defaults(a.substr(plen), {"plot", "tests", "out"}, {"", ".json"});
         }
         if (a == "--map") {
             if (i + 1 < argc) {
-                return resolve_input_path_with_defaults(std::string(argv[i + 1]), {"tests", "out"}, {"", ".json"});
+                return resolve_input_path_with_defaults(std::string(argv[i + 1]), {"plot", "tests", "out"}, {"", ".json"});
             }
             std::cerr << "警告: --map 缺少 JSON 文件路径，已忽略\n";
             return "";
@@ -154,7 +154,7 @@ inline int run_test_simulator_cli(int argc, char** argv) {
                   << "  max_steps 为正整数可选；可与 --debug 混排。\n"
                   << "  <elf> 支持仅填文件名：自动尝试当前目录、out/、tests/。\n"
                   << "  --log-steps=<n> 仅限制日志记录前 n 个 step；不影响实际运行结束条件（0=不限制）。\n"
-                  << "  map json 通过 --map 传入；仅填文件名时自动尝试 tests/ 与 out/（可省 .json）。\n"
+                  << "  map json 通过 --map 传入；仅填文件名时自动尝试 plot/、tests/、out/（可省 .json）。\n"
                   << "  --debug=0  安静模式：不写 log/ 文件、不输出 LOG/调试类信息（stderr 仅保留告警/错误）。\n"
                   << "  --debug=1  显式开启调试输出（默认即为开启）。\n"
                  

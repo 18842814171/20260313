@@ -12,6 +12,9 @@
  */
 class MultiplierUnit {
 public:
+    /// RV32M：低 32 位（有符号无穷精度乘积累的低位等价于本条路径）与高 32 位（mulh）。
+    enum class MulMode : uint8_t { MUL_low, MULH_high_signed };
+
     /// 从 issue 到结果 ready 的固定延迟。
     static constexpr int kLatency = 4;
 
@@ -22,6 +25,7 @@ public:
         a_ = b_ = 0;
         rd_ = pc_ = 0;
         result_ = 0;
+        mode_ = MulMode::MUL_low;
     }
 
     bool busy() const { return in_flight_; }
@@ -30,7 +34,7 @@ public:
     bool result_ready() const { return result_ready_; }
     uint32_t pending_rd() const { return rd_; }
 
-    void issue(uint32_t a, uint32_t b, uint32_t rd, uint32_t pc) {
+    void issue(uint32_t a, uint32_t b, uint32_t rd, uint32_t pc, MulMode mode = MulMode::MUL_low) {
         in_flight_ = true;
         result_ready_ = false;
         cycles_left_ = kLatency - 1;
@@ -38,6 +42,7 @@ public:
         b_ = b;
         rd_ = rd;
         pc_ = pc;
+        mode_ = mode;
     }
 
     void cancel() { reset(); }
@@ -51,7 +56,12 @@ public:
             cycles_left_--;
             return;
         }
-        result_ = static_cast<uint32_t>(static_cast<uint64_t>(a_) * static_cast<uint64_t>(b_));
+        const int64_t prod =
+            static_cast<int64_t>(static_cast<int32_t>(a_)) *
+            static_cast<int64_t>(static_cast<int32_t>(b_));
+        result_ = (mode_ == MulMode::MUL_low)
+                      ? static_cast<uint32_t>(prod)
+                      : static_cast<uint32_t>(static_cast<uint64_t>(prod) >> 32);
         in_flight_ = false;
         result_ready_ = true;
         cycles_left_ = 0;
@@ -68,6 +78,7 @@ private:
     bool in_flight_ = false;
     bool result_ready_ = false;
     int cycles_left_ = 0;
+    MulMode mode_ = MulMode::MUL_low;
     uint32_t a_ = 0;
     uint32_t b_ = 0;
     uint32_t rd_ = 0;

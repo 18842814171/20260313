@@ -1,0 +1,277 @@
+/* 全局样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    background: white;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* 标题区域 */
+.header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.title {
+    font-size: 48px;
+    font-weight: 700;
+    color: #1a73e8;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+}
+
+.subtitle {
+    font-size: 18px;
+    color: #666;
+    font-weight: 400;
+}
+
+/* 按钮网格 */
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+/* 按钮样式 */
+.menu-btn {
+    background: white;
+    border: 2px solid #1a73e8;
+    border-radius: 16px;
+    padding: 24px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(26, 115, 232, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.menu-btn:hover::before {
+    left: 100%;
+}
+
+.menu-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(26, 115, 232, 0.2);
+    background: #f8fbff;
+}
+
+.menu-btn.primary {
+    background: white;
+    border-color: #1a73e8;
+}
+
+.menu-btn.exit {
+    border-color: #dc3545;
+    background: white;
+}
+
+.menu-btn.exit:hover {
+    box-shadow: 0 8px 20px rgba(220, 53, 69, 0.2);
+    background: #fff8f8;
+}
+
+.btn-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.btn-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a73e8;
+}
+
+.menu-btn.exit .btn-text {
+    color: #dc3545;
+}
+
+.btn-desc {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* 退出按钮区域 */
+.exit-section {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.exit-section .menu-btn {
+    min-width: 280px;
+    text-align: center;
+    align-items: center;
+}
+
+/* 页脚 */
+.footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid #e0e0e0;
+    color: #999;
+    font-size: 14px;
+}
+
+/* 模态框样式 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 0;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    animation: slideDown 0.3s ease;
+}
+
+.modal-content h2 {
+    padding: 20px 24px 10px 24px;
+    color: #1a73e8;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-content p {
+    padding: 20px 24px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.modal-close {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    padding: 12px 20px;
+    transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+    color: #333;
+}
+
+/* 动画 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+    
+    .title {
+        font-size: 36px;
+    }
+    
+    .subtitle {
+        font-size: 16px;
+    }
+    
+    .button-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .menu-btn {
+        padding: 20px;
+    }
+    
+    .btn-text {
+        font-size: 18px;
+    }
+    
+    .btn-icon {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 28px;
+    }
+    
+    .btn-text {
+        font-size: 16px;
+    }
+    
+    .btn-desc {
+        font-size: 12px;
+    }
+}
+
+/* 加载动画（可选） */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.menu-btn:active {
+    transform: translateY(0);
+    transition: transform 0.05s ease;
+}

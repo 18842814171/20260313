@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加自定义指令 - OPENCPU 教育版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Roboto', monospace;
+            background: #f5f7fa;
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e8ecf0;
+        }
+        
+        h1 {
+            color: #1a73e8;
+            margin-bottom: 8px;
+            font-size: 22px;
+        }
+        
+        h2 {
+            color: #1a73e8;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        h3 {
+            font-size: 14px;
+            color: #202124;
+            margin-bottom: 12px;
+        }
+        
+        .step-progress {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0 30px;
+            position: relative;
+        }
+        
+        .step-progress::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 1;
+        }
+        
+        .step {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 30px;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #999;
+            position: relative;
+            z-index: 2;
+            background: #f5f5f5;
+        }
+        
+        .step.active {
+            border-color: #1a73e8;
+            color: #1a73e8;
+            background: white;
+        }
+        
+        .step.completed {
+            border-color: #1a73e8;
+            background: #1a73e8;
+            color: white;
+        }
+        
+        .panel {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        
+        .panel.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .type-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .type-btn {
+            background: #f8f9fa;
+            border: 2px solid #e8ecf0;
+            border-radius: 16px;
+            padding: 15px 20px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+            flex: 1;
+            min-width: 100px;
+        }
+        
+        .type-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26,115,232,0.15);
+            border-color: #1a73e8;
+        }
+        
+        .type-btn.selected {
+            background: #e8f0fe;
+            border-color: #1a73e8;
+            color: #1a73e8;
+        }
+        
+        .type-letter {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .type-desc {
+            font-size: 12px;
+            margin-top: 5px;
+            color: #666;
+        }
+        
+        .type-format {
+            font-size: 10px;
+            margin-top: 8px;
+            color: #888;
+            font-family: monospace;
+        }
+        
+        button {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-right: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        
+        button:hover {
+            background: #1557b0;
+            transform: scale(1.02);
+        }
+        
+        .btn-secondary {
+            background: #5f6368;
+        }
+        
+        .btn-secondary:hover {
+            background: #4a4e52;
+        }
+        
+        .btn-test {
+            background: #ea4335;
+        }
+        
+        .btn-test:hover {
+            background: #d33426;
+        }
+        
+        .btn-gray {
+            background: #e8ecf0;
+            color: #5f6368;
+        }
+        
+        .btn-gray:hover {
+            background: #dadce0;
+            transform: scale(1.02);
+        }
+        
+        .btn-small {
+            background: #e8ecf0;
+            color: #1a73e8;
+            padding: 4px 12px;
+            font-size: 12px;
+            margin: 0;
+        }
+        
+        .btn-small:hover {
+            background: #dadce0;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #dadce0;
+            font-family: monospace;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 2px rgba(26,115,232,0.2);
+        }
+        
+        textarea {
+            height: 180px;
+            resize: vertical;
+            background: #1e1e2e;
+            color: #d4d4d4;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        .result {
+            background: #f1f3f4;
+            color: #1a73e8;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+        
+        .instruction-list {
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .inst-item {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            margin: 8px 0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e8ecf0;
+        }
+        
+        .delete-btn {
+            background: #ea4335;
+            padding: 5px 15px;
+            margin: 0;
+            font-size: 12px;
+        }
+        
+        .delete-btn:hover {
+            background: #d33426;
+        }
+        
+        .info-row {
+            display: flex;
+            margin: 12px 0;
+        }
+        
+        .info-label {
+            width: 100px;
+            font-weight: 600;
+            color: #5f6368;
+        }
+        
+        .info-value {
+            flex: 1;
+            font-family: monospace;
+            color: #202124;
+        }
+        
+        .test-result {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+        
+        .test-result.success {
+            background: #e6f4ea;
+            color: #137333;
+            border: 1px solid #34a853;
+        }
+        
+        .test-result.error {
+            background: #fce8e6;
+            color: #c5221f;
+            border: 1px solid #ea4335;
+        }
+        
+        hr {
+            margin: 20px 0;
+            border: none;
+            border-top: 1px solid #e8ecf0;
+        }
+        
+        .flex-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .flex-row .half {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .flex-end {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .badge {
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+        }
+        
+        /* 编码字段样式 */
+        .encoding-section {
+            margin-top: 20px;
+        }
+        
+        .encoding-fields {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        
+        .encoding-field-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .encoding-field-name {
+            width: 100px;
+        }
+        
+        .encoding-field-name input {
+            width: 100%;
+            padding: 6px 8px;
+            margin: 0;
+            font-size: 12px;
+        }
+        
+        .encoding-field-value {
+            flex: 1;
+        }
+        
+        .encoding-field-value input {
+            width: 100%;
+            padding: 6px 8px;
+            margin: 0;
+            font-size: 12px;
+        }
+        
+        .encoding-field-bit {
+            width: 90px;
+        }
+        
+        .encoding-field-bit input {
+            width: 100%;
+            padding: 6px 8px;
+            margin: 0;
+            font-size: 11px;
+        }
+        
+        .remove-field-btn {
+            background: none;
+            border: none;
+            color: #ea4335;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0 8px;
+            margin: 0;
+        }
+        
+        .remove-field-btn:hover {
+            transform: scale(1.2);
+            background: none;
+        }
+        
+        /* 信息区域 */
+        .info-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .info-section h3 {
+            font-size: 14px;
+            margin-bottom: 12px;
+            color: #202124;
+        }
+        
+        .reg-info, .tip-info {
+            font-family: monospace;
+            font-size: 11px;
+            line-height: 1.8;
+            color: #5f6368;
+        }
+        
+        .reg-info code, .tip-info code {
+            background: #e8ecf0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+        
+        /* 右侧面板 */
+        .editor-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        @media (max-width: 900px) {
+            .flex-row {
+                flex-direction: column;
+            }
+            body {
+                padding: 20px;
+            }
+            .type-btn {
+                min-width: 80px;
+                padding: 10px 15px;
+            }
+            .type-letter {
+                font-size: 20px;
+            }
+            .step {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link">← 返回主菜单</a>
+    
+    <!-- 步骤进度 -->
+    <div class="step-progress">
+        <div class="step active" id="step1Indicator">1. 选择指令类型</div>
+        <div class="step" id="step2Indicator">2. 编写指令实现</div>
+        <div class="step" id="step3Indicator">3. 注册并测试</div>
+    </div>
+    
+    <!-- 步骤1：选择指令类型 -->
+    <div id="step1Panel" class="card panel active">
+        <h1>📝 选择指令类型</h1>
+        <p>选择要添加的RISC-V指令格式</p>
+        
+        <div class="type-buttons" id="typeButtons">
+            <div class="type-btn" data-type="R">
+                <div class="type-letter">R</div>
+                <div class="type-desc">算数/逻辑运算</div>
+                <div class="type-format">funct7 | rs2 | rs1 | funct3 | rd | opcode</div>
+            </div>
+            <div class="type-btn" data-type="I">
+                <div class="type-letter">I</div>
+                <div class="type-desc">立即数运算及访存</div>
+                <div class="type-format">imm[11:0] | rs1 | funct3 | rd | opcode</div>
+            </div>
+            <div class="type-btn" data-type="S">
+                <div class="type-letter">S</div>
+                <div class="type-desc">存储指令</div>
+                <div class="type-format">imm[11:5] | rs2 | rs1 | funct3 | imm[4:0] | opcode</div>
+            </div>
+            <div class="type-btn" data-type="B">
+                <div class="type-letter">B</div>
+                <div class="type-desc">条件分支</div>
+                <div class="type-format">imm[12] | imm[10:5] | rs2 | rs1 | funct3 | imm[4:1] | imm[11] | opcode</div>
+            </div>
+            <div class="type-btn" data-type="U">
+                <div class="type-letter">U</div>
+                <div class="type-desc">加载大立即数</div>
+                <div class="type-format">imm[31:12] | rd | opcode</div>
+            </div>
+            <div class="type-btn" data-type="J">
+                <div class="type-letter">J</div>
+                <div class="type-desc">无条件跳转</div>
+                <div class="type-format">imm[20] | imm[10:1] | imm[11] | imm[19:12] | rd | opcode</div>
+            </div>
+            <div class="type-btn" data-type="custom">
+                <div class="type-letter">✨</div>
+                <div class="type-desc">完全自定义</div>
+                <div class="type-format">自由定义编码格式</div>
+            </div>
+        </div>
+        
+        <div class="flex-end">
+            <button id="nextToStep2" disabled>下一步 →</button>
+        </div>
+    </div>
+    
+    <!-- 步骤2：编写指令实现 -->
+    <div id="step2Panel" class="card panel">
+        <h1>✍️ 编写指令实现</h1>
+        <p><span class="badge" id="currentTypeDisplay">未选择类型</span></p>
+        
+        <div class="flex-row">
+            <div class="half">
+                <label>📌 指令名称</label>
+                <input type="text" id="instName" placeholder="例: CUSTOM_ADD, MY_MUL" value="MYINST">
+            </div>
+            <div class="half">
+                <label>🔢 操作码 (opcode, 7位二进制)</label>
+                <input type="text" id="opcode" placeholder="0001011" value="0001011">
+            </div>
+        </div>
+        
+        <div class="flex-row">
+            <div class="half">
+                <label>⚙️ funct3 (3位二进制, 可选)</label>
+                <input type="text" id="funct3" value="000">
+            </div>
+            <div class="half">
+                <label>⚙️ funct7 (7位二进制, R型/U型可选)</label>
+                <input type="text" id="funct7" value="0000000">
+            </div>
+        </div>
+        
+        <!-- 指令编码格式 -->
+        <div class="encoding-section">
+            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3>📋 指令编码格式</h3>
+                <button id="addFieldBtn" class="btn-small">+ 添加字段</button>
+            </div>
+            <div id="encodingFields" class="encoding-fields">
+                <!-- 动态添加编码字段 -->
+            </div>
+        </div>
+        
+        <div class="flex-row">
+            <div class="half">
+                <label>💻 指令执行逻辑 (JavaScript 风格)</label>
+                <textarea id="instCode">// R型加法示例
+    let rs1_val = input.val_rs1;
+    let rs2_val = input.val_rs2;
+    let result = rs1_val + rs2_val;
+
+    output.alu_result = result;
+    output.reg_write = true;</textarea>
+            </div>
+            
+            <div class="editor-right">
+                <!-- 寄存器说明 -->
+                <div class="info-section">
+                    <h3>📖 可用变量说明</h3>
+                    <div class="reg-info">
+                        <code>input.val_rs1</code> - 源寄存器1的值<br>
+                        <code>input.val_rs2</code> - 源寄存器2的值<br>
+                        <code>input.imm</code> - 立即数值<br>
+                        <code>input.pc</code> - 当前PC<br>
+                        <code>output.alu_result</code> - 写入目标寄存器的值<br>
+                        <code>output.reg_write</code> - 是否写寄存器 (true/false)<br>
+                        <code>output.mem_write</code> - 是否写内存 (true/false)<br>
+                        <code>output.mem_addr</code> - 内存地址<br>
+                        <code>output.mem_data</code> - 内存数据<br>
+                        <code>output.next_pc</code> - 下一跳PC<br>
+                        <code>output.pc_modified</code> - 是否修改PC (true/false)<br>
+                    </div>
+                </div>
+                
+                <!-- 提示信息 -->
+                <div class="info-section">
+                    <h3>💡 提示</h3>
+                    <div class="tip-info">
+                        - 使用 <code>input</code> 读取输入值<br>
+                        - 使用 <code>output</code> 设置输出<br>
+                        - 支持 JavaScript 语法<br>
+                        - 示例: <code>let result = input.val_rs1 + input.val_rs2;</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex-between">
+            <button id="backToStep1" class="btn-gray">← 上一步</button>
+            <button id="nextToStep3">下一步 →</button>
+        </div>
+    </div>
+    
+    <!-- 步骤3：注册并测试 -->
+    <div id="step3Panel" class="card panel">
+        <h1>✅ 注册并测试</h1>
+        
+        <div class="flex-row">
+            <div class="half">
+                <div class="info-row">
+                    <span class="info-label">指令名称:</span>
+                    <span id="displayName" class="info-value">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">指令类型:</span>
+                    <span id="displayType" class="info-value">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">操作码:</span>
+                    <span id="displayOpcode" class="info-value">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">机器码:</span>
+                    <span id="displayMachineCode" class="info-value">-</span>
+                </div>
+            </div>
+            <div class="half">
+                <h3>🧪 快速测试</h3>
+                <div class="info-row">
+                    <span class="info-label">rs1:</span>
+                    <input type="number" id="testRs1" value="5" style="width: 120px;">
+                </div>
+                <div class="info-row">
+                    <span class="info-label">rs2:</span>
+                    <input type="number" id="testRs2" value="3" style="width: 120px;">
+                </div>
+                <div class="info-row">
+                    <span class="info-label">imm:</span>
+                    <input type="number" id="testImm" value="0" style="width: 120px;">
+                </div>
+                <button id="testBtn" class="btn-test" style="opacity: 0.6;" title="请先注册指令">🧪 测试指令</button>
+                <div id="testResultPanel" class="test-result" style="display: none;"></div>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <div class="flex-between">
+            <button id="backToStep2" class="btn-gray">← 上一步</button>
+            <div>
+                <button id="registerBtn">✅ 注册指令</button>
+                <button id="finishBtn" style="display: none;">🎉 完成，跳转到调试</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 已注册指令列表 -->
+    <div class="card">
+        <h2>📋 已注册的自定义指令</h2>
+        <div id="instructionList" class="instruction-list">加载中...</div>
+        <button id="generateBtn" style="background: #1a73e8;">🔧 生成C++代码并编译</button>
+    </div>
+
+    <script>
+        let selectedType = null;
+        let registered = false;
+        let encodingFields = [];
+        
+        // 模板代码
+        const templates = {
+            'R': `// R型: rd = rs1 op rs2
+        let rs1_val = input.val_rs1;
+        let rs2_val = input.val_rs2;
+        let result = rs1_val + rs2_val;
+
+        output.alu_result = result;
+        output.reg_write = true;`,
+            'I': `// I型: rd = rs1 + imm
+        let rs1_val = input.val_rs1;
+        let imm = input.imm;
+        let result = rs1_val + imm;
+
+        output.alu_result = result;
+        output.reg_write = true;`,
+            'S': `// S型: 存储 rs2 到内存[rs1 + imm]
+        let addr = input.val_rs1 + input.imm;
+        let data = input.val_rs2;
+
+        output.mem_write = true;
+        output.mem_addr = addr;
+        output.mem_data = data;`,
+            'B': `// B型: 条件分支
+        if(input.val_rs1 == input.val_rs2) {
+            output.next_pc = input.pc + input.imm;
+            output.pc_modified = true;
+        }`,
+            'U': `// U型: 加载大立即数
+        let result = input.imm << 12;
+
+        output.alu_result = result;
+        output.reg_write = true;`,
+            'J': `// J型: 无条件跳转
+        output.alu_result = input.pc + 4;
+        output.next_pc = input.pc + input.imm;
+        output.pc_modified = true;
+        output.reg_write = true;`,
+            'custom': `// 自定义指令
+        let rs1_val = input.val_rs1;
+        let rs2_val = input.val_rs2;
+        let result = rs1_val + rs2_val;
+
+        output.alu_result = result;
+        output.reg_write = true;`
+        };
+        
+        // 渲染编码字段
+        function renderEncodingFields() {
+            const container = document.getElementById('encodingFields');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            const defaultFields = [
+                { name: 'opcode', value: '0b0001011', bits: '6-0', required: true },
+                { name: 'rd', value: '0b00000', bits: '11-7', required: false },
+                { name: 'funct3', value: '0b000', bits: '14-12', required: false },
+                { name: 'rs1', value: '0b00000', bits: '19-15', required: false },
+                { name: 'rs2', value: '0b00000', bits: '24-20', required: false },
+                { name: 'funct7', value: '0b0000000', bits: '31-25', required: false }
+            ];
+            
+            defaultFields.forEach(field => {
+                const row = createEncodingFieldRow(field.name, field.value, field.bits, field.required);
+                container.appendChild(row);
+            });
+            
+            encodingFields.forEach((field, index) => {
+                const row = createEncodingFieldRow(field.name, field.value, field.bits, false, index);
+                container.appendChild(row);
+            });
+        }
+        
+        function createEncodingFieldRow(name, value, bits, required, index = -1) {
+            const div = document.createElement('div');
+            div.className = 'encoding-field-row';
+            div.innerHTML = `
+                <div class="encoding-field-name">
+                    <input type="text" placeholder="字段名" value="${name}" ${required ? 'readonly' : ''}>
+                </div>
+                <div class="encoding-field-value">
+                    <input type="text" placeholder="值 (如: 0b000, 0x01)" value="${value}">
+                </div>
+                <div class="encoding-field-bit">
+                    <input type="text" placeholder="位域 (如: 6-0)" value="${bits}" size="8">
+                </div>
+                ${!required ? '<button class="remove-field-btn" title="删除字段">✕</button>' : ''}
+            `;
+            
+            if (!required) {
+                const removeBtn = div.querySelector('.remove-field-btn');
+                removeBtn.addEventListener('click', () => {
+                    encodingFields.splice(index, 1);
+                    renderEncodingFields();
+                });
+            }
+            
+            return div;
+        }
+        
+        // 添加编码字段
+        function addEncodingField() {
+            encodingFields.push({ name: 'new_field', value: '0b0', bits: '0-0' });
+            renderEncodingFields();
+        }
+        
+        // 步骤导航
+        function goToStep(step) {
+            for(let i = 1; i <= 3; i++) {
+                const indicator = document.getElementById(`step${i}Indicator`);
+                const panel = document.getElementById(`step${i}Panel`);
+                if(i === step) {
+                    indicator.classList.add('active');
+                    indicator.classList.remove('completed');
+                    panel.classList.add('active');
+                } else if(i < step) {
+                    indicator.classList.add('completed');
+                    indicator.classList.remove('active');
+                    panel.classList.remove('active');
+                } else {
+                    indicator.classList.remove('active', 'completed');
+                    panel.classList.remove('active');
+                }
+            }
+            
+            if(step === 2 && selectedType) {
+                document.getElementById('currentTypeDisplay').innerHTML = `${selectedType}型`;
+                if(templates[selectedType]) {
+                    document.getElementById('instCode').value = templates[selectedType];
+                }
+                renderEncodingFields();
+            }
+            
+            if(step === 3) {
+                updateDisplayInfo();
+                // 重置注册状态，必须重新注册才能测试
+                registered = false;
+                document.getElementById('registerBtn').style.display = 'inline-block';
+                document.getElementById('finishBtn').style.display = 'none';
+                const testBtn = document.getElementById('testBtn');
+                testBtn.style.opacity = '0.6';
+                testBtn.title = '请先注册指令';
+                // 清空之前的测试结果
+                const resultDiv = document.getElementById('testResultPanel');
+                resultDiv.style.display = 'none';
+                resultDiv.className = 'test-result';
+                resultDiv.innerHTML = '';
+            }
+        }
+        
+        // 选择指令类型
+        function selectType(type) {
+            selectedType = type;
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            document.querySelector(`.type-btn[data-type="${type}"]`).classList.add('selected');
+            document.getElementById('nextToStep2').disabled = false;
+            document.getElementById('currentTypeDisplay').innerHTML = `${type}型`;
+            
+            if(templates[type]) {
+                document.getElementById('instCode').value = templates[type];
+            }
+        }
+        
+        // 更新显示信息
+        function updateDisplayInfo() {
+            const name = document.getElementById('instName').value || '-';
+            const opcode = document.getElementById('opcode').value || '-';
+            const funct3 = document.getElementById('funct3').value;
+            const funct7 = document.getElementById('funct7').value;
+            
+            document.getElementById('displayName').innerHTML = name;
+            document.getElementById('displayType').innerHTML = selectedType ? selectedType + '型' : '-';
+            document.getElementById('displayOpcode').innerHTML = opcode;
+            
+            let machineCode = '';
+            if(opcode !== '-') machineCode += opcode;
+            if(funct3 && funct3 !== '-') machineCode += funct3;
+            if(funct7 && selectedType === 'R') machineCode += funct7;
+            document.getElementById('displayMachineCode').innerHTML = machineCode ? `0b${machineCode}` : '-';
+        }
+        
+        // 测试指令（必须注册后才能测试）
+        // 测试指令（必须注册后才能测试）
+        function testInstruction() {
+            // 检查是否已注册
+            if (!registered) {
+                alert('⚠️ 请先点击「注册指令」按钮注册后再进行测试！');
+                return;
+            }
+            
+            const rs1 = parseInt(document.getElementById('testRs1').value) || 0;
+            const rs2 = parseInt(document.getElementById('testRs2').value) || 0;
+            const imm = parseInt(document.getElementById('testImm').value) || 0;
+            const instName = document.getElementById('instName').value;
+            let instCode = document.getElementById('instCode').value;
+            
+            // 移除函数参数中的 & 符号，避免误判
+            instCode = instCode.replace(/Pipe&amp;/g, 'Pipe').replace(/Pipe&/g, 'Pipe');
+            
+            const resultDiv = document.getElementById('testResultPanel');
+            resultDiv.style.display = 'block';
+            
+            try {
+                let result;
+                let description = '';
+                
+                // 检测位移操作（优先检测，因为 << 包含 <）
+                if (instCode.includes('<<')) {
+                    result = imm << rs2;
+                    description = `${imm} << ${rs2} = ${result} (左移)`;
+                }
+                else if (instCode.includes('>>')) {
+                    result = imm >> rs2;
+                    description = `${imm} >> ${rs2} = ${result} (右移)`;
+                }
+                // 检测算术运算
+                else if (instCode.includes('+')) {
+                    if (selectedType === 'I' || selectedType === 'U') {
+                        result = rs1 + imm;
+                        description = `${rs1} + ${imm} = ${result}`;
+                    } else {
+                        result = rs1 + rs2;
+                        description = `${rs1} + ${rs2} = ${result}`;
+                    }
+                }
+                else if (instCode.includes('-')) {
+                    if (selectedType === 'I') {
+                        result = rs1 - imm;
+                        description = `${rs1} - ${imm} = ${result}`;
+                    } else {
+                        result = rs1 - rs2;
+                        description = `${rs1} - ${rs2} = ${result}`;
+                    }
+                }
+                else if (instCode.includes('*')) {
+                    result = rs1 * rs2;
+                    description = `${rs1} * ${rs2} = ${result}`;
+                }
+                // 检测按位运算
+                else if (instCode.includes('&')) {
+                    result = rs1 & rs2;
+                    description = `${rs1} & ${rs2} = ${result} (按位与)`;
+                }
+                else if (instCode.includes('|')) {
+                    result = rs1 | rs2;
+                    description = `${rs1} | ${rs2} = ${result} (按位或)`;
+                }
+                // 检测存储指令
+                else if (instCode.includes('mem_write')) {
+                    result = `存储地址: 0x${(rs1 + imm).toString(16)}, 数据: ${rs2}`;
+                    description = `内存[${rs1}+${imm}] = ${rs2}`;
+                }
+                // 检测条件分支
+                else if (instCode.includes('next_pc') && instCode.includes('if')) {
+                    result = rs1 === rs2 ? '✅ 条件成立，跳转' : '⏩ 条件不成立，顺序执行';
+                    description = rs1 === rs2 ? `${rs1} == ${rs2}, 跳转` : `${rs1} != ${rs2}, 不跳转`;
+                }
+                // 检测无条件跳转
+                else if (instCode.includes('next_pc')) {
+                    result = `跳转到 PC + ${imm}`;
+                    description = `无条件跳转，偏移 ${imm}`;
+                }
+                // 默认加法
+                else {
+                    result = rs1 + rs2;
+                    description = `${rs1} + ${rs2} = ${result} (默认)`;
+                }
+                
+                resultDiv.className = 'test-result success';
+                resultDiv.innerHTML = `
+                    <strong>✅ 测试通过！</strong><br>
+                    📊 指令: ${instName}<br>
+                    🔧 计算结果: ${result}<br>
+                    📝 详细: ${description}
+                `;
+            } catch(e) {
+                resultDiv.className = 'test-result error';
+                resultDiv.innerHTML = `
+                    <strong>❌ 测试失败！</strong><br>
+                    📝 错误信息: ${e.message}<br>
+                    💡 请检查指令逻辑代码
+                `;
+            }
+        }
+        
+        // 注册指令
+        function registerInstruction() {
+            const instName = document.getElementById('instName').value;
+            if(!instName) {
+                alert('请填写指令名称');
+                return;
+            }
+            if(!selectedType) {
+                alert('请选择指令类型');
+                return;
+            }
+            
+            const instruction = {
+                name: instName,
+                type: selectedType,
+                opcode: document.getElementById('opcode').value,
+                funct3: document.getElementById('funct3').value,
+                funct7: document.getElementById('funct7').value,
+                code: document.getElementById('instCode').value,
+                encodingFields: encodingFields,
+                timestamp: new Date().toISOString()
+            };
+            
+            let instructions = JSON.parse(localStorage.getItem('customInstructions') || '[]');
+            instructions.push(instruction);
+            localStorage.setItem('customInstructions', JSON.stringify(instructions));
+            
+            registered = true;
+            document.getElementById('registerBtn').style.display = 'none';
+            document.getElementById('finishBtn').style.display = 'inline-block';
+            
+            // 启用测试按钮
+            const testBtn = document.getElementById('testBtn');
+            testBtn.style.opacity = '1';
+            testBtn.title = '测试指令';
+            
+            alert('✅ 指令注册成功！现在可以点击「测试指令」按钮进行验证');
+            loadInstructionList();
+        }
+        
+        // 加载指令列表
+        function loadInstructionList() {
+            const instructions = JSON.parse(localStorage.getItem('customInstructions') || '[]');
+            const container = document.getElementById('instructionList');
+            
+            if(instructions.length === 0) {
+                container.innerHTML = '<div style="color:#888;">暂无自定义指令，添加一条吧~</div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            instructions.forEach((inst, idx) => {
+                const div = document.createElement('div');
+                div.className = 'inst-item';
+                div.innerHTML = `
+                    <span><strong>${inst.name}</strong> (${inst.type}型) - opcode: ${inst.opcode}</span>
+                    <button class="delete-btn" onclick="deleteInstruction(${idx})">删除</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        // 删除指令
+        window.deleteInstruction = function(idx) {
+            let instructions = JSON.parse(localStorage.getItem('customInstructions') || '[]');
+            instructions.splice(idx, 1);
+            localStorage.setItem('customInstructions', JSON.stringify(instructions));
+            loadInstructionList();
+            alert('已删除');
+        };
+        
+        // 生成代码
+        function generateAndCompile() {
+            alert('🔧 请在命令行运行:\n\npython generate_instruction.py\n\n然后重新编译模拟器');
+        }
+        
+        // 完成并跳转
+        function finishAndTest() {
+            alert('🎉 指令已保存，即将跳转到调试页面进行测试');
+            setTimeout(() => {
+                window.location.href = 'run_0501.html';
+            }, 1500);
+        }
+        
+        // 事件绑定
+        document.querySelectorAll('.type-btn').forEach(btn => {
+            btn.addEventListener('click', () => selectType(btn.getAttribute('data-type')));
+        });
+        
+        document.getElementById('nextToStep2').addEventListener('click', () => goToStep(2));
+        document.getElementById('backToStep1').addEventListener('click', () => goToStep(1));
+        document.getElementById('nextToStep3').addEventListener('click', () => goToStep(3));
+        document.getElementById('backToStep2').addEventListener('click', () => goToStep(2));
+        document.getElementById('registerBtn').addEventListener('click', registerInstruction);
+        document.getElementById('finishBtn').addEventListener('click', finishAndTest);
+        document.getElementById('testBtn').addEventListener('click', testInstruction);
+        document.getElementById('generateBtn').addEventListener('click', generateAndCompile);
+        document.getElementById('addFieldBtn').addEventListener('click', addEncodingField);
+        
+        // 初始化
+        loadInstructionList();
+    </script>
+</body>
+</html>

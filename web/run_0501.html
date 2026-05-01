@@ -1,0 +1,1102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OPENCPU - 运行程序</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/run.css" />
+  <style>
+    :root { --output-panel-width: 420px; --accent: #1a73e8; }
+    body { margin: 0; background: #ffffff; margin-right: calc(var(--output-panel-width) + 36px); }
+    h1 { margin: 0 0 10px; }
+    .container { padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
+    .nav-bar { margin-bottom: 18px; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+    .card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 16px;
+      padding: 16px;
+      width: 360px;
+      min-width: 360px;
+      max-width: 360px;
+      box-sizing: border-box;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .card h2 { margin: 0 0 10px; font-size: 18px; }
+    .btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    button { padding: 8px 12px; border-radius: 8px; border: 1px solid #1a73e8; background: #ffffff; color: #1a73e8; cursor: pointer; transition: all 0.2s ease; }
+    button:hover { background: #1a73e8; color: #ffffff; transform: translateY(-1px); box-shadow: 0 2px 8px rgba(26,115,232,0.22); }
+    button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+    select, input { padding: 8px; border: 1px solid #d0d7de; border-radius: 10px; width: 100%; margin: 6px 0; box-sizing: border-box; background: #ffffff; }
+    pre { background: #f8fafc; color: #0f172a; padding: 12px; border-radius: 12px; max-height: 360px; overflow: auto; border: 1px solid #e2e8f0; }
+    .wave-wrap { background: #fff; border: 1px solid #e0e0e0; border-radius: 16px; padding: 16px; margin-top: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    #waveCanvas { width: 100%; height: 520px; border: 1px solid #d0d7de; background: #ffffff; border-radius: 12px; display: block; }
+    .muted { color: #64748b; font-size: 13px; }
+    #outputPanel {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      width: var(--output-panel-width);
+      height: calc(100vh - 32px);
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 10px;
+      box-sizing: border-box;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+    }
+    #outputResizer {
+      position: absolute;
+      left: -4px;
+      top: 0;
+      width: 8px;
+      height: 100%;
+      cursor: col-resize;
+      border-radius: 8px;
+    }
+    #outputResizer:hover { background: rgba(37, 99, 235, 0.12); }
+    body.resizing { cursor: col-resize; user-select: none; }
+    #outputPanel h2 { margin: 0; font-size: 18px; }
+    #output { flex: 1; max-height: none; margin: 0; white-space: pre-wrap; }
+    .uart-input-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-top: 1px dashed #d6deea;
+      padding-top: 8px;
+    }
+    .uart-input-wrap label {
+      color: #475569;
+      font-size: 12px;
+    }
+    #uartInput {
+      width: 100%;
+      min-height: 82px;
+      resize: vertical;
+      border-radius: 6px;
+      border: 1px solid #bbb;
+      padding: 8px;
+      box-sizing: border-box;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    .uart-actions {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    #uartWaveHint {
+      color: #0f766e;
+      font-size: 12px;
+      white-space: pre-wrap;
+      background: #ecfeff;
+      border: 1px solid #a5f3fc;
+      border-radius: 6px;
+      padding: 6px 8px;
+      display: none;
+    }
+    .track-picker-row { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+    .track-picker-row select { margin: 0; flex: 1; }
+    .track-selected { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .track-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eef2ff;
+      color: #3730a3;
+      border: 1px solid #c7d2fe;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 12px;
+    }
+    .track-chip button {
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: #3730a3;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .quick-path { margin-top: 10px; padding-top: 8px; border-top: 1px dashed #d6deea; }
+    .quick-path code { word-break: break-all; }
+    .serial-panel {
+      margin-top: 8px;
+      border: 1px solid #d6deea;
+      border-radius: 8px;
+      background: #fff;
+      display: none;
+      padding: 8px;
+      gap: 8px;
+      flex-direction: column;
+    }
+    .serial-panel.active { display: flex; }
+    .serial-status {
+      font-size: 12px;
+      color: #475569;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .serial-output {
+      min-height: 140px;
+      max-height: 260px;
+      overflow: auto;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      background: #f8fafc;
+      white-space: pre-wrap;
+    }
+    .serial-send-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    #serialCmdInput {
+      margin: 0;
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav-bar">
+      <button class="back-btn" type="button" onclick="window.location.href='index1.html'">← 返回首页</button>
+      <div class="placeholder"></div>
+      <div class="placeholder"></div>
+    </div>
+  <aside id="outputPanel">
+    <div id="outputResizer" title="拖拽调整宽度"></div>
+    <h2>执行结果</h2>
+    <pre id="output">等待操作...</pre>
+    <div class="uart-input-wrap">
+      
+     
+      <p class="muted" style="margin: 0; font-size: 12px;">左侧"运行"无串口输入。需要 UART 交互请先点「打开串口」，再用「在串口中运行」或下方单行输入。</p>
+      <div class="uart-actions">
+        <button type="button" id="sendUartBtn">在串口中运行</button>
+        <button type="button" id="toggleSerialBtn">打开串口</button>
+      </div>
+      <div id="serialPanel" class="serial-panel">
+        <div class="serial-status">
+          <span id="serialConnText">未连接</span>
+          <span id="serialModeText">模式2：SSH实时交互</span>
+        </div>
+        <pre id="serialOutput" class="serial-output">等待串口连接...</pre>
+        <div class="serial-send-row">
+          <input id="serialCmdInput" type="text" placeholder="输入串口命令后回车/发送，例如：q" />
+          <button type="button" id="serialSendBtn">发送</button>
+          <button type="button" id="serialSttyBtn" title="仅在已回到 bash 提示符后点击；运行 io 时不要点，否则会当串口字符喂给模拟器">恢复 shell</button>
+        </div>
+      </div>
+      <div id="uartWaveHint"></div>
+    </div>
+  </aside>
+
+  <h1 class="title" style="text-align:left; font-size: 28px;">运行程序</h1>
+  <p class="muted" style="margin:0 0 12px;">编译、执行 RISC-V 程序；串口交互；生成与查看波形图。</p>
+
+  <div class="row">
+    <div class="card">
+      <h2>Connection</h2>
+      <label>API Base URL（VM 后端地址）</label>
+      <input id="apiBase" type="text" placeholder="如 http://100.x.x.x:5000 或留空使用同源" />
+      <div class="btns">
+        <button onclick="saveApiBase()">保存连接配置</button>
+      </div>
+      <p class="muted">HTML 放在 Windows 时，请填 VM 地址；同源部署可留空。</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <h2>Build</h2>
+      <p class="muted">对应 README: <code>make</code></p>
+      <div class="btns">
+        <button onclick="runAction('build','make')">make</button>
+        <button onclick="runAction('build','clean')">make clean</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Compile</h2>
+      <label>tests/ 文件</label>
+      <select id="testsFile"></select>
+      <div class="btns">
+        <button onclick="runAction('compile','c')">c</button>
+        <button onclick="runAction('compile','asm')">asm</button>
+        <button onclick="runAction('compile','dump')">dump</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>运行程序</h2>
+      <p class="muted">对应 README: <code>./build/test ...</code> 与 <code>./build/waveform ...</code></p>
+      <label>out/ 文件夹中的二进制文件</label>
+      <select id="outFile"></select>
+      <label>log steps</label>
+      <input id="logSteps" type="number" value="2000" min="1" />
+      <p class="muted">控制写入日志文件的最大步数，只影响日志大小。</p>
+      <label>max steps (0=默认)</label>
+      <input id="maxSteps" type="number" value="0" min="0" />
+      <p class="muted">CPU 最多运行多少步；0 表示用程序默认上限。</p>
+      
+      <label>log/ 文件（日志文件名，如果不指定，默认与程序名称一致）</label>
+      <input id="runLogFile" type="text" list="runLogFileList" placeholder="如 -2.txt" />
+      <datalist id="runLogFileList"></datalist>
+      <p class="muted">需要串口交互的程序（如 <code>io</code>）请用右侧「打开串口」→「在串口中运行」，勿依赖本按钮。</p>
+      <div class="btns">
+        <button onclick="runAction('simulate','run')">运行（HTTP，无串口输入）</button>
+        
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>绘制波形图</h2>
+      <label>log/ 文件夹中的日志文件</label>
+      <input id="logFile" type="text" list="logFileList" placeholder="如 -2.txt" />
+      <datalist id="logFileList"></datalist>
+      <label>max wave steps</label>
+      <input id="waveSteps" type="number" value="2000" min="1" />
+      <p class="muted">转波形时读取日志的步数上限。</p>
+      <label>输出文件名（写入 plot/文件夹）</label>
+      <input id="waveOutput" type="text" value="wave.json" />
+      <div class="btns">
+        <button onclick="runAction('waveform','build')">生成波形图json文件</button>
+        <button onclick="openWave()">打开波形图json文件</button>
+      </div>
+      <hr style="border: none; border-top: 1px dashed #d6deea; margin: 12px 0;" />
+      <h2>波形图可视化（分页）</h2>
+      <p class="muted" style="margin:0 0 8px;"><code>MUL</code> 与 <code>MULH</code> 共用多周期乘法单元（当前固定延迟 4 个仿真周期），结果在乘法完成周期从 EX/MEM 侧写出（波形上常为「占位 + 一拍写回」形态）。波形每一列是一个仿真周期；可调小「每页步数」并对照日志里的 <code>issue</code>/<code>complete</code>。</p>
+      <label>波形 JSON 文件（plot/ 下）</label>
+      <input id="waveJsonFile" type="text" value="wave.json" />
+      <label>每页步数</label>
+      <input id="pageSize" type="number" value="20" min="1" />
+      <label>可显示变量（从 JSON tracks 中选择）</label>
+      <div class="track-picker-row">
+        <select id="trackPicker"></select>
+        <button type="button" onclick="addSelectedTrack()">添加</button>
+        <button type="button" onclick="resetPreferredTracks()">默认</button>
+        <button type="button" onclick="clearTrackSelection()">清空</button>
+      </div>
+      <div id="selectedTracks" class="track-selected"></div>
+      <div class="btns">
+        <button onclick="loadWave()">加载波形</button>
+        <button onclick="prevPage()">上一页</button>
+        <button onclick="nextPage()">下一页</button>
+      </div>
+      <p id="wavePageInfo" class="muted">未加载</p>
+    </div>
+  </div>
+
+  <div class="wave-wrap">
+    <h2>波形图显示</h2>
+    <p class="muted" style="margin:0 0 8px;">在画布上<strong>单击</strong>放置竖线光标，下方列出该 step 各通道当前值（便于大步数时分页查看）。</p>
+    <canvas id="waveCanvas" style="width: 100%; height: auto; background: #fff; border: 1px solid #bbb; border-radius: 6px; cursor: crosshair;"></canvas>
+    <pre id="waveCursorReadout" style="margin-top:10px;padding:10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;white-space:pre-wrap;min-height:2.5em;">(未放置光标：在波形画布上单击)</pre>
+  </div>
+
+  <div class="row">
+    <button onclick="refreshFiles()">刷新文件列表</button>
+  </div>
+
+  <script>
+    let waveData = null;
+    let currentPage = 0;
+    let selectedTrackNames = [];
+    let waveCursorStep = null;
+    let waveViewGeom = null;
+    let actionInFlight = false;
+    let serialWs = null;
+    let serialModeOpen = false;
+    let serialRunning = false;
+    let serialRunDoneToken = '';
+
+    function currentApiBase() {
+      return (localStorage.getItem('SIM_API_BASE') || '').trim().replace(/\/+$/, '');
+    }
+
+    function apiUrl(path) {
+      const base = currentApiBase();
+      return base ? (base + path) : path;
+    }
+
+    function saveApiBase() {
+      const v = (document.getElementById('apiBase').value || '').trim();
+      localStorage.setItem('SIM_API_BASE', v);
+      document.getElementById('output').textContent = '已保存 API Base: ' + (v || '(same-origin)');
+      refreshFiles();
+    }
+
+    async function refreshFiles() {
+      const res = await fetch(apiUrl('/api/files'));
+      const data = await res.json();
+      fillSelect('testsFile', data.tests || []);
+      fillSelect('outFile', (data.out || []).filter((x) => !String(x).startsWith('.')));
+      fillDatalistInput('logFile', 'logFileList', data.log || []);
+      fillDatalistInput('runLogFile', 'runLogFileList', data.log || []);
+    }
+
+    function fillSelect(id, items) {
+      const sel = document.getElementById(id);
+      const prev = sel.value;
+      sel.innerHTML = '';
+      for (const item of items) {
+        const opt = document.createElement('option');
+        opt.value = item;
+        opt.textContent = item;
+        sel.appendChild(opt);
+      }
+      if (prev && items.includes(prev)) sel.value = prev;
+    }
+
+    function fillDatalistInput(inputId, listId, items) {
+      const input = document.getElementById(inputId);
+      const list = document.getElementById(listId);
+      list.innerHTML = '';
+      for (const item of items) {
+        const opt = document.createElement('option');
+        opt.value = item;
+        list.appendChild(opt);
+      }
+    }
+
+    function printResult(data) {
+      document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+    }
+
+    function appendSerialOutput(text) {
+      const out = document.getElementById('serialOutput');
+      out.textContent += String(text || '');
+      out.scrollTop = out.scrollHeight;
+    }
+
+    function setSerialButtonState() {
+      const btn = document.getElementById('toggleSerialBtn');
+      if (!btn) return;
+      if (!serialModeOpen) {
+        btn.textContent = '打开串口';
+        return;
+      }
+      btn.textContent = serialRunning ? '串口运行中' : '串口关闭';
+    }
+
+    function wsUrlFromApiBase() {
+      const base = currentApiBase();
+      if (base) {
+        const wsBase = base.replace(/^http:/i, 'ws:').replace(/^https:/i, 'wss:');
+        return wsBase + '/ws/ssh';
+      }
+      const wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      return `${wsProto}//${window.location.host}/ws/ssh`;
+    }
+
+    function closeSerial() {
+      if (serialWs) {
+        try { serialWs.close(); } catch (_) {}
+      }
+      serialWs = null;
+      serialModeOpen = false;
+      serialRunning = false;
+      const panel = document.getElementById('serialPanel');
+      const connText = document.getElementById('serialConnText');
+      if (panel) panel.classList.remove('active');
+      if (connText) connText.textContent = '未连接';
+      setSerialButtonState();
+    }
+
+    function openSerial() {
+      const panel = document.getElementById('serialPanel');
+      const connText = document.getElementById('serialConnText');
+      const output = document.getElementById('serialOutput');
+      if (panel) panel.classList.add('active');
+      if (output) output.textContent = '';
+      if (connText) connText.textContent = '连接中...';
+      serialModeOpen = true;
+      serialRunning = false;
+      setSerialButtonState();
+
+      const url = wsUrlFromApiBase();
+      serialWs = new WebSocket(url);
+      serialWs.onopen = () => {
+        if (connText) connText.textContent = `已连接: ${url}`;
+        appendSerialOutput('[串口] WebSocket 已连接\n');
+      };
+      serialWs.onmessage = (event) => {
+        let payload = null;
+        try { payload = JSON.parse(event.data); } catch (_) {}
+        if (!payload) {
+          appendSerialOutput(String(event.data || ''));
+          return;
+        }
+        if (payload.type === 'output') {
+          const chunk = String(payload.data || '');
+          appendSerialOutput(chunk);
+          if (serialRunDoneToken && chunkHasSerialRunDoneLine(chunk, serialRunDoneToken)) {
+            serialRunning = false;
+            setSerialButtonState();
+            appendSerialOutput('\n[串口] 程序已结束（若 shell 回显异常，请在出现提示符后点「恢复 shell」）\n');
+            serialRunDoneToken = '';
+          }
+        } else if (payload.type === 'error') {
+          appendSerialOutput(`\n[错误] ${payload.message || '未知错误'}\n`);
+        }
+      };
+      serialWs.onclose = () => {
+        if (connText) connText.textContent = '连接关闭';
+        serialWs = null;
+        serialRunning = false;
+        setSerialButtonState();
+      };
+      serialWs.onerror = () => {
+        if (connText) connText.textContent = '连接异常';
+      };
+    }
+
+    function sendSerialCommand(cmdText) {
+      if (!serialWs || serialWs.readyState !== WebSocket.OPEN) {
+        appendSerialOutput('\n[提示] 串口未连接\n');
+        return;
+      }
+      const cmd = String(cmdText || '').trim();
+      if (!cmd) return;
+      serialWs.send(JSON.stringify({ type: 'input', data: `${cmd}\n` }));
+      appendSerialOutput(`\n$ ${cmd}\n`);
+    }
+
+    function sendSerialRaw(data) {
+      if (!serialWs || serialWs.readyState !== WebSocket.OPEN) return;
+      serialWs.send(JSON.stringify({ type: 'input', data: String(data || '') }));
+    }
+
+    /** bash 的 echo 会单独一行输出哨兵；整行匹配避免误触发 */
+    function chunkHasSerialRunDoneLine(chunk, token) {
+      if (!token || !chunk.includes(token)) return false;
+      const lines = String(chunk).replace(/\r\n/g, '\n').split('\n');
+      return lines.some((line) => line.trim() === token);
+    }
+
+    /** 勿在 io 仍运行时发送：此时 PTY stdin 连着模拟器，会进 MMIO RX */
+    function sendShellSttySane() {
+      appendSerialOutput('\n[提示] 已向 shell 发送 stty sane（请确认已出现 bash 提示符）\n');
+      sendSerialRaw('stty sane 2>/dev/null\n');
+    }
+
+    function setActionBusy(busy) {
+      actionInFlight = busy;
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach((btn) => {
+        const originalText = btn.dataset.originalText || btn.textContent;
+        btn.dataset.originalText = originalText;
+        btn.disabled = busy;
+        btn.textContent = busy ? '执行中...' : originalText;
+      });
+    }
+
+    function parseSerialInputLines() {
+      const el = document.getElementById('uartInput');
+      const raw = el && typeof el.value === 'string' ? el.value : '';
+      return raw
+        .split('\n')
+        .map(v => v.trimEnd())
+        .filter(v => v.length > 0);
+    }
+
+    function updateUartWaveHint(data) {
+      const hint = document.getElementById('uartWaveHint');
+      if (!hint) return;
+      hint.style.display = 'none';
+      hint.textContent = '';
+
+      const text = JSON.stringify(data || {});
+      const successLike = /uart|serial|rx|tx|MMIO|UART/i.test(text) &&
+        !/timeout|timed out|超时|failed|失败/i.test(text);
+      if (!successLike) {
+        return;
+      }
+
+      hint.style.display = 'block';
+      hint.textContent =
+        '输出中含 UART/MMIO 相关信息时，可在波形图重点查看：\n' +
+        '- mem_addr（UART MMIO 地址读写）\n' +
+        '- mem_rw（load/store 区分收发方向）\n' +
+        '- wb_val / wb_reg（接收字符进入寄存器）\n' +
+        '- ex_result 与 control（轮询/分支等待路径）';
+    }
+
+    /** 方案 B：仅在 WebSocket 串口会话中启动当前选中的 out 程序；可选 #uartInput 批量行（无则仅启动，交互用单行框） */
+    function runSerialWithPreset() {
+      if (!serialModeOpen || !serialWs || serialWs.readyState !== WebSocket.OPEN) {
+        document.getElementById('output').textContent =
+          '请先在右侧点击「打开串口」并等待连接成功，再点「在串口中运行」。非交互程序仍可用卡片上的「运行（HTTP，无串口输入）」。';
+        return;
+      }
+      const file = document.getElementById('outFile').value;
+      if (!file) {
+        document.getElementById('output').textContent = '请先在「运行程序」卡片中选择 out/ 下的二进制。';
+        return;
+      }
+      const logSteps = Number(document.getElementById('logSteps').value || 2000);
+      const maxSteps = Number(document.getElementById('maxSteps').value || 0);
+      const mapName = document.getElementById('mapName').value.trim();
+      const cmdParts = ['./build/test', file];
+      if (maxSteps > 0) cmdParts.push(String(maxSteps));
+      cmdParts.push('--debug=1', `--log-steps=${logSteps}`);
+      if (mapName) cmdParts.push(`--map=${mapName}`);
+      serialRunDoneToken = `__SERIAL_DONE_${Date.now()}__`;
+      const runCmd = `${cmdParts.join(' ')}; echo ${serialRunDoneToken}`;
+      const lines = parseSerialInputLines();
+
+      serialRunning = true;
+      setSerialButtonState();
+      appendSerialOutput(`\n[运行] ${cmdParts.join(' ')}\n`);
+      sendSerialRaw('\u0003');
+      appendSerialOutput('^C\n');
+      setTimeout(() => {
+        sendSerialCommand(runCmd);
+        for (const line of lines) {
+          sendSerialCommand(line);
+        }
+      }, 120);
+      const hasQuit = lines.some(v => String(v).trim().toLowerCase() === 'q');
+      if (!hasQuit && lines.length > 0) {
+        appendSerialOutput('\n[提示] 许多串口测试需输入 q 退出；也可在下方单行框手动输入\n');
+      } else if (lines.length === 0) {
+        appendSerialOutput('\n[提示] 未填批量行时，请在程序提示后在下方输入框手动发送字符（如 q）\n');
+      }
+      document.getElementById('output').textContent = '已在串口会话中启动（见下方串口输出）。';
+    }
+
+    async function runAction(category, action) {
+      if (actionInFlight) {
+        document.getElementById('output').textContent = '已有命令在执行，请等待上一条完成。';
+        return;
+      }
+      const payload = { category, action };
+      if (category === 'compile') {
+        payload.file = document.getElementById('testsFile').value;
+      } else if (category === 'simulate') {
+        payload.file = document.getElementById('outFile').value;
+        payload.log_steps = Number(document.getElementById('logSteps').value || 2000);
+        payload.max_steps = Number(document.getElementById('maxSteps').value || 0);
+        payload.map = document.getElementById('mapName').value.trim();
+        payload.log_file = document.getElementById('runLogFile').value;
+        // HTTP 不附带串口输入；交互请用「在串口中运行」
+      } else if (category === 'waveform') {
+        payload.file = document.getElementById('logFile').value;
+        payload.max_wave_steps = Number(document.getElementById('waveSteps').value || 2000);
+        payload.output = document.getElementById('waveOutput').value.trim() || 'wave.json';
+      }
+      const timeoutMs = category === 'simulate' ? 180000 : 30000;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+      setActionBusy(true);
+      try {
+        const res = await fetch(apiUrl('/api/action'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+        const data = await res.json();
+        printResult(data);
+        if (category === 'simulate' && action === 'run') {
+          updateUartWaveHint(data);
+        }
+        if (category === 'simulate' && action === 'run_and_wave') {
+          
+        } else if (category === 'waveform' && action === 'build') {
+          const waveName = payload.output || 'wave.json';
+          document.getElementById('waveJsonFile').value = waveName;
+        }
+        await refreshFiles();
+      } catch (err) {
+        const msg = (err && err.name === 'AbortError')
+          ? `请求超时（>${timeoutMs}ms），已自动取消。`
+          : `请求失败: ${err?.message || err}`;
+        document.getElementById('output').textContent = msg;
+      } finally {
+        clearTimeout(timeoutId);
+        setActionBusy(false);
+      }
+    }
+
+    function openWave() {
+      const name = (document.getElementById('waveOutput').value || 'wave.json').trim();
+      window.open(apiUrl('/plot/' + encodeURIComponent(name)), '_blank');
+    }
+
+    function drawText(ctx, text, x, y, color = '#1f2937') {
+      ctx.fillStyle = color;
+      ctx.fillText(text, x, y);
+    }
+
+    function prepareCanvasForDraw(trackCount, pageSize) {
+      const canvas = document.getElementById('waveCanvas');
+      const dpr = window.devicePixelRatio || 1;
+      const cssWidth = Math.max(900, Math.floor(canvas.clientWidth || 900));
+      const cssHeight = Math.max(360, 80 + Math.max(1, trackCount) * 50);
+      canvas.style.height = `${cssHeight}px`;
+      canvas.width = Math.floor(cssWidth * dpr);
+      canvas.height = Math.floor(cssHeight * dpr);
+      const ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, cssWidth, cssHeight);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, cssWidth, cssHeight);
+      ctx.font = '12px Arial';
+      return { ctx, cssWidth, cssHeight };
+    }
+
+    function getStepValue(samples, step) {
+      let value = '-';
+      for (const s of samples) {
+        if (Number(s.step) <= step) {
+          value = s.value;
+        } else {
+          break;
+        }
+      }
+      return value;
+    }
+
+    function refreshWaveCursorReadout() {
+      const el = document.getElementById('waveCursorReadout');
+      if (!el) return;
+      if (!waveData || waveCursorStep === null) {
+        el.textContent = '(未放置光标：在波形画布上单击)';
+        return;
+      }
+      const tracks = getDisplayTracks(waveData.tracks).slice(0, 8);
+      const lines = [`step=${waveCursorStep}`];
+      for (const t of tracks) {
+        lines.push(`${t.name}: ${getStepValue(t.samples || [], waveCursorStep)}`);
+      }
+      el.textContent = lines.join('\n');
+    }
+
+    function getDisplayTracks(allTracks) {
+      const map = new Map((allTracks || []).map(t => [t.name, t]));
+      if (selectedTrackNames.length > 0) {
+        return selectedTrackNames
+          .filter(name => map.has(name))
+          .map(name => map.get(name));
+      }
+      const preferred = ['pc_if', 'pc_id', 'opcode', 'wb_reg', 'wb_val', 'mem_rw', 'mem_addr', 'control'];
+      const selected = [];
+      for (const name of preferred) {
+        if (map.has(name)) selected.push(map.get(name));
+      }
+      if (selected.length > 0) return selected;
+      return (allTracks || []).slice(0, 8);
+    }
+
+    function getTotalStepCount() {
+      const fromMeta = Number(waveData?.meta?.step_count || 0);
+      if (fromMeta > 0) return fromMeta;
+      const steps = Array.isArray(waveData?.steps) ? waveData.steps : [];
+      if (steps.length === 0) return 0;
+      const maxStep = Math.max(...steps.map(s => Number(s.step || 0)));
+      return maxStep + 1;
+    }
+
+    function isNumericLike(v) {
+      return typeof v === 'string' && (/^0x[0-9a-f]+$/i.test(v) || /^-?\d+$/.test(v));
+    }
+
+    function valueToLevel(v) {
+      if (v === '-' || v === '' || v == null) return 1;
+      if (/^0x0+$/i.test(v) || v === '0') return 0;
+      return 2;
+    }
+
+    function isBusTrack(trackName) {
+      return trackName.startsWith('pc_') ||
+        trackName === 'opcode' ||
+        trackName === 'wb_reg' ||
+        trackName === 'wb_val' ||
+        trackName === 'mem_addr' ||
+        trackName === 'mem_rw' ||
+        trackName === 'control' ||
+        trackName === 'ex_result';
+    }
+
+    function isBinaryLike(v) {
+      if (v === '-' || v === '' || v == null) return false;
+      return /^(0x0|0x1|0|1)$/i.test(String(v).trim());
+    }
+
+    function shouldRenderBusCells(trackName, samples) {
+      if (isBusTrack(trackName)) return true;
+      for (const s of samples || []) {
+        const v = String(s?.value ?? '').trim();
+        if (!v || v === '-') continue;
+        if (!isBinaryLike(v)) return true;
+      }
+      return false;
+    }
+
+    function getTrackColor(trackName, value, numericMode) {
+      if (trackName === 'control') {
+        const t = String(value || '');
+        if (t.includes('FLUSH')) return '#dc2626';
+        if (t.includes('STALL') || t.includes('hazard')) return '#d97706';
+        if (t.includes('FWD')) return '#0284c7';
+        return '#6b7280';
+      }
+      if (trackName === 'mem_rw') {
+        return String(value) === 'store' ? '#7c3aed' : '#0891b2';
+      }
+      if (trackName === 'opcode') return '#16a34a';
+      if (trackName.startsWith('pc_')) return '#0ea5e9';
+      if (trackName.startsWith('wb_')) return '#f59e0b';
+      if (trackName.startsWith('mem_')) return '#8b5cf6';
+      if (!numericMode) return '#475569';
+      return '#2563eb';
+    }
+
+    function updateTrackPicker() {
+      const picker = document.getElementById('trackPicker');
+      picker.innerHTML = '';
+      const tracks = Array.isArray(waveData?.tracks) ? waveData.tracks : [];
+      for (const t of tracks) {
+        const opt = document.createElement('option');
+        opt.value = t.name;
+        opt.textContent = t.name;
+        picker.appendChild(opt);
+      }
+      renderSelectedTracks();
+    }
+
+    function renderSelectedTracks() {
+      const wrap = document.getElementById('selectedTracks');
+      wrap.innerHTML = '';
+      if (selectedTrackNames.length === 0) {
+        wrap.textContent = '当前使用默认变量集';
+        wrap.classList.add('muted');
+        return;
+      }
+      wrap.classList.remove('muted');
+      for (const name of selectedTrackNames) {
+        const chip = document.createElement('span');
+        chip.className = 'track-chip';
+        chip.textContent = name;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = 'x';
+        btn.title = '移除';
+        btn.onclick = () => {
+          selectedTrackNames = selectedTrackNames.filter(n => n !== name);
+          renderSelectedTracks();
+          renderWavePage();
+        };
+        chip.appendChild(btn);
+        wrap.appendChild(chip);
+      }
+    }
+
+    function addSelectedTrack() {
+      const name = document.getElementById('trackPicker').value;
+      if (!name) return;
+      if (!selectedTrackNames.includes(name)) {
+        selectedTrackNames.push(name);
+      }
+      renderSelectedTracks();
+      renderWavePage();
+    }
+
+    function clearTrackSelection() {
+      selectedTrackNames = [];
+      renderSelectedTracks();
+      renderWavePage();
+    }
+
+    function resetPreferredTracks() {
+      const preferred = ['pc_if', 'pc_id', 'opcode', 'wb_reg', 'wb_val', 'mem_rw', 'mem_addr', 'control'];
+      const available = new Set((waveData?.tracks || []).map(t => t.name));
+      selectedTrackNames = preferred.filter(name => available.has(name));
+      renderSelectedTracks();
+      renderWavePage();
+    }
+
+    async function copyLogSignalPath() {
+      const text = document.getElementById('logSignalPath').textContent.trim();
+      try {
+        await navigator.clipboard.writeText(text);
+        document.getElementById('output').textContent = `已复制路径: ${text}\n字段清单宏：PIPE_*_LOG_FIELDS；日志开关：include/utils/utils.hpp 里的 SimLogConfig::log_pipe_signals`;
+      } catch (_) {
+        document.getElementById('output').textContent = `复制失败，请手动复制: ${text}`;
+      }
+    }
+
+    function renderWavePage() {
+      const canvas = document.getElementById('waveCanvas');
+      const pageSize = Math.max(1, Number(document.getElementById('pageSize').value || 20));
+
+      if (!waveData || !Array.isArray(waveData.tracks)) {
+        waveViewGeom = null;
+        const prepared = prepareCanvasForDraw(1, pageSize);
+        const ctx = prepared.ctx;
+        drawText(ctx, '请先加载 wave.json', 20, 30);
+        refreshWaveCursorReadout();
+        return;
+      }
+      const tracks = getDisplayTracks(waveData.tracks).slice(0, 8);
+      const prepared = prepareCanvasForDraw(tracks.length, pageSize);
+      const ctx = prepared.ctx;
+      const canvasWidth = prepared.cssWidth;
+      const canvasHeight = prepared.cssHeight;
+      if (waveData.tracks.length === 0) {
+        drawText(ctx, '已加载，但 tracks 为空（通常表示 log 中没有可解析波形）', 20, 30);
+      }
+
+      const startStep = currentPage * pageSize;
+      const endStep = startStep + pageSize - 1;
+
+      const left = 120;
+      const top = 50;
+      const rowH = 50;
+      const stepW = Math.max(20, Math.floor((canvasWidth - left - 20) / pageSize));
+
+      const trackRows = Math.max(1, tracks.length);
+      waveViewGeom = {
+        left,
+        top,
+        rowH,
+        stepW,
+        startStep,
+        pageSize,
+        trackCount: trackRows,
+        canvasWidth,
+        canvasHeight
+      };
+
+      // vertical step grid
+      ctx.strokeStyle = '#d9e1eb';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= pageSize; i += 1) {
+        const x = left + i * stepW;
+        ctx.beginPath();
+        ctx.moveTo(x, top - 20);
+        ctx.lineTo(x, top + trackRows * rowH);
+        ctx.stroke();
+      }
+
+      for (let i = 0; i <= pageSize; i += 5) {
+        const step = startStep + i;
+        drawText(ctx, String(step), left + i * stepW + 2, top - 25, '#64748b');
+      }
+
+      tracks.forEach((track, idx) => {
+        const baseY = top + idx * rowH;
+        drawText(ctx, track.name || `track${idx}`, 10, baseY + 18, '#0f172a');
+        const trackName = track.name || '';
+
+        let prevY = null;
+        let prevX = null;
+        let prevV = null;
+        let lastLabelX = -9999;
+        const busCellMode = shouldRenderBusCells(trackName, track.samples || []);
+        for (let s = startStep; s <= endStep; s += 1) {
+          const v = getStepValue(track.samples || [], s);
+          const numericMode = isNumericLike(v);
+          const busMode = busCellMode;
+          const level = valueToLevel(v); // 0=low 1=mid(unknown) 2=high
+          const y = (numericMode && !busMode) ? (baseY + (level === 2 ? 8 : (level === 1 ? 20 : 32))) : (baseY + 20);
+          const x = left + (s - startStep) * stepW;
+          const color = getTrackColor(trackName, v, numericMode);
+
+          if (busMode) {
+            const cellLeft = x;
+            const cellRight = x + stepW;
+            const topY = baseY + 10;
+            const bottomY = baseY + 30;
+            const edge = Math.min(6, Math.max(2, Math.floor(stepW * 0.22)));
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(cellLeft + edge, topY);
+            ctx.lineTo(cellRight - edge, topY);
+            ctx.lineTo(cellRight, baseY + 20);
+            ctx.lineTo(cellRight - edge, bottomY);
+            ctx.lineTo(cellLeft + edge, bottomY);
+            ctx.lineTo(cellLeft, baseY + 20);
+            ctx.closePath();
+            ctx.stroke();
+
+            if (v !== '-' && v !== '' && stepW >= 28) {
+              const text = String(v);
+              const maxChars = Math.max(2, Math.floor((stepW - 8) / 7));
+              const shown = text.length > maxChars ? (text.slice(0, Math.max(1, maxChars - 1)) + '…') : text;
+              ctx.fillStyle = color;
+              ctx.fillText(shown, cellLeft + 4, baseY + 24);
+            }
+            prevX = x;
+            prevY = y;
+            prevV = v;
+            continue;
+          }
+
+          if (prevX !== null) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(prevX, prevY);
+            ctx.lineTo(x, prevY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+          }
+          if ((busMode || !numericMode) && v !== prevV && v !== '-' && v !== '' && (x - lastLabelX) >= 48) {
+            drawText(ctx, String(v), x + 2, baseY + 35, color);
+            lastLabelX = x;
+          }
+          prevX = x;
+          prevY = y;
+          prevV = v;
+        }
+      });
+
+      if (waveCursorStep !== null && waveCursorStep >= startStep && waveCursorStep <= endStep) {
+        const cx = left + (waveCursorStep - startStep) * stepW + stepW / 2;
+        ctx.strokeStyle = '#ef4444';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(cx, top - 22);
+        ctx.lineTo(cx, top + trackRows * rowH);
+        ctx.stroke();
+      }
+
+      const totalSteps = getTotalStepCount();
+      const maxPages = Math.max(1, Math.ceil(totalSteps / pageSize));
+      document.getElementById('wavePageInfo').textContent =
+        `第 ${currentPage + 1}/${maxPages} 页，step ${startStep}-${endStep}（总步数约 ${totalSteps}）`;
+      refreshWaveCursorReadout();
+    }
+
+    async function loadWave() {
+      const name = (document.getElementById('waveJsonFile').value || 'wave.json').trim();
+      const res = await fetch(apiUrl('/plot/' + encodeURIComponent(name)));
+      if (!res.ok) {
+        document.getElementById('wavePageInfo').textContent = `加载失败: ${res.status} (${name})`;
+        return;
+      }
+      waveData = await res.json();
+      currentPage = 0;
+      waveCursorStep = null;
+      updateTrackPicker();
+      resetPreferredTracks();
+      renderWavePage();
+    }
+
+    function prevPage() {
+      if (!waveData) return;
+      currentPage = Math.max(0, currentPage - 1);
+      renderWavePage();
+    }
+
+    function nextPage() {
+      if (!waveData) return;
+      const pageSize = Math.max(1, Number(document.getElementById('pageSize').value || 20));
+      const maxPages = Math.max(1, Math.ceil(getTotalStepCount() / pageSize));
+      currentPage = Math.min(maxPages - 1, currentPage + 1);
+      renderWavePage();
+    }
+
+    function updateOutputPanelWidth(v) {
+      const px = Math.max(300, Math.min(900, Number(v || 420)));
+      document.documentElement.style.setProperty('--output-panel-width', `${px}px`);
+      localStorage.setItem('SIM_OUTPUT_PANEL_WIDTH', String(px));
+    }
+
+    function initOutputPanelResize() {
+      const resizer = document.getElementById('outputResizer');
+      if (!resizer) return;
+      let resizing = false;
+      const onMove = (e) => {
+        if (!resizing) return;
+        const newWidth = Math.max(300, Math.min(900, window.innerWidth - e.clientX - 16));
+        updateOutputPanelWidth(newWidth);
+      };
+      const stopResize = () => {
+        if (!resizing) return;
+        resizing = false;
+        document.body.classList.remove('resizing');
+        window.removeEventListener('mousemove', onMove);
+        window.removeEventListener('mouseup', stopResize);
+      };
+      resizer.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        resizing = true;
+        document.body.classList.add('resizing');
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', stopResize);
+      });
+    }
+
+    (function initWaveCanvasCursor() {
+      const canvas = document.getElementById('waveCanvas');
+      if (!canvas) return;
+      canvas.addEventListener('click', (e) => {
+        if (!waveViewGeom) return;
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.clientWidth / rect.width;
+        const x = (e.clientX - rect.left) * scaleX;
+        const { left, stepW, startStep, pageSize } = waveViewGeom;
+        if (x < left) return;
+        let idx = Math.floor((x - left) / stepW);
+        idx = Math.max(0, Math.min(pageSize - 1, idx));
+        waveCursorStep = startStep + idx;
+        renderWavePage();
+      });
+    })();
+
+    document.getElementById('apiBase').value = localStorage.getItem('SIM_API_BASE') || '';
+    const savedWidth = Number(localStorage.getItem('SIM_OUTPUT_PANEL_WIDTH') || 420);
+    updateOutputPanelWidth(savedWidth);
+    initOutputPanelResize();
+    const sendUartBtn = document.getElementById('sendUartBtn');
+    if (sendUartBtn) {
+      sendUartBtn.addEventListener('click', () => runSerialWithPreset());
+    }
+    const toggleSerialBtn = document.getElementById('toggleSerialBtn');
+    if (toggleSerialBtn) {
+      toggleSerialBtn.addEventListener('click', () => {
+        if (!serialModeOpen) openSerial();
+        else closeSerial();
+      });
+    }
+    const serialSendBtn = document.getElementById('serialSendBtn');
+    const serialCmdInput = document.getElementById('serialCmdInput');
+    if (serialSendBtn) {
+      serialSendBtn.addEventListener('click', () => sendSerialCommand(serialCmdInput?.value || ''));
+    }
+    const serialSttyBtn = document.getElementById('serialSttyBtn');
+    if (serialSttyBtn) {
+      serialSttyBtn.addEventListener('click', () => sendShellSttySane());
+    }
+    if (serialCmdInput) {
+      serialCmdInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          sendSerialCommand(serialCmdInput.value || '');
+          serialCmdInput.value = '';
+        }
+      });
+    }
+    setSerialButtonState();
+    renderSelectedTracks();
+    refreshFiles();
+    renderWavePage();
+  </script>
+  </div>
+</body>
+</html>

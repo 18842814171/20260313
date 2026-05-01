@@ -138,6 +138,10 @@ static std::string pipe_value(int32_t v) {
     return std::to_string(v);
 }
 
+static std::string pipe_value(ALUOp v) {
+    return std::to_string(static_cast<int>(v));
+}
+
 template <typename T>
 static void append_pipe_field(std::ostringstream& oss, bool& first, const char* key, const T& value) {
     if (!first) oss << " ";
@@ -278,7 +282,8 @@ void CPU::decode(Pipe_IF_ID& in, Pipe_ID_EX& out) {
                  (inst_reads_rs2(next_id) && in.inst.rs2() == pending_rd));
             const bool writes_pending =
                 (pending_rd != 0) && inst_writes_rd(next_id) && (in.inst.rd() == pending_rd);
-            const bool mul_port_busy = (next_id == INST_MUL) && !mul_unit_.can_issue();
+            const bool mul_port_busy =
+                ((next_id == INST_MUL) || (next_id == INST_MULH)) && !mul_unit_.can_issue();
             if (reads_pending || writes_pending || mul_port_busy) {
                 stall = true;
                 LOG("MUL scoreboard stall: pending x" + DEC(pending_rd) +
@@ -502,7 +507,7 @@ void CPU::execute(Pipe_ID_EX& in, const Pipe_EX_MEM& prev_ex_mem, Pipe_EX_MEM& o
         out.is_byte = false;
         out.is_unsigned = false;
         out.pc_modified = false;
-        LOG("MUL (multiplier): complete, rd=x" + DEC(m_rd) + " prod=" + HEX(m_prod));
+        LOG("MUL/mult (multiplier): complete, rd=x" + DEC(m_rd) + " result=" + HEX(m_prod));
         return;
     }
 
@@ -524,29 +529,14 @@ void CPU::execute(Pipe_ID_EX& in, const Pipe_EX_MEM& prev_ex_mem, Pipe_EX_MEM& o
     in.val_rs1 = rs1_val;
     in.val_rs2 = rs2_val;
 
-    if (in.inst_id == INST_MUL) {
-        mul_unit_.issue(rs1_val, rs2_val, in.rd, in.pc);
+    if (in.inst_id == INST_MUL || in.inst_id == INST_MULH) {
+        using MM = MultiplierUnit::MulMode;
+        const MM mm = (in.inst_id == INST_MULH) ? MM::MULH_high_signed : MM::MUL_low;
+        mul_unit_.issue(rs1_val, rs2_val, in.rd, in.pc, mm);
         mul_issued_count_++;
-        LOG("MUL (multiplier): issue, latency=" + DEC(MultiplierUnit::kLatency) +
+        LOG(std::string("MUL/mult (multiplier): issue ") + (mm == MM::MULH_high_signed ? "MULH" : "MUL") +
+            ", latency=" + DEC(MultiplierUnit::kLatency) +
             " rs1=" + HEX(rs1_val) + " rs2=" + HEX(rs2_val));
-        return;
-    }
-
-    if (in.inst_id == INST_MULH) {
-        const int64_t prod =
-            static_cast<int64_t>(static_cast<int32_t>(rs1_val)) *
-            static_cast<int64_t>(static_cast<int32_t>(rs2_val));
-        out.valid = true;
-        out.pc = in.pc;
-        out.rd = in.rd;
-        out.alu_result = static_cast<uint32_t>((static_cast<uint64_t>(prod) >> 32) & 0xFFFFFFFFu);
-        out.val_rs2 = in.val_rs2;
-        out.reg_write = true;
-        out.mem_read = false;
-        out.mem_write = false;
-        out.is_byte = false;
-        out.is_unsigned = false;
-        out.pc_modified = false;
         return;
     }
 

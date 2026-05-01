@@ -37,7 +37,7 @@ make
 ```bash
 ./compile.sh c tests/map_device_caller_test.c
 
-./build/test map_device_caller_test --map=maploader_sample
+./build/test map_device_caller_test --map=plot/maploader_sample.json
 ```
 # New: to waveform
 ./build/test xxx --debug=1 --log-steps=2000

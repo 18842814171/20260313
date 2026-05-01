@@ -1,0 +1,245 @@
+Instruction table initialized with 38 entries
+Interrupts enabled
+Loading ELF: out/mul_test
+Program entry point: 0x0x10000
+Main address: 0x0x0
+GP initialized to 0x0x11824
+
+========== Running ==========
+==============================
+Step: 0
+==============================
+  IF pc: 0x10000
+    raw_inst: 0x600513
+ [PIPE_IF_ID] valid=1 pc=0x10000 interrupt_taken=0 interrupt_pc=0x0 inst_raw=0x600513
+ [PIPE_ID_EX] valid=0 pc=0x0 inst_id=0x0 rs1=0x0 rs2=0x0 rd=0x0 imm=0 val_rs1=0x0 val_rs2=0x0 alu_src=0 alu_op=0 reg_write=0 mem_read=0 mem_write=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+ [PIPE_EX_MEM] valid=0 pc=0x0 rd=0x0 is_unsigned=0 alu_result=0x0 val_rs2=0x0 target_pc=0x0 pc_modified=0 reg_write=0 mem_read=0 mem_write=0 is_byte=0 is_trap=0 trap_cause=0x0
+ [PIPE_MEM_WB] valid=0 rd=0x0 alu_result=0x0 mem_data=0x0 reg_write=0 mem_read=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+==============================
+Step: 1
+==============================
+  Decoded Instruction: ADDI
+  ID pc: 0x10000
+    rs1=x0 rs2=x6 rd=x10
+    imm=0x6
+    rs1_val=0x0 rs2_val=0x0
+  IF pc: 0x10004
+    raw_inst: 0x700593
+ [PIPE_IF_ID] valid=1 pc=0x10004 interrupt_taken=0 interrupt_pc=0x0 inst_raw=0x700593
+ [PIPE_ID_EX] valid=1 pc=0x10000 inst_id=0x13 rs1=0x0 rs2=0x6 rd=0xa imm=6 val_rs1=0x0 val_rs2=0x0 alu_src=1 alu_op=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+ [PIPE_EX_MEM] valid=0 pc=0x0 rd=0x0 is_unsigned=0 alu_result=0x0 val_rs2=0x0 target_pc=0x0 pc_modified=0 reg_write=0 mem_read=0 mem_write=0 is_byte=0 is_trap=0 trap_cause=0x0
+ [PIPE_MEM_WB] valid=0 rd=0x0 alu_result=0x0 mem_data=0x0 reg_write=0 mem_read=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+==============================
+Step: 2
+==============================
+  EXEC: ADDI rd=x10 rs1=x0 rs2=x6 | x0=0x0 x6=0x0 imm=0x6
+execute_inst: id=0x13 (ADDI)
+Instruction ID ADDI 0x13
+Input1 value = 0
+Input2 source = Immediate
+Selected Input2 value = 6
+ADDI Result: 6
+  EX result: 0x6
+  Decoded Instruction: ADDI
+  ID pc: 0x10004
+    rs1=x0 rs2=x7 rd=x11
+    imm=0x7
+    rs1_val=0x0 rs2_val=0x0
+  IF pc: 0x10008
+    raw_inst: 0x2b50533
+ [PIPE_IF_ID] valid=1 pc=0x10008 interrupt_taken=0 interrupt_pc=0x0 inst_raw=0x2b50533
+ [PIPE_ID_EX] valid=1 pc=0x10004 inst_id=0x13 rs1=0x0 rs2=0x7 rd=0xb imm=7 val_rs1=0x0 val_rs2=0x0 alu_src=1 alu_op=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+ [PIPE_EX_MEM] valid=1 pc=0x10000 rd=0xa is_unsigned=0 alu_result=0x6 val_rs2=0x0 target_pc=0x0 pc_modified=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_trap=0 trap_cause=0x0
+ [PIPE_MEM_WB] valid=0 rd=0x0 alu_result=0x0 mem_data=0x0 reg_write=0 mem_read=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+==============================
+Step: 3
+==============================
+  EXEC: ADDI rd=x11 rs1=x0 rs2=x7 | x0=0x0 x7=0x0 imm=0x7
+execute_inst: id=0x13 (ADDI)
+Instruction ID ADDI 0x13
+Input1 value = 0
+Input2 source = Immediate
+Selected Input2 value = 7
+ADDI Result: 7
+  EX result: 0x7
+  Decoded Instruction: MUL
+  ID pc: 0x10008
+    rs1=x10 rs2=x11 rd=x10
+    rs1_val=0x1 rs2_val=0x20004
+  IF pc: 0x1000c
+    raw_inst: 0x500613
+ [PIPE_IF_ID] valid=1 pc=0x1000c interrupt_taken=0 interrupt_pc=0x0 inst_raw=0x500613
+ [PIPE_ID_EX] valid=1 pc=0x10008 inst_id=0x433 rs1=0xa rs2=0xb rd=0xa imm=0 val_rs1=0x1 val_rs2=0x20004 alu_src=0 alu_op=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+ [PIPE_EX_MEM] valid=1 pc=0x10004 rd=0xb is_unsigned=0 alu_result=0x7 val_rs2=0x0 target_pc=0x0 pc_modified=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_trap=0 trap_cause=0x0
+ [PIPE_MEM_WB] valid=1 rd=0xa alu_result=0x6 mem_data=0x0 reg_write=1 mem_read=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+==============================
+Step: 4
+==============================
+  WB: r10 = 0x6 (from ALU)
+  FWD: x11 <- MEM/WB
+  FWD: x11 <- EX/MEM
+  MUL (multiplier): issue, latency=4 rs1=0x6 rs2=0x7
+  Decoded Instruction: ADDI
+  ID pc: 0x1000c
+    rs1=x0 rs2=x5 rd=x12
+    imm=0x5
+    rs1_val=0x0 rs2_val=0x0
+  IF pc: 0x10010
+    raw_inst: 0x960693
+ [PIPE_IF_ID] valid=1 pc=0x10010 interrupt_taken=0 interrupt_pc=0x0 inst_raw=0x960693
+ [PIPE_ID_EX] valid=1 pc=0x1000c inst_id=0x13 rs1=0x0 rs2=0x5 rd=0xc imm=5 val_rs1=0x0 val_rs2=0x0 alu_src=1 alu_op=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+ [PIPE_EX_MEM] valid=0 pc=0x10004 rd=0xb is_unsigned=0 alu_result=0x7 val_rs2=0x0 target_pc=0x0 pc_modified=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_trap=0 trap_cause=0x0
+ [PIPE_MEM_WB] valid=1 rd=0xb alu_result=0x7 mem_data=0x0 reg_write=1 mem_read=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+==============================
+Step: 5
+==============================
+  WB: r11 = 0x7 (from ALU)
+  EXEC: ADDI rd=x12 rs1=x0 rs2=x5 | x0=0x0 x5=0x0 imm=0x5
+execute_inst: id=0x13 (ADDI)
+Instruction ID ADDI 0x13
+Input1 value = 0
+Input2 source = Immediate
+Selected Input2 value = 5
+ADDI Result: 5
+  EX result: 0x5
+  Decoded Instruction: ADDI
+  ID pc: 0x10010
+    rs1=x12 rs2=x9 rd=x13
+    imm=0x9
+    rs1_val=0x0 rs2_val=0x0
+  IF pc: 0x10014
+    raw_inst: 0xd50733
+ [PIPE_IF_ID] valid=1 pc=0x10014 interrupt_taken=0 interrupt_pc=0x0 inst_raw=0xd50733
+ [PIPE_ID_EX] valid=1 pc=0x10010 inst_id=0x13 rs1=0xc rs2=0x9 rd=0xd imm=9 val_rs1=0x0 val_rs2=0x0 alu_src=1 alu_op=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+ [PIPE_EX_MEM] valid=1 pc=0x1000c rd=0xc is_unsigned=0 alu_result=0x5 val_rs2=0x0 target_pc=0x0 pc_modified=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_trap=0 trap_cause=0x0
+ [PIPE_MEM_WB] valid=0 rd=0xb alu_result=0x7 mem_data=0x0 reg_write=1 mem_read=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+==============================
+Step: 6
+==============================
+  FWD: x12 <- MEM/WB
+  FWD: x12 <- EX/MEM
+  EXEC: ADDI rd=x13 rs1=x12 rs2=x9 | x12=0x5 x9=0x0 imm=0x9
+execute_inst: id=0x13 (ADDI)
+Instruction ID ADDI 0x13
+Input1 value = 5
+Input2 source = Immediate
+Selected Input2 value = 9
+ADDI Result: 14
+  EX result: 0xe
+  MUL scoreboard stall: pending x10 next=ADD
+  STALL inserted
+  Fetch stalled
+ [PIPE_IF_ID] valid=1 pc=0x10014 interrupt_taken=0 interrupt_pc=0x0 inst_raw=0xd50733
+ [PIPE_ID_EX] valid=0 pc=0x10010 inst_id=0x13 rs1=0xc rs2=0x9 rd=0xd imm=9 val_rs1=0x5 val_rs2=0x0 alu_src=1 alu_op=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+ [PIPE_EX_MEM] valid=1 pc=0x10010 rd=0xd is_unsigned=0 alu_result=0xe val_rs2=0x0 target_pc=0x0 pc_modified=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_trap=0 trap_cause=0x0
+ [PIPE_MEM_WB] valid=1 rd=0xc alu_result=0x5 mem_data=0x0 reg_write=1 mem_read=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+==============================
+Step: 7
+==============================
+  WB: r12 = 0x5 (from ALU)
+  MUL scoreboard stall: pending x10 next=ADD
+  STALL inserted
+  Fetch stalled
+ [PIPE_IF_ID] valid=1 pc=0x10014 interrupt_taken=0 interrupt_pc=0x0 inst_raw=0xd50733
+ [PIPE_ID_EX] valid=0 pc=0x10010 inst_id=0x13 rs1=0xc rs2=0x9 rd=0xd imm=9 val_rs1=0x5 val_rs2=0x0 alu_src=1 alu_op=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+ [PIPE_EX_MEM] valid=0 pc=0x10010 rd=0xd is_unsigned=0 alu_result=0xe val_rs2=0x0 target_pc=0x0 pc_modified=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_trap=0 trap_cause=0x0
+ [PIPE_MEM_WB] valid=1 rd=0xd alu_result=0xe mem_data=0x0 reg_write=1 mem_read=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+==============================
+Step: 8
+==============================
+  WB: r13 = 0xe (from ALU)
+  MUL (multiplier): complete, rd=x10 prod=0x2a
+==============================
+Step: 9
+==============================
+  Decoded Instruction: ADD
+  ID pc: 0x10014
+    rs1=x10 rs2=x13 rd=x14
+    rs1_val=0x6 rs2_val=0xe
+  IF pc: 0x10018
+    raw_inst: 0x70513
+ [PIPE_IF_ID] valid=1 pc=0x10018 interrupt_taken=0 interrupt_pc=0x0 inst_raw=0x70513
+ [PIPE_ID_EX] valid=1 pc=0x10014 inst_id=0x33 rs1=0xa rs2=0xd rd=0xe imm=0 val_rs1=0x6 val_rs2=0xe alu_src=0 alu_op=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+ [PIPE_EX_MEM] valid=0 pc=0x10008 rd=0xa is_unsigned=0 alu_result=0x2a val_rs2=0x0 target_pc=0x0 pc_modified=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_trap=0 trap_cause=0x0
+ [PIPE_MEM_WB] valid=1 rd=0xa alu_result=0x2a mem_data=0x0 reg_write=1 mem_read=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+==============================
+Step: 10
+==============================
+  WB: r10 = 0x2a (from ALU)
+  EXEC: ADD rd=x14 rs1=x10 rs2=x13 | x10=0x2a x13=0xe
+execute_inst: id=0x33 (ADD)
+Instruction ID ADD 0x33
+  EX result: 0x38
+  Decoded Instruction: ADDI
+  ID pc: 0x10018
+    rs1=x14 rs2=x0 rd=x10
+    rs1_val=0x0 rs2_val=0x0
+  IF pc: 0x1001c
+    raw_inst: 0x5d00893
+ [PIPE_IF_ID] valid=1 pc=0x1001c interrupt_taken=0 interrupt_pc=0x0 inst_raw=0x5d00893
+ [PIPE_ID_EX] valid=1 pc=0x10018 inst_id=0x13 rs1=0xe rs2=0x0 rd=0xa imm=0 val_rs1=0x0 val_rs2=0x0 alu_src=1 alu_op=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+ [PIPE_EX_MEM] valid=1 pc=0x10014 rd=0xe is_unsigned=0 alu_result=0x38 val_rs2=0xe target_pc=0x0 pc_modified=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_trap=0 trap_cause=0x0
+ [PIPE_MEM_WB] valid=0 rd=0xa alu_result=0x2a mem_data=0x0 reg_write=1 mem_read=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+==============================
+Step: 11
+==============================
+  FWD: x14 <- MEM/WB
+  FWD: x14 <- EX/MEM
+  EXEC: ADDI rd=x10 rs1=x14 rs2=x0 | x14=0x38 x0=0x0
+execute_inst: id=0x13 (ADDI)
+Instruction ID ADDI 0x13
+Input1 value = 56
+Input2 source = Immediate
+Selected Input2 value = 0
+ADDI Result: 56
+  EX result: 0x38
+  Decoded Instruction: ADDI
+  ID pc: 0x1001c
+    rs1=x0 rs2=x29 rd=x17
+    imm=0x5d
+    rs1_val=0x0 rs2_val=0x0
+  IF pc: 0x10020
+    raw_inst: 0x73
+ [PIPE_IF_ID] valid=1 pc=0x10020 interrupt_taken=0 interrupt_pc=0x0 inst_raw=0x73
+ [PIPE_ID_EX] valid=1 pc=0x1001c inst_id=0x13 rs1=0x0 rs2=0x1d rd=0x11 imm=93 val_rs1=0x0 val_rs2=0x0 alu_src=1 alu_op=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+ [PIPE_EX_MEM] valid=1 pc=0x10018 rd=0xa is_unsigned=0 alu_result=0x38 val_rs2=0x0 target_pc=0x0 pc_modified=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_trap=0 trap_cause=0x0
+ [PIPE_MEM_WB] valid=1 rd=0xe alu_result=0x38 mem_data=0x0 reg_write=1 mem_read=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+==============================
+Step: 12
+==============================
+  WB: r14 = 0x38 (from ALU)
+  EXEC: ADDI rd=x17 rs1=x0 rs2=x29 | x0=0x0 x29=0x0 imm=0x5d
+execute_inst: id=0x13 (ADDI)
+Instruction ID ADDI 0x13
+Input1 value = 0
+Input2 source = Immediate
+Selected Input2 value = 93
+ADDI Result: 93
+  EX result: 0x5d
+  Decoded Instruction: ECALL
+  ID pc: 0x10020
+  IF pc: 0x10024
+    raw_inst: 0x0
+ [PIPE_IF_ID] valid=1 pc=0x10024 interrupt_taken=0 interrupt_pc=0x0 inst_raw=0x0
+ [PIPE_ID_EX] valid=1 pc=0x10020 inst_id=0x73 rs1=0x0 rs2=0x0 rd=0x0 imm=0 val_rs1=0x0 val_rs2=0x0 alu_src=1 alu_op=0 reg_write=0 mem_read=0 mem_write=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+ [PIPE_EX_MEM] valid=1 pc=0x1001c rd=0x11 is_unsigned=0 alu_result=0x5d val_rs2=0x0 target_pc=0x0 pc_modified=0 reg_write=1 mem_read=0 mem_write=0 is_byte=0 is_trap=0 trap_cause=0x0
+ [PIPE_MEM_WB] valid=1 rd=0xa alu_result=0x38 mem_data=0x0 reg_write=1 mem_read=0 is_byte=0 is_unsigned=0 is_trap=0 trap_cause=0x0
+==============================
+Step: 13
+==============================
+  WB: r10 = 0x38 (from ALU)
+  EXEC: ECALL rd=x0 rs1=x0 rs2=x0 | x0=0x0 x0=0x0
+  SYSCALL: exit(56)
+  ECALL: a7=93 a0=56 a1=7 a2=5
+Halted (ECALL/EBREAK).
+Ran 14 step(s). a0 (x10) = 56. exit_code = 56
+
+Ran 14 steps.
+PC: 0x0x10028
+Exit code: 56
+
+=== Final Register State ===
+
+========== Final Status ==========
+Timer MTIME: 13
+UART RX FIFO: 0 char(s)

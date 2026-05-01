@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPENCPU - 教育版 | RISC-V 模拟器</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 标题区域 -->
+        <header class="header">
+            <h1 class="title">OPENCPU</h1>
+            <p class="subtitle">教育版 - RISC-V 流水线模拟器</p>
+        </header>
+
+        <!-- 主菜单区域 -->
+        <main class="main-menu">
+            <div class="button-grid">
+                <button class="menu-btn primary" data-page="run" onclick="window.location.href='run_0501.html'">
+                    <span class="btn-icon">▶</span>
+                    <span class="btn-text">1. 运行程序</span>
+                    <span class="btn-desc">编译、执行 RISC-V 程序；串口交互；显示波形图</span>
+                </button>
+
+                <button class="menu-btn primary" data-page="custom-inst">
+                    <span class="btn-icon">⚙</span>
+                    <span class="btn-text">2. 添加自定义指令</span>
+                    <span class="btn-desc"></span>
+                </button>
+
+                <button class="menu-btn primary" data-page="peripheral">
+                    <span class="btn-icon">🔌</span>
+                    <span class="btn-text">3. 外设信息</span>
+                    <span class="btn-desc">查看并修改当前外设信息</span>
+                </button>
+
+                <button class="menu-btn primary" data-page="storage" onclick="window.location.href='map_plotter.html'">
+                    <span class="btn-icon">💾</span>
+                    <span class="btn-text">4. 启用绘图仪</span>
+                    <span class="btn-desc">运行绘图仪功能</span>
+                </button>
+
+                <button class="menu-btn primary" data-page="terminal" onclick="window.location.href='terminal.html'">
+                    <span class="btn-icon">🔧</span>
+                    <span class="btn-text">5. 连接终端</span>
+                    <span class="btn-desc">打开内核开发环境终端,用于添加文件</span>
+                    
+                </button>
+            </div>
+
+            <!-- 退出按钮区域 -->
+            <div class="exit-section">
+                <button class="menu-btn exit" data-page="exit">
+                    <span class="btn-icon">🚪</span>
+                    <span class="btn-text">退出</span>
+                    <span class="btn-desc">关闭模拟器</span>
+                </button>
+            </div>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <p>© 2024 OPENCPU 教育版 | 基于 RISC-V RV32I 架构</p>
+        </footer>
+    </div>
+
+    <!-- 模态框提示（临时，后续可替换为实际页面） -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 id="modal-title">提示</h2>
+            <p id="modal-message">功能开发中，敬请期待！</p>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

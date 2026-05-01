@@ -1,0 +1,219 @@
+<!doctype html>
+<!-- [占位/后端] 地图 JSON 下拉依赖 GET /api/files 的 JSON 字段 plot_json（字符串数组，为 plot 目录下 *.json 文件名）。若未实现，页面仍可通过手动输入框传参。 -->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>绘图仪 · 地图 JSON 渲染</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #fafafa; max-width: 960px; }
+    h1 { margin-bottom: 8px; }
+    .hints { background: #ecfeff; border: 1px solid #a5f3fc; border-radius: 8px; padding: 10px 12px; margin: 12px 0 16px; color: #0f172a; font-size: 14px; line-height: 1.55; }
+    .hints a { color: #0369a1; }
+    .card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 14px; margin-bottom: 14px; }
+    label { display: block; margin-top: 8px; font-size: 13px; color: #334155; }
+    select, input { width: 100%; max-width: 480px; padding: 8px; margin-top: 4px; border-radius: 6px; border: 1px solid #bbb; box-sizing: border-box; }
+    button { padding: 8px 14px; margin: 10px 8px 0 0; border-radius: 6px; border: 1px solid #999; background: #f4f4f4; cursor: pointer; }
+    button:hover { background: #e9e9e9; }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+    .muted { color: #64748b; font-size: 13px; }
+    #mapRunOutput { white-space: pre-wrap; background: #f6f8fb; border: 1px solid #dbe2ea; border-radius: 8px; padding: 10px; min-height: 80px; font-size: 12px; }
+    #mapPreviewWrap { margin-top: 12px; text-align: center; }
+    #mapPreviewImg { max-width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; }
+    .nav { margin-bottom: 16px; }
+    .nav a { margin-right: 12px; }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <a href="index1.html">← 返回首页</a>
+  </div>
+  <h1>绘图仪 · 从地图 JSON 生成画面</h1>
+  <div class="hints">
+    <div>（1）此页面用于运行绘图仪功能：仅执行 <code>map_device_caller_test</code>，并通过 <code>--map</code> 指定 <code>plot/</code> 目录下的地图 JSON（CAD 实体数组、像素图或瓦片图格式见 <code>include/maploader.hpp</code>）。</div>
+    <div style="margin-top:8px;">（2）如需在仓库中新增或修改地图 JSON，请返回首页进入「连接终端」页进行文件读写（SSH 读写 <code>plot/*.json</code>）。</div>
+  </div>
+
+  <div class="card">
+    <label for="apiBase">API Base URL（与运行控制台相同，可留空同源）</label>
+    <input id="apiBase" type="text" placeholder="http://主机:5000" />
+    <button type="button" id="saveApi">保存连接配置</button>
+    <p class="muted">地图 JSON 下拉列表来自接口字段 <code>plot_json</code>；若后端尚未实现，可手动在下方输入框填写文件名（如 <code>maploader_sample.json</code>）。</p>
+
+    <label for="plotJsonSelect">plot/ 下可用于地图的 JSON</label>
+    <select id="plotJsonSelect"></select>
+    <label for="plotJsonManual">或手动指定（相对 plot/ 或含 plot/ 的路径）</label>
+    <input id="plotJsonManual" type="text" placeholder="maploader_sample.json" />
+
+    <button type="button" id="runMapBtn">运行绘图仪并刷新预览</button>
+    <button type="button" id="refreshPreviewBtn">仅刷新预览图</button>
+
+    <p id="mapListNote" class="muted"></p>
+    <pre id="mapRunOutput"></pre>
+    <div id="mapPreviewWrap">
+      <p class="muted">预览（由模拟器写出 P6 PPM，本页在浏览器内转为图像显示；地图源仅使用 JSON，不在此页选择 PPM 作为输入）。</p>
+      <img id="mapPreviewImg" alt="地图渲染预览" style="display:none;" />
+    </div>
+  </div>
+
+  <script>
+    const FIXED_ELF = 'map_device_caller_test';
+    const PREVIEW_FILE = 'map_device_preview.ppm';
+
+    function currentApiBase() {
+      return (localStorage.getItem('SIM_API_BASE') || '').trim().replace(/\/+$/, '');
+    }
+    function apiUrl(path) {
+      const base = currentApiBase();
+      return base ? (base + path) : path;
+    }
+
+    function setOut(msg) {
+      document.getElementById('mapRunOutput').textContent = msg;
+    }
+
+    document.getElementById('apiBase').value = localStorage.getItem('SIM_API_BASE') || '';
+    document.getElementById('saveApi').onclick = () => {
+      const v = (document.getElementById('apiBase').value || '').trim();
+      localStorage.setItem('SIM_API_BASE', v);
+      setOut('已保存 API Base: ' + (v || '(同源)'));
+      loadPlotJsonList();
+    };
+
+    function mapArgFromInputs() {
+      const manual = (document.getElementById('plotJsonManual').value || '').trim();
+      if (manual) return manual.replace(/^plot\//, '');
+      const sel = (document.getElementById('plotJsonSelect').value || '').trim();
+      return sel;
+    }
+
+    function fillPlotJsonSelect(items) {
+      const sel = document.getElementById('plotJsonSelect');
+      const prev = sel.value;
+      sel.innerHTML = '';
+      const list = Array.isArray(items) ? items.filter((n) => n && !n.startsWith('.')) : [];
+      for (const name of list) {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        sel.appendChild(opt);
+      }
+      if (prev && list.includes(prev)) sel.value = prev;
+      document.getElementById('mapListNote').textContent =
+        list.length ? `共 ${list.length} 个 JSON（来自 /api/files 的 plot_json）。` :
+        '未从服务器取得 plot_json 列表：请在后端 /api/files 响应中加入键 plot_json（plot 目录下 *.json 文件名数组），或用手动输入框指定。';
+    }
+
+    async function loadPlotJsonList() {
+      try {
+        const res = await fetch(apiUrl('/api/files'));
+        const data = await res.json();
+        const plotJson = data.plot_json || data.plotJson || [];
+        fillPlotJsonSelect(plotJson);
+      } catch (e) {
+        fillPlotJsonSelect([]);
+        setOut('加载文件列表失败: ' + (e && e.message ? e.message : e));
+      }
+    }
+
+    /** P6 PPM → PNG data URL（仅用于预览） */
+    async function ppmUrlToPngDataUrl(fetchUrl) {
+      const res = await fetch(fetchUrl);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const ab = await res.arrayBuffer();
+      const u8 = new Uint8Array(ab);
+      let i = 0;
+      function readLine() {
+        let s = '';
+        while (i < u8.length && u8[i] !== 10 && u8[i] !== 13) {
+          s += String.fromCharCode(u8[i++]);
+        }
+        while (i < u8.length && (u8[i] === 10 || u8[i] === 13)) i++;
+        return s;
+      }
+      const magic = readLine();
+      if (magic !== 'P6') throw new Error('需要二进制 P6 PPM');
+      let line = readLine();
+      while (line.startsWith('#')) line = readLine();
+      const wh = line.trim().split(/\s+/);
+      const w = parseInt(wh[0], 10);
+      const h = parseInt(wh[1], 10);
+      line = readLine();
+      while (line.startsWith('#')) line = readLine();
+      parseInt(line, 10);
+      if (!w || !h || w > 4096 || h > 4096) throw new Error('无效宽高');
+      const expected = w * h * 3;
+      if (i + expected > u8.length) throw new Error('PPM 数据不完整');
+      const c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      const ctx = c.getContext('2d');
+      const img = ctx.createImageData(w, h);
+      let p = 0;
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          const di = (y * w + x) * 4;
+          img.data[di] = u8[i++];
+          img.data[di + 1] = u8[i++];
+          img.data[di + 2] = u8[i++];
+          img.data[di + 3] = 255;
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+      return c.toDataURL('image/png');
+    }
+
+    async function refreshPreview() {
+      const img = document.getElementById('mapPreviewImg');
+      try {
+        const url = apiUrl('/plot/' + encodeURIComponent(PREVIEW_FILE));
+        const dataUrl = await ppmUrlToPngDataUrl(url);
+        img.src = dataUrl;
+        img.style.display = 'inline-block';
+      } catch (e) {
+        img.style.display = 'none';
+        setOut((document.getElementById('mapRunOutput').textContent || '') +
+          '\n[预览] ' + (e && e.message ? e.message : e));
+      }
+    }
+
+    document.getElementById('runMapBtn').onclick = async () => {
+      const map = mapArgFromInputs();
+      if (!map) {
+        setOut('请选择或填写地图 JSON 文件名。');
+        return;
+      }
+      const mapPayload = map.includes('/') ? map : ('plot/' + map.replace(/^\//, ''));
+      const btn = document.getElementById('runMapBtn');
+      btn.disabled = true;
+      setOut('运行中…');
+      try {
+        const res = await fetch(apiUrl('/api/action'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            category: 'simulate',
+            action: 'run',
+            file: FIXED_ELF,
+            log_steps: 500,
+            max_steps: 0,
+            map: mapPayload,
+            log_file: ''
+          })
+        });
+        const data = await res.json();
+        setOut(JSON.stringify(data, null, 2));
+        await refreshPreview();
+      } catch (e) {
+        setOut('请求失败: ' + (e && e.message ? e.message : e));
+      } finally {
+        btn.disabled = false;
+      }
+    };
+
+    document.getElementById('refreshPreviewBtn').onclick = () => refreshPreview();
+
+    loadPlotJsonList();
+  </script>
+</body>
+</html>

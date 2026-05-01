@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>OpenCPU · 内核开发环境 </title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --accent: #1a73e8;
+            --accent-hover: #1558c0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: #ffffff;
+            color: #1e1e1e;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 整体布局 */
+        .app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* 顶栏 */
+        .title-bar {
+            background: #f3f3f3;
+            border-bottom: 1px solid #ddd;
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .backend-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-family: monospace;
+        }
+
+        .led {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #d73a49;
+            box-shadow: 0 0 2px #d73a49;
+        }
+
+        .led.online {
+            background: #2ea043;
+        }
+
+        /* 主体左右结构 */
+        .main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* 左侧文件树 (VSCode 侧边栏) */
+        .sidebar {
+            width: 280px;
+            background: #fafafa;
+            border-right: 1px solid #e5e5e5;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 12px 16px;
+            font-weight: 600;
+            font-size: 12px;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .refresh-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: var(--accent);
+        }
+
+        .refresh-btn:hover {
+            background: #eaeaea;
+        }
+
+        .file-tree {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 0;
+        }
+
+        .tree-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px 6px 20px;
+            font-size: 13px;
+            font-family: 'Segoe UI', monospace;
+            cursor: pointer;
+            transition: background 0.1s;
+            color: #333;
+        }
+
+        .tree-item:hover {
+            background: #eaeef2;
+        }
+
+        .tree-item.active {
+            background: #e2e8f0;
+            border-left: 3px solid var(--accent);
+        }
+
+        .file-icon {
+            font-size: 16px;
+            width: 22px;
+        }
+
+        /* 右侧区域 (编辑器 + 终端) */
+        .right-pane {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+        }
+
+        /* 可拖拽分隔条 */
+        .splitter {
+            width: 6px;
+            cursor: col-resize;
+            background: transparent;
+            position: relative;
+            flex: 0 0 6px;
+        }
+        .splitter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 2px;
+            width: 2px;
+            background: #e5e5e5;
+        }
+        .splitter:hover::before,
+        .splitter.dragging::before {
+            background: var(--accent);
+        }
+
+        /* 编辑器区域 */
+        .editor-container {
+            flex: 1 1 60%;
+            display: flex;
+            flex-direction: column;
+            min-height: 200px;
+            min-width: 360px;
+        }
+
+        .editor-header {
+            background: #f9f9f9;
+            padding: 8px 16px;
+            border-bottom: 1px solid #e5e5e5;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-tab {
+            background: #fff;
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            border: 1px solid #ccc;
+            background: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn:hover {
+            background: #f0f0f0;
+        }
+
+        .code-editor {
+            flex: 1;
+            background: #ffffff;
+            padding: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow: auto;
+            outline: none;
+            white-space: pre-wrap;
+            border: none;
+            resize: none;
+            width: 100%;
+        }
+
+        /* 终端区域 (白底黑字，类似 VSCode 集成终端) */
+        .terminal-container {
+            flex: 0 0 40%;
+            min-width: 320px;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 窄屏时退回上下布局，避免右侧过窄 */
+        @media (max-width: 1100px) {
+            .right-pane {
+                flex-direction: column;
+            }
+            .splitter { display: none; }
+            .terminal-container {
+                flex: 0 0 auto;
+                min-width: 0;
+                border-top: 1px solid #e5e5e5;
+            }
+        }
+
+        .terminal-header {
+            background: #f6f6f6;
+            padding: 6px 16px;
+            border-bottom: 1px solid #e5e5e5;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            gap: 16px;
+        }
+
+        .terminal-output {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            font-family: 'Fira Code', 'Menlo', monospace;
+            font-size: 12px;
+            background: #fff;
+            color: #1e1e1e;
+            white-space: pre-wrap;
+        }
+
+        .terminal-line {
+            margin-bottom: 2px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-top: 1px solid #ececec;
+            background: #fefefe;
+        }
+
+        .prompt {
+            color: #0e5a6e;
+            font-weight: 600;
+            margin-right: 8px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .terminal-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-family: monospace;
+            font-size: 12px;
+            padding: 6px 0;
+        }
+
+        .send-btn {
+            background: #e9e9e9;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        /* 加载遮罩 */
+        .loading-overlay {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #fff;
+            border-radius: 8px;
+            padding: 8px 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            font-size: 12px;
+            border-left: 3px solid var(--accent);
+            z-index: 1000;
+            display: none;
+        }
+
+        /* 滚动条 */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <div class="title-bar">
+        <div class="logo">
+            <span>⚙️ OpenCPU · 内核开发环境</span>
+            <span style="font-size:11px; background:#eef; padding:2px 8px; border-radius:12px;">WebSocket 与运行页同源配置：读取 localStorage「SIM_API_BASE」</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <a href="index1.html" style="font-size:12px; color: var(--accent); text-decoration:none;">← 返回首页</a>
+            <div class="backend-status">
+                <div class="led" id="backendLed"></div>
+                <span id="backendStatusText">检测中...</span>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <!-- 左侧文件树 -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <span>📂 远程文件系统</span>
+                <button class="refresh-btn" id="refreshTreeBtn">⟳ 刷新</button>
+            </div>
+            <div class="file-tree" id="fileTree">
+                <div style="padding: 16px; color: #888;">等待后端连接...</div>
+            </div>
+            <div style="padding: 8px 16px; font-size: 11px; border-top: 1px solid #eee; color: #666;">
+                📁 当前目录: <span id="currentDirPath">/home/linda/3.8/my_sim</span>
+            </div>
+        </div>
+
+        <!-- 右侧区域 -->
+        <div class="right-pane">
+            <!-- 编辑器 -->
+            <div class="editor-container" id="editorPane">
+                <div class="editor-header">
+                    <div class="file-tab" id="activeFileTab">未选择文件</div>
+                    <div class="editor-actions">
+                        <button class="btn" id="resetEditorBtn">⟳ 重置</button>
+                        <button class="btn btn-primary" id="saveFileBtn">💾 保存到虚拟机</button>
+                    </div>
+                </div>
+                <div class="code-editor" id="codeEditor" contenteditable="true" spellcheck="false">
+                    // 从左侧选择文件，内容将显示在此处
+                    // 编辑后点击保存即可通过 SSH 写入虚拟机
+                </div>
+            </div>
+
+            <div class="splitter" id="paneSplitter" title="拖动调整宽度"></div>
+
+            <!-- 终端 (SSH 实时交互) -->
+            <div class="terminal-container" id="terminalPane">
+                <div class="terminal-header">
+                    <span> 终端 </span>
+                </div>
+                <div class="terminal-output" id="terminalOutput">
+                    <div class="terminal-line">✨ 等待后端连接...</div>
+                    
+                </div>
+                <div class="terminal-input-line">
+                    <span class="prompt">$</span>
+                    <input type="text" class="terminal-input" id="terminalInput" placeholder="仅文件/目录类命令（如 ls、cd、cat、cp）；编译与运行请用运行控制台" autocomplete="off" disabled>
+                    <button class="send-btn" id="sendCmdBtn" disabled>发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loadingToast" class="loading-overlay">
+    <span>执行中...</span>
+</div>
+
+<script>
+    // ======================= 后端配置 (WebSocket SSH 桥接) =======================
+    // 与 run_0501.html 共用 localStorage「SIM_API_BASE」（http(s) 根地址）；留空时回退到下方默认 WS。
+    const BACKEND_WS_URL_FALLBACK = 'ws://127.0.0.1:5000/ws/ssh';
+
+    function getBackendWsUrl() {
+        const base = (localStorage.getItem('SIM_API_BASE') || '').trim().replace(/\/+$/, '');
+        if (base) {
+            const wsBase = base.replace(/^http:/i, 'ws:').replace(/^https:/i, 'wss:');
+            return wsBase + '/ws/ssh';
+        }
+        return BACKEND_WS_URL_FALLBACK;
+    }
+    const reconnectDelayMs = 3000;
+
+    let backendOnline = false;
+    let ws = null;
+    let reconnectTimer = null;
+    let requestId = 0;
+    const pendingExec = new Map();
+    let sshShellReady = false;
+
+    // DOM 元素
+    const fileTreeDiv = document.getElementById('fileTree');
+    const terminalOutputDiv = document.getElementById('terminalOutput');
+    const terminalInput = document.getElementById('terminalInput');
+    const sendCmdBtn = document.getElementById('sendCmdBtn');
+    const refreshTreeBtn = document.getElementById('refreshTreeBtn');
+    const saveFileBtn = document.getElementById('saveFileBtn');
+    const resetEditorBtn = document.getElementById('resetEditorBtn');
+    const codeEditor = document.getElementById('codeEditor');
+    const activeFileTab = document.getElementById('activeFileTab');
+    const currentDirSpan = document.getElementById('currentDirPath');
+    const backendLed = document.getElementById('backendLed');
+    const backendStatusText = document.getElementById('backendStatusText');
+    const loadingToast = document.getElementById('loadingToast');
+    const editorPane = document.getElementById('editorPane');
+    const terminalPane = document.getElementById('terminalPane');
+    const paneSplitter = document.getElementById('paneSplitter');
+
+    // 当前工作目录 & 文件树状态
+    let currentDirectory = '/home/linda/3.8/my_sim';
+    let activeFilePath = null;
+    let activeFileContent = '';
+
+    // 左右面板宽度（可拖拽）
+    const SPLIT_STORAGE_KEY = 'opencpu_terminal_split';
+    function applySplit(editorPercent) {
+        const p = Math.max(20, Math.min(80, Number(editorPercent)));
+        editorPane.style.flex = `0 0 ${p}%`;
+        terminalPane.style.flex = `0 0 ${100 - p}%`;
+    }
+
+    function initResizableSplit() {
+        if (!editorPane || !terminalPane || !paneSplitter) return;
+        if (window.matchMedia && window.matchMedia('(max-width: 1100px)').matches) return;
+
+        const saved = Number(localStorage.getItem(SPLIT_STORAGE_KEY));
+        if (!Number.isNaN(saved) && saved > 0) applySplit(saved);
+
+        let dragging = false;
+        const minEditorPx = 360;
+        const minTerminalPx = 320;
+
+        const onMove = (clientX) => {
+            const rect = editorPane.parentElement.getBoundingClientRect();
+            const total = rect.width;
+            const offsetX = clientX - rect.left;
+
+            const minEditor = minEditorPx;
+            const maxEditor = total - minTerminalPx;
+            const clamped = Math.max(minEditor, Math.min(maxEditor, offsetX));
+            const percent = (clamped / total) * 100;
+            applySplit(percent);
+            localStorage.setItem(SPLIT_STORAGE_KEY, String(percent));
+        };
+
+        const onMouseMove = (e) => {
+            if (!dragging) return;
+            e.preventDefault();
+            onMove(e.clientX);
+        };
+        const onMouseUp = () => {
+            if (!dragging) return;
+            dragging = false;
+            paneSplitter.classList.remove('dragging');
+            document.body.style.userSelect = '';
+            window.removeEventListener('mousemove', onMouseMove);
+            window.removeEventListener('mouseup', onMouseUp);
+        };
+
+        paneSplitter.addEventListener('mousedown', (e) => {
+            dragging = true;
+            paneSplitter.classList.add('dragging');
+            document.body.style.userSelect = 'none';
+            window.addEventListener('mousemove', onMouseMove);
+            window.addEventListener('mouseup', onMouseUp);
+            e.preventDefault();
+        });
+    }
+
+    function showLoading(show) {
+        loadingToast.style.display = show ? 'flex' : 'none';
+    }
+
+    function addTerminalMessage(text, isError = false) {
+        const line = document.createElement('div');
+        line.className = 'terminal-line';
+        line.style.color = isError ? '#d73a49' : '#1e1e1e';
+        line.innerText = text;
+        terminalOutputDiv.appendChild(line);
+        line.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // 将后端 PTY 输出按“真实换行”渲染，并过滤 ANSI 控制序列
+    // 说明：ssh.shell() 的 data 会被拆成很小的 chunk（甚至单字符），
+    // 若每个 chunk 都新建一行就会出现“每个字一行”的效果。
+    function stripAnsi(input) {
+        if (!input) return '';
+        // 1) OSC（例如设置标题）: ESC ] ... BEL 或 ESC ] ... ESC \
+        let s = input.replace(/\x1B\][^\x07]*(\x07|\x1B\\)/g, '');
+        // 2) CSI（颜色/光标/模式等）: ESC [ ... cmd
+        s = s.replace(/\x1B\[[0-?]*[ -/]*[@-~]/g, '');
+        return s;
+    }
+
+    function getOrCreateLastTerminalLine() {
+        let last = terminalOutputDiv.lastElementChild;
+        if (!last || !last.classList || !last.classList.contains('terminal-line')) {
+            last = document.createElement('div');
+            last.className = 'terminal-line';
+            last.style.color = '#1e1e1e';
+            last.innerText = '';
+            terminalOutputDiv.appendChild(last);
+        }
+        return last;
+    }
+
+    function appendTerminalOutput(rawText) {
+        const text = stripAnsi(String(rawText ?? ''));
+        if (!text) return;
+
+        // 统一换行符，并处理回车覆盖（简单实现：把 \r 当作换行）
+        const normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+        const parts = normalized.split('\n');
+
+        // 第一段追加到当前最后一行
+        const first = parts.shift();
+        if (first !== undefined && first.length) {
+            const lastLine = getOrCreateLastTerminalLine();
+            lastLine.innerText += first;
+        }
+
+        // 后续每段都开新行
+        for (const part of parts) {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.style.color = '#1e1e1e';
+            line.innerText = part;
+            terminalOutputDiv.appendChild(line);
+        }
+
+        terminalOutputDiv.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function setBackendStatus(online, message) {
+        backendOnline = online;
+        backendLed.className = online ? 'led online' : 'led';
+        backendStatusText.innerText = message;
+        terminalInput.disabled = !online;
+        sendCmdBtn.disabled = !online;
+        if (!online) {
+            fileTreeDiv.innerHTML = '<div style="padding: 16px; color: #888;">后端未连接，无法获取文件列表</div>';
+        }
+    }
+
+    function sendSocketMessage(payload) {
+        if (!ws || ws.readyState !== WebSocket.OPEN) {
+            throw new Error('WebSocket 未连接');
+        }
+        ws.send(JSON.stringify(payload));
+    }
+
+    // 同步交互式终端的工作目录（影响右侧实时 shell）
+    function syncTerminalCwd(path) {
+        if (!backendOnline || !sshShellReady) return;
+        // 用 cd + clear 保证视觉上也干净一些；失败会在终端里显示错误
+        sendSocketMessage({ type: 'input', data: `cd "${path}"\n` });
+    }
+
+    function scheduleReconnect() {
+        if (reconnectTimer) return;
+        reconnectTimer = setTimeout(() => {
+            reconnectTimer = null;
+            connectBackend();
+        }, reconnectDelayMs);
+    }
+
+    function handleSocketMessage(event) {
+        let data = null;
+        try {
+            data = JSON.parse(event.data);
+        } catch (_err) {
+            // 兼容后端直接推纯文本输出
+            addTerminalMessage(String(event.data || ''));
+            return;
+        }
+
+        if (data.type === 'output') {
+            if (data.data) appendTerminalOutput(data.data);
+            return;
+        }
+        if (data.type === 'error') {
+            addTerminalMessage(data.message || '后端返回错误', true);
+            return;
+        }
+        if (data.type === 'exec_result') {
+            const waiter = pendingExec.get(data.id);
+            if (waiter) {
+                pendingExec.delete(data.id);
+                waiter.resolve({
+                    stdout: data.stdout || '',
+                    stderr: data.stderr || '',
+                    returncode: data.returncode !== undefined ? data.returncode : 0
+                });
+            }
+            return;
+        }
+    }
+
+    function connectBackend() {
+        if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
+            return;
+        }
+
+        const wsUrl = getBackendWsUrl();
+        addTerminalMessage(`🔌 正在连接 ${wsUrl} ...`);
+        ws = new WebSocket(wsUrl);
+        let sshReady = false;
+        sshShellReady = false;
+        ws.onopen = () => {
+            setBackendStatus(true, '已连接');
+            addTerminalMessage('✅ WebSocket 已连接，SSH 终端就绪');
+            // 兜底：如果后端没有输出 [ready] 标记，1s 后也尝试刷新
+            setTimeout(() => {
+                if (backendOnline && !sshReady) refreshFileTree();
+            }, 1000);
+        };
+
+        ws.onmessage = (event) => {
+            // 优先检测后端 shell 就绪标记，然后再走统一消息处理
+            try {
+                const data = JSON.parse(event.data);
+                if (data.type === 'output' && typeof data.data === 'string' && data.data.includes('[ready]')) {
+                    if (!sshReady) {
+                        sshReady = true;
+                        sshShellReady = true;
+                        refreshFileTree();
+                        // 关键：让右侧交互式终端起始目录与左侧文件树一致
+                        syncTerminalCwd(currentDirectory);
+                    }
+                }
+            } catch (_err) {
+                // 非 JSON 输出由 handleSocketMessage 内部兼容处理
+            }
+            handleSocketMessage(event);
+        };
+
+        ws.onerror = () => {
+            setBackendStatus(false, '连接异常');
+            addTerminalMessage('❌ WebSocket 连接异常', true);
+        };
+
+        ws.onclose = () => {
+            setBackendStatus(false, '未连接');
+            addTerminalMessage('⚠️ 连接已断开，尝试自动重连...');
+            for (const waiter of pendingExec.values()) {
+                waiter.reject(new Error('WebSocket 已断开'));
+            }
+            pendingExec.clear();
+            scheduleReconnect();
+        };
+    }
+
+    // 通过 WS 请求执行命令（用于文件树和文件读写）
+    async function execCommand(cmd, showLoad = true) {
+        if (!backendOnline) {
+            throw new Error('后端未连接，无法执行命令');
+        }
+        if (showLoad) showLoading(true);
+        try {
+            const id = ++requestId;
+            const result = await new Promise((resolve, reject) => {
+                pendingExec.set(id, { resolve, reject });
+                sendSocketMessage({ type: 'exec', id: id, cmd: cmd });
+                setTimeout(() => {
+                    if (pendingExec.has(id)) {
+                        pendingExec.delete(id);
+                        reject(new Error('命令执行超时'));
+                    }
+                }, 15000);
+            });
+            return result;
+        } finally {
+            if (showLoad) showLoading(false);
+        }
+    }
+
+    function parseLsOutput(output) {
+        const lines = output.split('\n');
+        const files = [];
+        for (const line of lines) {
+            if (line.trim() === '' || line.startsWith('total')) continue;
+            const parts = line.split(/\s+/);
+            if (parts.length < 9) continue;
+            const name = parts.slice(8).join(' ');
+            if (name === '.' || name === '..') continue;
+            const isDir = line.startsWith('d');
+            files.push({
+                name: name,
+                path: `${currentDirectory}/${name}`,
+                isDir: isDir
+            });
+        }
+        return files;
+    }
+
+    async function refreshFileTree() {
+        if (!backendOnline) {
+            fileTreeDiv.innerHTML = '<div style="padding: 16px; color: #888;">后端未连接，无法获取文件列表</div>';
+            return;
+        }
+        fileTreeDiv.innerHTML = '<div style="padding: 16px;">加载中...</div>';
+        try {
+            const result = await execCommand(`ls -la "${currentDirectory}"`, true);
+            if (result.stderr && result.stderr.trim()) {
+                throw new Error(result.stderr);
+            }
+            renderFileTree(parseLsOutput(result.stdout));
+        } catch (err) {
+            fileTreeDiv.innerHTML = `<div style="padding: 16px; color: #d73a49;">获取目录失败: ${err.message}</div>`;
+            addTerminalMessage(`❌ 刷新目录失败: ${err.message}`, true);
+        }
+    }
+
+    function renderFileTree(files) {
+        if (!files.length) {
+            fileTreeDiv.innerHTML = '<div style="padding: 16px;">目录为空或无权限</div>';
+            return;
+        }
+        const container = document.createElement('div');
+        container.className = 'file-tree';
+
+        // 增加“上一级目录”入口（因为 parseLsOutput 会过滤掉 ..）
+        const normalized = String(currentDirectory || '').replace(/\/+$/, '') || '/';
+        if (normalized !== '/') {
+            const lastSlash = normalized.lastIndexOf('/');
+            const parentDir = lastSlash > 0 ? normalized.slice(0, lastSlash) : '/';
+            const up = document.createElement('div');
+            up.className = 'tree-item';
+            up.innerHTML = `<span class="file-icon">↩</span><span>.. 上一级</span>`;
+            up.addEventListener('click', async () => {
+                currentDirectory = parentDir;
+                currentDirSpan.innerText = currentDirectory;
+                await refreshFileTree();
+                addTerminalMessage(`📂 当前目录切换至: ${currentDirectory}`);
+                syncTerminalCwd(currentDirectory);
+            });
+            container.appendChild(up);
+        }
+
+        const sorted = [...files].sort((a, b) => {
+            if (a.isDir === b.isDir) return a.name.localeCompare(b.name);
+            return a.isDir ? -1 : 1;
+        });
+        for (const item of sorted) {
+            const div = document.createElement('div');
+            div.className = 'tree-item';
+            const icon = item.isDir ? '📁' : '📄';
+            div.innerHTML = `<span class="file-icon">${icon}</span><span>${item.name}</span>`;
+            if (!item.isDir) {
+                div.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    document.querySelectorAll('.tree-item').forEach((el) => el.classList.remove('active'));
+                    div.classList.add('active');
+                    await loadFileIntoEditor(item.path);
+                });
+            } else {
+                div.addEventListener('click', async () => {
+                    currentDirectory = item.path;
+                    currentDirSpan.innerText = currentDirectory;
+                    await refreshFileTree();
+                    addTerminalMessage(`📂 当前目录切换至: ${currentDirectory}`);
+                    // 同步右侧终端目录
+                    syncTerminalCwd(currentDirectory);
+                });
+            }
+            container.appendChild(div);
+        }
+        fileTreeDiv.innerHTML = '';
+        fileTreeDiv.appendChild(container);
+    }
+
+    async function loadFileIntoEditor(filePath) {
+        try {
+            const result = await execCommand(`cat "${filePath}"`, true);
+            if (result.stderr && result.stderr.trim()) {
+                throw new Error(result.stderr);
+            }
+            activeFilePath = filePath;
+            activeFileContent = result.stdout || '';
+            codeEditor.innerText = activeFileContent;
+            activeFileTab.innerHTML = `📄 ${filePath.split('/').pop()}`;
+            addTerminalMessage(`已加载: ${filePath}`);
+        } catch (err) {
+            addTerminalMessage(`❌ 读取文件失败: ${err.message}`, true);
+        }
+    }
+
+    async function saveCurrentFile() {
+        if (!activeFilePath) {
+            addTerminalMessage('没有打开的文件，请先从左侧选择文件', true);
+            return;
+        }
+        const newContent = codeEditor.innerText;
+        const cmd = `cat > "${activeFilePath}" << 'EOF_OPENCPU'\n${newContent}\nEOF_OPENCPU`;
+        addTerminalMessage(`保存中: ${activeFilePath}`);
+        try {
+            const result = await execCommand(cmd, true);
+            if (result.stderr && result.stderr.trim() && !result.stderr.includes('EOF_OPENCPU')) {
+                addTerminalMessage(`保存警告: ${result.stderr}`, true);
+                return;
+            }
+            activeFileContent = newContent;
+            addTerminalMessage(`✅ 文件已保存: ${activeFilePath}`);
+        } catch (err) {
+            addTerminalMessage(`❌ 保存失败: ${err.message}`, true);
+        }
+    }
+
+    function resetEditor() {
+        if (!activeFilePath) {
+            addTerminalMessage('没有活动文件');
+            return;
+        }
+        codeEditor.innerText = activeFileContent;
+        addTerminalMessage(`已重置 ${activeFilePath} 至上次保存版本`);
+    }
+
+    /** 本页终端仅用于「远程」浏览目录与读写文件；编译与运行由 run_0501.html 发起。 */
+    function isAllowedRemoteFileCommand(cmd) {
+        const t = String(cmd || '').trim();
+        if (!t) return { ok: false, reason: '空命令' };
+        const blocked = /^(make|ninja|cmake|meson|\.\/build\/|\.\/build\b|\.\/compile|gcc|g\+\+|clang|clang\+\+|ld\.|ar\b|riscv|python\d*\b|pip\d*\b|node\b|npm\b|curl\b|wget\b|ssh\b|scp\b|git\b|sudo\b|docker\b)/i;
+        if (blocked.test(t)) {
+            return { ok: false, reason: '已禁止：编译/仿真/包管理类命令。请在「运行程序 run_0501.html」执行 make、build/test 等。' };
+        }
+        const allowed = /^(cd|ls|pwd|mkdir|rmdir|touch|cp|mv|rm|cat|head|tail|less|more|ln|chmod|chown|stat|file|hexdump|od|du|df|tree|find|grep|wc|sort|uniq|diff|vim|vi|nano|sed|awk)\b/i;
+        if (allowed.test(t)) return { ok: true };
+        if (/^echo\s/i.test(t) && (/>|>>)/.test(t))) return { ok: true };
+        return { ok: false, reason: '仅允许目录与文件相关命令（如 cd、ls、cat、cp、mv、rm、mkdir、touch、vim/nano 等）。' };
+    }
+
+    // 实时终端输入：发给后端当前 SSH 会话 stdin
+    function sendTerminalCommand() {
+        const cmd = terminalInput.value;
+        if (!cmd.trim()) return;
+        const gate = isAllowedRemoteFileCommand(cmd);
+        if (!gate.ok) {
+            addTerminalMessage(`[已拦截] ${gate.reason}`, true);
+            return;
+        }
+        addTerminalMessage(`$ ${cmd}`);
+        terminalInput.value = '';
+        try {
+            sendSocketMessage({ type: 'input', data: `${cmd}\n` });
+        } catch (err) {
+            addTerminalMessage(`发送失败: ${err.message}`, true);
+        }
+    }
+
+    function init() {
+        initResizableSplit();
+        connectBackend();
+
+        refreshTreeBtn.addEventListener('click', () => {
+            if (backendOnline) refreshFileTree();
+            else addTerminalMessage('后端未连接，无法刷新', true);
+        });
+        saveFileBtn.addEventListener('click', saveCurrentFile);
+        resetEditorBtn.addEventListener('click', resetEditor);
+        sendCmdBtn.addEventListener('click', sendTerminalCommand);
+
+        terminalInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendTerminalCommand();
+            }
+        });
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key.toLowerCase() === 'c') {
+                e.preventDefault();
+                try {
+                    sendSocketMessage({ type: 'input', data: '\u0003' });
+                    addTerminalMessage('^C');
+                } catch (err) {
+                    addTerminalMessage(`发送 Ctrl+C 失败: ${err.message}`, true);
+                }
+            }
+        });
+
+        codeEditor.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                document.execCommand('insertText', false, '    ');
+            }
+        });
+        currentDirSpan.innerText = currentDirectory;
+    }
+
+    init();
+</script>
+</body>
+</html>

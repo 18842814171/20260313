@@ -104,6 +104,7 @@ struct Pipe_IF_ID {
     X(val_rs1)                   \
     X(val_rs2)                   \
     X(alu_src)                   \
+    X(alu_op)                    \
     X(reg_write)                 \
     X(mem_read)                  \
     X(mem_write)                 \
