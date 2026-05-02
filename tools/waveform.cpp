@@ -56,6 +56,11 @@ struct StepRecord {
     std::vector<RegWrite> reg_writes;
     std::vector<MemEvent> mem_events;
     std::vector<std::string> events;
+    /** 本周期日志中出现乘法单元 scoreboard 阻塞（与 load-use 等 STALL 区分） */
+    bool mul_scoreboard_stall = false;
+    bool mul_issue_event = false;
+    bool mul_complete_event = false;
+    std::string mul_issue_kind;
 };
 
 struct ParseResult {
@@ -308,6 +313,20 @@ ParseResult parse_log_steps(const std::string& log_path, std::size_t step_limit)
             current.pipe_mem_wb = parse_pipe_fields(trim(match[1].str()));
             continue;
         }
+        if (t.find("MUL/mult (multiplier): issue") != std::string::npos) {
+            current.mul_issue_event = true;
+            current.mul_issue_kind =
+                (t.find("issue MULH") != std::string::npos) ? "MULH" : "MUL";
+            continue;
+        }
+        if (t.find("MUL/mult (multiplier): complete") != std::string::npos) {
+            current.mul_complete_event = true;
+            continue;
+        }
+        if (t.find("MUL scoreboard stall") != std::string::npos) {
+            current.mul_scoreboard_stall = true;
+            continue;
+        }
         if (t.find("FLUSH:") != std::string::npos ||
             t.find("STALL") != std::string::npos ||
             t.find("hazard") != std::string::npos ||
@@ -326,6 +345,31 @@ ParseResult parse_log_steps(const std::string& log_path, std::size_t step_limit)
     return result;
 }
 
+/** 乘法未写回周期内若插入 scoreboard stall，波形上应用 MUL/MULH 拉平，避免误显示后续 ADDI 气泡。 */
+static std::vector<std::string> effective_opcode_per_step(const std::vector<StepRecord>& steps) {
+    std::vector<std::string> out;
+    out.reserve(steps.size());
+    bool mul_busy = false;
+    std::string last_kind = "MUL";
+    for (const auto& s : steps) {
+        std::string op = s.id_stage.opcode;
+        if (mul_busy && s.mul_scoreboard_stall) {
+            op = last_kind.empty() ? "MUL" : last_kind;
+        }
+        out.push_back(op);
+        if (s.mul_issue_event) {
+            mul_busy = true;
+            if (!s.mul_issue_kind.empty()) {
+                last_kind = s.mul_issue_kind;
+            }
+        }
+        if (s.mul_complete_event) {
+            mul_busy = false;
+        }
+    }
+    return out;
+}
+
 void write_wave_json(const std::string& output_path, const std::string& source_log,
                      const ParseResult& parsed) {
     std::ofstream out(output_path, std::ios::out | std::ios::trunc);
@@ -334,11 +378,13 @@ void write_wave_json(const std::string& output_path, const std::string& source_l
     }
 
     const auto& steps = parsed.steps;
+    const std::vector<std::string> opcode_eff = effective_opcode_per_step(steps);
     std::map<std::string, std::vector<std::pair<std::size_t, std::string>>> tracks;
-    for (const auto& s : steps) {
+    for (std::size_t si = 0; si < steps.size(); ++si) {
+        const auto& s = steps[si];
         if (!s.if_stage.pc.empty()) tracks["pc_if"].push_back({s.step, s.if_stage.pc});
         if (!s.id_stage.pc.empty()) tracks["pc_id"].push_back({s.step, s.id_stage.pc});
-        if (!s.id_stage.opcode.empty()) tracks["opcode"].push_back({s.step, s.id_stage.opcode});
+        if (!opcode_eff[si].empty()) tracks["opcode"].push_back({s.step, opcode_eff[si]});
         if (!s.ex_result.empty()) tracks["ex_result"].push_back({s.step, s.ex_result});
         if (!s.events.empty()) tracks["control"].push_back({s.step, s.events.front()});
         if (!s.mem_events.empty()) {
@@ -381,7 +427,7 @@ void write_wave_json(const std::string& output_path, const std::string& source_l
         out << "      \"if\": {\"pc\": \"" << json_escape(s.if_stage.pc)
             << "\", \"raw_inst\": \"" << json_escape(s.if_stage.raw_inst) << "\"},\n";
         out << "      \"id\": {"
-            << "\"opcode\": \"" << json_escape(s.id_stage.opcode) << "\", "
+            << "\"opcode\": \"" << json_escape(opcode_eff[i]) << "\", "
             << "\"pc\": \"" << json_escape(s.id_stage.pc) << "\", "
             << "\"rs1\": \"" << json_escape(s.id_stage.rs1) << "\", "
             << "\"rs2\": \"" << json_escape(s.id_stage.rs2) << "\", "

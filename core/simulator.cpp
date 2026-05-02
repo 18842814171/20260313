@@ -153,7 +153,7 @@ void simulator(std::string infile, size_t max_steps, const std::string& map_json
 
         std::cerr << "\n[UART: 主机键盘 → MMIO RX；Ctrl+C 结束 stdin 线程]\n";
         if (max_steps > 0) {
-            std::cerr << "[模拟器] 本次步数上限(请求) " << max_steps << "，硬顶 CPU::kHardAbsoluteRunStepLimit="
+            std::cerr << "[模拟器] 本次步数上限(请求) " << max_steps << "，CPU::kHardAbsoluteRunStepLimit="
                       << CPU::kHardAbsoluteRunStepLimit << "\n";
         } else {
             std::cerr << "[模拟器] 未指定步数上限，使用默认 CPU::kDefaultRunStepLimit=" << CPU::kDefaultRunStepLimit

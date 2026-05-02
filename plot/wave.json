@@ -101,7 +101,7 @@
     {
       "step": 6,
       "if": {"pc": "", "raw_inst": ""},
-      "id": {"opcode": "", "pc": "", "rs1": "", "rs2": "", "rd": "", "imm": "", "rs1_val": "", "rs2_val": ""},
+      "id": {"opcode": "MUL", "pc": "", "rs1": "", "rs2": "", "rd": "", "imm": "", "rs1_val": "", "rs2_val": ""},
       "pipe": {
         "if_id": {"inst_raw": "0xd50733", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10014", "valid": "1"},
         "id_ex": {"alu_op": "0", "alu_src": "1", "imm": "9", "inst_id": "0x13", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10010", "rd": "0xd", "reg_write": "1", "rs1": "0xc", "rs2": "0x9", "trap_cause": "0x0", "val_rs1": "0x5", "val_rs2": "0x0", "valid": "0"},
@@ -116,7 +116,7 @@
     {
       "step": 7,
       "if": {"pc": "", "raw_inst": ""},
-      "id": {"opcode": "", "pc": "", "rs1": "", "rs2": "", "rd": "", "imm": "", "rs1_val": "", "rs2_val": ""},
+      "id": {"opcode": "MUL", "pc": "", "rs1": "", "rs2": "", "rd": "", "imm": "", "rs1_val": "", "rs2_val": ""},
       "pipe": {
         "if_id": {"inst_raw": "0xd50733", "interrupt_pc": "0x0", "interrupt_taken": "0", "pc": "0x10014", "valid": "1"},
         "id_ex": {"alu_op": "0", "alu_src": "1", "imm": "9", "inst_id": "0x13", "is_byte": "0", "is_trap": "0", "is_unsigned": "0", "mem_read": "0", "mem_write": "0", "pc": "0x10010", "rd": "0xd", "reg_write": "1", "rs1": "0xc", "rs2": "0x9", "trap_cause": "0x0", "val_rs1": "0x5", "val_rs2": "0x0", "valid": "0"},
@@ -230,7 +230,7 @@
     },
     {
       "name": "opcode",
-      "samples": [{"step": 1, "value": "ADDI"}, {"step": 2, "value": "ADDI"}, {"step": 3, "value": "MUL"}, {"step": 4, "value": "ADDI"}, {"step": 5, "value": "ADDI"}, {"step": 9, "value": "ADD"}, {"step": 10, "value": "ADDI"}, {"step": 11, "value": "ADDI"}, {"step": 12, "value": "ECALL"}]
+      "samples": [{"step": 1, "value": "ADDI"}, {"step": 2, "value": "ADDI"}, {"step": 3, "value": "MUL"}, {"step": 4, "value": "ADDI"}, {"step": 5, "value": "ADDI"}, {"step": 6, "value": "MUL"}, {"step": 7, "value": "MUL"}, {"step": 9, "value": "ADD"}, {"step": 10, "value": "ADDI"}, {"step": 11, "value": "ADDI"}, {"step": 12, "value": "ECALL"}]
     },
     {
       "name": "pc_id",

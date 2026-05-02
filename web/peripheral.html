@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外设信息 - OPENCPU 教育版</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-peripheral">
+    <!-- 列表页：设备一览 -->
+    <div id="view-list">
+        <div class="container">
+            <nav class="page-subnav">
+                <a href="index1.html">← 返回主菜单</a>
+            </nav>
+            <header class="header">
+                <h1 class="title">外设信息</h1>
+                <p class="subtitle">以下为模拟器中的 Timer、UART 与绘图仪（DisplayDevice）在头文件中的寄存器/参数与公开接口摘要。</p>
+            </header>
+            <main class="peripheral-main">
+                <div class="peripheral-sheet" role="table" aria-label="外设列表">
+                    <div class="peripheral-sheet-header">
+                        <span>外设</span>
+                        <span>操作</span>
+                    </div>
+                    <div class="peripheral-row">
+                        <div>
+                            <div class="peripheral-device-name">定时器 · Timer</div>
+                            <div class="peripheral-device-meta">include/device/Timer.hpp · mtime / mtimecmp</div>
+                        </div>
+                        <button type="button" class="btn-expand" data-target="timer">展开信息</button>
+                    </div>
+                    <div class="peripheral-row">
+                        <div>
+                            <div class="peripheral-device-name">串口 · UART</div>
+                            <div class="peripheral-device-meta">include/device/UART.hpp · MMIO 寄存器与 FIFO</div>
+                        </div>
+                        <button type="button" class="btn-expand" data-target="uart">展开信息</button>
+                    </div>
+                    <div class="peripheral-row">
+                        <div>
+                            <div class="peripheral-device-name">绘图仪 · DisplayDevice</div>
+                            <div class="peripheral-device-meta">include/device/Display.hpp · 帧缓冲与 PPM 导出</div>
+                        </div>
+                        <button type="button" class="btn-expand" data-target="display">展开信息</button>
+                    </div>
+                </div>
+            </main>
+            <footer class="footer">
+                <p>© 2024 OPENCPU 教育版 | 基于 RISC-V RV32I 架构</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- 详情：Timer（摘自 Timer.hpp） -->
+    <div id="view-timer" class="hidden">
+        <div class="container">
+            <nav class="page-subnav">
+                <a href="#" id="back-timer">← 返回列表</a>
+                <span> · </span>
+                <a href="index1.html">返回主菜单</a>
+            </nav>
+            <header class="header header--detail">
+                <h1 class="title title-detail">定时器 · Timer</h1>
+                <div class="peripheral-meta-row">
+                    <p class="subtitle">class Timer : public Device</p>
+                    <span class="peripheral-tag">include/device/Timer.hpp</span>
+                </div>
+            </header>
+            <main class="peripheral-main">
+                <div class="peripheral-block">
+                    <h2>寄存器 / 关键变量一览</h2>
+                    <p class="btn-desc">说明：这里的地址是<strong>相对设备基址</strong>的偏移；“默认值”来自构造函数或 reset()。</p>
+                    <div class="peripheral-sheet" role="table" aria-label="Timer 变量表">
+                        <div class="peripheral-sheet-header">
+                            <span>变量名</span><span>说明</span><span>类型</span><span>值</span>
+                        </div>
+                        <div class="peripheral-row peripheral-row-4">
+                            <div class="peripheral-cell"><code>MTIME_ADDR</code></div>
+                            <div class="peripheral-cell">计数器寄存器偏移（mtime）</div>
+                            <div class="peripheral-cell"><code>uint32_t</code></div>
+                            <div class="peripheral-cell"><code>0x00</code></div>
+                        </div>
+                        <div class="peripheral-row peripheral-row-4">
+                            <div class="peripheral-cell"><code>MTIMECMP_ADDR</code></div>
+                            <div class="peripheral-cell">比较寄存器偏移（mtimecmp）</div>
+                            <div class="peripheral-cell"><code>uint32_t</code></div>
+                            <div class="peripheral-cell"><code>0x08</code></div>
+                        </div>
+                        <div class="peripheral-row peripheral-row-4">
+                            <div class="peripheral-cell"><code>mtime</code></div>
+                            <div class="peripheral-cell">64-bit 计数器，每 tick +1</div>
+                            <div class="peripheral-cell"><code>uint64_t</code></div>
+                            <div class="peripheral-cell"><code>0</code></div>
+                        </div>
+                        <div class="peripheral-row peripheral-row-4">
+                            <div class="peripheral-cell"><code>mtimecmp</code></div>
+                            <div class="peripheral-cell">比较值：当 mtime ≥ mtimecmp 触发中断</div>
+                            <div class="peripheral-cell"><code>uint64_t</code></div>
+                            <div class="peripheral-cell"><code>0xFFFFFFFFFFFFFFFF</code></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="peripheral-block">
+                    <h2>对外可调用的函数（Public）</h2>
+                    <pre class="peripheral-code">Timer();
+void reset();
+
+// Device
+void write(uint32_t addr, uint8_t* data, size_t size) override;
+void read(uint32_t addr, uint8_t* data, size_t size) override;
+
+void tick();
+bool check_interrupt();
+void clear_interrupt();
+
+uint64_t get_mtime() const;
+uint64_t get_mtimecmp() const;
+void set_mtimecmp(uint64_t val);</pre>
+                </div>
+            </main>
+            <footer class="footer">
+                <p>© 2024 OPENCPU 教育版 | 基于 RISC-V RV32I 架构</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- 详情：UART（摘自 UART.hpp） -->
+    <div id="view-uart" class="hidden">
+        <div class="container">
+            <nav class="page-subnav">
+                <a href="#" id="back-uart">← 返回列表</a>
+                <span> · </span>
+                <a href="index1.html">返回主菜单</a>
+            </nav>
+            <header class="header header--detail">
+                <h1 class="title title-detail">串口 · UART</h1>
+                <div class="peripheral-meta-row">
+                    <p class="subtitle">class UART : public Device</p>
+                    <span class="peripheral-tag">include/device/UART.hpp</span>
+                </div>
+            </header>
+            <main class="peripheral-main">
+                <div class="peripheral-block">
+                    <h2>寄存器偏移 / 位掩码一览（常用）</h2>
+                    <p class="btn-desc">说明：地址为<strong>相对基址</strong>偏移；位掩码用于控制/状态寄存器的 bit 位。</p>
+                    <div class="peripheral-sheet" role="table" aria-label="UART 常量表">
+                        <div class="peripheral-sheet-header">
+                            <span>变量名</span><span>说明</span><span>类型</span><span>值</span>
+                        </div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_TXDATA</code></div><div class="peripheral-cell">发送数据寄存器（写）</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x00</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_RXDATA</code></div><div class="peripheral-cell">接收数据寄存器（读）</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x04</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_TXCTRL</code></div><div class="peripheral-cell">发送控制寄存器</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x08</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_RXCTRL</code></div><div class="peripheral-cell">接收控制寄存器</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x0C</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_IE</code></div><div class="peripheral-cell">中断使能寄存器</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x10</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_IP</code></div><div class="peripheral-cell">中断挂起寄存器</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x14</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_DIV</code></div><div class="peripheral-cell">波特率分频寄存器</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x18</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>RXDATA_EMPTY_MASK</code></div><div class="peripheral-cell">RX 空标志（bit31）</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x80000000</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>TXDATA_FULL_MASK</code></div><div class="peripheral-cell">TX 满标志（bit31）</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x80000000</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>TXCTRL_TXEN_MASK</code></div><div class="peripheral-cell">启用发送（bit0）</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x1</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>RXCTRL_RXEN_MASK</code></div><div class="peripheral-cell">启用接收（bit0）</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x1</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>INT_RXWM_MASK</code></div><div class="peripheral-cell">RX 水印中断（bit1）</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x2</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>FIFO_SIZE</code></div><div class="peripheral-cell">接收 FIFO 容量</div><div class="peripheral-cell"><code>size_t</code></div><div class="peripheral-cell"><code>16</code></div></div>
+                    </div>
+                </div>
+                <div class="peripheral-block">
+                    <h2>内部状态（成员变量）</h2>
+                    <p class="btn-desc">说明：这些是 C++ 类成员（不是 MMIO 寄存器本身）。默认值以构造函数/ reset() 为准。</p>
+                    <div class="peripheral-sheet" role="table" aria-label="UART 成员变量表">
+                        <div class="peripheral-sheet-header">
+                            <span>变量名</span><span>说明</span><span>类型</span><span>值</span>
+                        </div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>txctrl</code></div><div class="peripheral-cell">发送控制寄存器镜像</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x1</code>（默认启用 TX）</div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>rxctrl</code></div><div class="peripheral-cell">接收控制寄存器镜像</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x3</code>（RXEN|RXWM）</div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>ie</code></div><div class="peripheral-cell">中断使能镜像</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x2</code>（默认启用 RXWM）</div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>ip</code></div><div class="peripheral-cell">中断挂起镜像</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x0</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>div</code></div><div class="peripheral-cell">分频寄存器镜像</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x0</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>rx_fifo</code></div><div class="peripheral-cell">接收 FIFO（主机输入在这里排队）</div><div class="peripheral-cell"><code>std::queue&lt;uint8_t&gt;</code></div><div class="peripheral-cell">初始为空</div></div>
+                    </div>
+                </div>
+                <div class="peripheral-block">
+                    <h2>对外可调用的函数（Public）</h2>
+                    <pre class="peripheral-code">UART();
+~UART() override;
+void reset();
+
+void write(uint32_t addr, uint8_t* data, size_t size) override;
+void read(uint32_t addr, uint8_t* data, size_t size) override;
+
+void tick();
+bool check_interrupt();
+void clear_interrupt();
+
+void put_char(uint8_t c);
+bool get_char(uint8_t&amp; c);
+bool try_pop_syscall_byte(uint8_t&amp; c);
+bool has_received() const;
+
+void start_console_input(int stdin_fd = 0);
+void stop_console_input();
+
+bool is_tx_full() const;
+size_t rx_count() const;
+
+uint64_t tx_character_count() const;
+uint64_t rx_character_count() const;
+void reset_transfer_counters();
+
+uint32_t get_txctrl() const;
+uint32_t get_rxctrl() const;
+uint32_t get_ie() const;
+uint32_t get_ip() const;
+uint32_t get_div() const;</pre>
+                </div>
+            </main>
+            <footer class="footer">
+                <p>© 2024 OPENCPU 教育版 | 基于 RISC-V RV32I 架构</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- 详情：Display / 绘图仪（摘自 Display.hpp） -->
+    <div id="view-display" class="hidden">
+        <div class="container">
+            <nav class="page-subnav">
+                <a href="#" id="back-display">← 返回列表</a>
+                <span> · </span>
+                <a href="index1.html">返回主菜单</a>
+            </nav>
+            <header class="header header--detail">
+                <h1 class="title title-detail">绘图仪 · DisplayDevice</h1>
+                <div class="peripheral-meta-row">
+                    <p class="subtitle">class DisplayDevice : public Device</p>
+                    <span class="peripheral-tag">include/device/Display.hpp</span>
+                </div>
+            </header>
+            <main class="peripheral-main">
+                <div class="peripheral-block">
+                    <h2>MMIO 寄存器 / 常量一览</h2>
+                    <p class="btn-desc">说明：通过写寄存器控制导出帧缓冲（PPM 文件）。地址为<strong>相对基址</strong>偏移。</p>
+                    <div class="peripheral-sheet" role="table" aria-label="Display 常量表">
+                        <div class="peripheral-sheet-header">
+                            <span>变量名</span><span>说明</span><span>类型</span><span>值</span>
+                        </div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_CTRL</code></div><div class="peripheral-cell">控制寄存器</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x00</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_STATUS</code></div><div class="peripheral-cell">状态寄存器</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x04</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_FB_ADDR</code></div><div class="peripheral-cell">帧缓冲起始地址</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x08</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_WIDTH</code></div><div class="peripheral-cell">宽度（像素）</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x0C</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_HEIGHT</code></div><div class="peripheral-cell">高度（像素）</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x10</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_FORMAT</code></div><div class="peripheral-cell">像素格式</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x14</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_FRAME_COUNT</code></div><div class="peripheral-cell">已导出帧计数</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x18</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_OUT_NAME_ADDR</code></div><div class="peripheral-cell">输出文件名字符串地址</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x1C</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>REG_OUT_NAME_LEN</code></div><div class="peripheral-cell">文件名最大长度</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x20</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>CTRL_ENABLE</code></div><div class="peripheral-cell">启用设备（bit0）</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>1&lt;&lt;0</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>CTRL_REFRESH</code></div><div class="peripheral-cell">触发导出（写 1）</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>1&lt;&lt;1</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>FORMAT_RGB332</code></div><div class="peripheral-cell">RGB332 格式</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>1</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>FORMAT_GRAY8</code></div><div class="peripheral-cell">灰度 8-bit</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0</code></div></div>
+                    </div>
+                </div>
+                <div class="peripheral-block">
+                    <h2>内部状态（成员变量）</h2>
+                    <p class="btn-desc">说明：默认值来自头文件中的初始化（例如宽高默认 64x64）。</p>
+                    <div class="peripheral-sheet" role="table" aria-label="Display 成员变量表">
+                        <div class="peripheral-sheet-header">
+                            <span>变量名</span><span>说明</span><span>类型</span><span>值</span>
+                        </div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>ctrl_</code></div><div class="peripheral-cell">控制寄存器镜像</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>status_</code></div><div class="peripheral-cell">状态寄存器镜像</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>STATUS_READY</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>fb_addr_</code></div><div class="peripheral-cell">帧缓冲地址</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0x30000</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>width_</code></div><div class="peripheral-cell">宽（像素）</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>64</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>height_</code></div><div class="peripheral-cell">高（像素）</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>64</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>format_</code></div><div class="peripheral-cell">像素格式</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>FORMAT_RGB332</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>frame_count_</code></div><div class="peripheral-cell">已导出帧数</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>out_name_addr_</code></div><div class="peripheral-cell">文件名地址（可选）</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0</code></div></div>
+                        <div class="peripheral-row peripheral-row-4"><div class="peripheral-cell"><code>out_name_len_</code></div><div class="peripheral-cell">文件名长度（可选）</div><div class="peripheral-cell"><code>uint32_t</code></div><div class="peripheral-cell"><code>0</code></div></div>
+                    </div>
+                </div>
+                <div class="peripheral-block">
+                    <h2>对外可调用的函数（Public）</h2>
+                    <pre class="peripheral-code">explicit DisplayDevice(Memory&amp; mem);
+
+void write(uint32_t addr, uint8_t* data, size_t size) override;
+void read(uint32_t addr, uint8_t* data, size_t size) override;</pre>
+                </div>
+                <div class="peripheral-block">
+                    <h2>内部实现用函数（Private / 不建议外部直接调用）</h2>
+                    <pre class="peripheral-code">void dump_frame_to_ppm();
+static void rgb332_to_rgb888(uint8_t p, uint8_t&amp; r, uint8_t&amp; g, uint8_t&amp; b);
+std::string resolve_output_filename() const;</pre>
+                </div>
+            </main>
+            <footer class="footer">
+                <p>© 2024 OPENCPU 教育版 | 基于 RISC-V RV32I 架构</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var views = {
+                list: document.getElementById('view-list'),
+                timer: document.getElementById('view-timer'),
+                uart: document.getElementById('view-uart'),
+                display: document.getElementById('view-display')
+            };
+
+            function parseHash() {
+                var h = (window.location.hash || '').replace(/^#/, '');
+                if (h === 'timer' || h === 'uart' || h === 'display') return h;
+                return 'list';
+            }
+
+            function show(which) {
+                views.list.classList.toggle('hidden', which !== 'list');
+                views.timer.classList.toggle('hidden', which !== 'timer');
+                views.uart.classList.toggle('hidden', which !== 'uart');
+                views.display.classList.toggle('hidden', which !== 'display');
+                var title = '外设信息 - OPENCPU 教育版';
+                if (which === 'timer') title = '定时器 · Timer - OPENCPU';
+                else if (which === 'uart') title = '串口 · UART - OPENCPU';
+                else if (which === 'display') title = '绘图仪 · Display - OPENCPU';
+                document.title = title;
+            }
+
+            function go(which) {
+                if (which === 'list') {
+                    window.location.hash = '';
+                } else {
+                    window.location.hash = which;
+                }
+                show(which === 'list' ? 'list' : which);
+            }
+
+            document.querySelectorAll('.btn-expand').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    go(btn.getAttribute('data-target'));
+                });
+            });
+
+            ['back-timer', 'back-uart', 'back-display'].forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        go('list');
+                    });
+                }
+            });
+
+            window.addEventListener('hashchange', function () {
+                show(parseHash());
+            });
+
+            show(parseHash());
+        })();
+    </script>
+</body>
+</html>

@@ -329,19 +329,55 @@ struct SegmentD {
     uint8_t color = 0;
 };
 
-ColorRGB pick_layer_rgb(const std::string& layer) {
-    static const std::unordered_map<std::string, ColorRGB> kLayerPalette = {
-        {"巷道", {255, 255, 255}},     // white
-        {"进尺", {255, 140, 0}},       // orange
-        {"通风设施", {0, 255, 255}},   // cyan
-        {"电缆", {255, 255, 0}},       // yellow
-        {"积水线探水线", {0, 255, 0}}, // green
-    };
-    const auto it = kLayerPalette.find(layer);
-    if (it != kLayerPalette.end()) {
-        return it->second;
+struct CadStyle {
+    ColorRGB background{0, 0, 0};
+    ColorRGB default_layer{210, 210, 210};
+    bool use_builtin_layer_colors = true;
+    std::unordered_map<std::string, ColorRGB> layer_colors;
+};
+
+void parse_cad_style(const JsonValue& obj, CadStyle& out) {
+    if (const JsonValue* bg = get_optional_field(obj, "background")) {
+        out.background = parse_color(*bg, "cad_style.background");
     }
-    return ColorRGB{210, 210, 210}; // default light gray
+    if (const JsonValue* d = get_optional_field(obj, "default_layer_color")) {
+        out.default_layer = parse_color(*d, "cad_style.default_layer_color");
+    }
+    if (const JsonValue* u = get_optional_field(obj, "use_builtin_layer_colors")) {
+        if (u->type != JsonValue::Type::Bool) {
+            throw std::runtime_error("cad_style.use_builtin_layer_colors must be boolean");
+        }
+        out.use_builtin_layer_colors = u->bool_value;
+    }
+    if (const JsonValue* lc = get_optional_field(obj, "layer_colors")) {
+        if (lc->type != JsonValue::Type::Object) {
+            throw std::runtime_error("cad_style.layer_colors must be object");
+        }
+        for (const auto& kv : lc->object_value) {
+            out.layer_colors[kv.first] = parse_color(*kv.second, "cad_style.layer_colors." + kv.first);
+        }
+    }
+}
+
+ColorRGB resolve_layer_rgb(const std::string& layer, const CadStyle& style) {
+    const auto custom = style.layer_colors.find(layer);
+    if (custom != style.layer_colors.end()) {
+        return custom->second;
+    }
+    if (style.use_builtin_layer_colors) {
+        static const std::unordered_map<std::string, ColorRGB> kBuiltin = {
+            {"巷道", {255, 255, 255}},
+            {"进尺", {255, 140, 0}},
+            {"通风设施", {0, 255, 255}},
+            {"电缆", {255, 255, 0}},
+            {"积水线探水线", {0, 255, 0}},
+        };
+        const auto it = kBuiltin.find(layer);
+        if (it != kBuiltin.end()) {
+            return it->second;
+        }
+    }
+    return style.default_layer;
 }
 
 const JsonValue* get_object_field(const JsonValue& obj, const std::string& key) {
@@ -387,11 +423,11 @@ void draw_line(std::vector<uint8_t>& pixels, uint32_t width, uint32_t height,
     }
 }
 
-MapImage parse_cad_entity_array(const JsonValue& root) {
+MapImage parse_cad_entity_array(const JsonValue& root, const CadStyle& style) {
     // Keep output compact for device tests while preserving shape.
     constexpr uint32_t kOutputWidth = 512;
     constexpr uint32_t kOutputHeight = 512;
-    const uint8_t bg = encode_rgb332(ColorRGB{0, 0, 0});
+    const uint8_t bg = encode_rgb332(style.background);
 
     std::vector<SegmentD> segments;
     segments.reserve(root.array_value.size());
@@ -418,7 +454,7 @@ MapImage parse_cad_entity_array(const JsonValue& root) {
         const JsonValue* layer_v = get_object_field(entity, "layer");
         const std::string layer_name =
             (layer_v != nullptr && layer_v->type == JsonValue::Type::String) ? layer_v->string_value : "DEFAULT";
-        const uint8_t layer_color = encode_rgb332(pick_layer_rgb(layer_name));
+        const uint8_t layer_color = encode_rgb332(resolve_layer_rgb(layer_name, style));
 
         if (type_v->string_value == "LWPOLYLINE") {
             const JsonValue* points_v = get_object_field(*attrs, "points");
@@ -584,10 +620,22 @@ MapImage load_map_from_json_text(const std::string& json_text) {
     JsonParser parser(json_text);
     const JsonValue root = parser.parse();
     if (root.type == JsonValue::Type::Array) {
-        return parse_cad_entity_array(root);
+        return parse_cad_entity_array(root, CadStyle{});
     }
     if (root.type != JsonValue::Type::Object) {
         throw std::runtime_error("Root JSON value must be object (tile/pixel map) or array (CAD entities)");
+    }
+
+    const JsonValue* entities = get_optional_field(root, "entities");
+    if (entities != nullptr && entities->type == JsonValue::Type::Array) {
+        CadStyle style;
+        if (const JsonValue* cs = get_optional_field(root, "cad_style")) {
+            if (cs->type != JsonValue::Type::Object) {
+                throw std::runtime_error("cad_style must be object");
+            }
+            parse_cad_style(*cs, style);
+        }
+        return parse_cad_entity_array(*entities, style);
     }
 
     const bool has_direct_pixels = get_optional_field(root, "pixels") != nullptr;

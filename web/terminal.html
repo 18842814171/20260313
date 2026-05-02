@@ -276,6 +276,77 @@
             gap: 16px;
         }
 
+        /* Build / Compile（与 run_0501.html 同源 API，经 HTTP /api/action） */
+        .terminal-actions {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e5e5;
+            background: #fafafa;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+        .terminal-actions .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .terminal-actions .card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 10px 12px;
+            min-width: 200px;
+            max-width: 280px;
+            flex: 1 1 200px;
+            box-sizing: border-box;
+        }
+        .terminal-actions .card h2 {
+            margin: 0 0 6px;
+            font-size: 14px;
+        }
+        .terminal-actions .muted {
+            color: #64748b;
+            font-size: 11px;
+            margin: 0 0 6px;
+        }
+        .terminal-actions label {
+            display: block;
+            font-size: 11px;
+            color: #475569;
+            margin-top: 4px;
+        }
+        .terminal-actions select {
+            width: 100%;
+            margin: 4px 0 0;
+            padding: 6px 8px;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            font-size: 12px;
+            box-sizing: border-box;
+        }
+        .terminal-actions .btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .terminal-actions .btns button {
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--accent);
+            background: #fff;
+            color: var(--accent);
+            font-size: 11px;
+            cursor: pointer;
+        }
+        .terminal-actions .btns button:hover:not(:disabled) {
+            background: var(--accent);
+            color: #fff;
+        }
+        .terminal-actions .btns button:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
         .terminal-output {
             flex: 1;
             overflow-y: auto;
@@ -395,6 +466,7 @@
                 <div class="editor-header">
                     <div class="file-tab" id="activeFileTab">未选择文件</div>
                     <div class="editor-actions">
+                        <button class="btn" id="newFileBtn" type="button" title="在当前目录创建空文件并打开">＋ 新建文件</button>
                         <button class="btn" id="resetEditorBtn">⟳ 重置</button>
                         <button class="btn btn-primary" id="saveFileBtn">💾 保存到虚拟机</button>
                     </div>
@@ -412,13 +484,32 @@
                 <div class="terminal-header">
                     <span> 终端 </span>
                 </div>
+                <div class="terminal-actions" id="terminalActions">
+                    <div class="row">
+                        <div class="card">
+                            <h2>Compile</h2>
+                            <p class="muted">两步：先选类型，再选对应目录中的文件（c→tests/，asm→asm/，dump→out/）。</p>
+                            <label for="compileKind">1. 类型</label>
+                            <select id="compileKind">
+                                <option value="c">c（tests/）</option>
+                                <option value="asm">asm（asm/）</option>
+                                <option value="dump">dump（out/ 反汇编）</option>
+                            </select>
+                            <label for="compileFile">2. 文件</label>
+                            <select id="compileFile"></select>
+                            <div class="btns">
+                                <button type="button" id="btnCompileRun" onclick="terminalRunCompile()">执行</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="terminal-output" id="terminalOutput">
                     <div class="terminal-line">✨ 等待后端连接...</div>
                     
                 </div>
                 <div class="terminal-input-line">
                     <span class="prompt">$</span>
-                    <input type="text" class="terminal-input" id="terminalInput" placeholder="仅文件/目录类命令（如 ls、cd、cat、cp）；编译与运行请用运行控制台" autocomplete="off" disabled>
+                    <input type="text" class="terminal-input" id="terminalInput" placeholder="仅文件/目录类命令（如 ls、cd、cat、cp）；运行/波形见 run_0501.html；make 请在 shell 里手动执行" autocomplete="off" disabled>
                     <button class="send-btn" id="sendCmdBtn" disabled>发送</button>
                 </div>
             </div>
@@ -442,6 +533,114 @@
         }
         return BACKEND_WS_URL_FALLBACK;
     }
+
+    function currentApiBase() {
+        return (localStorage.getItem('SIM_API_BASE') || '').trim().replace(/\/+$/, '');
+    }
+    function apiUrl(path) {
+        const base = currentApiBase();
+        return base ? (base + path) : path;
+    }
+
+    let terminalHttpBusy = false;
+    function setTerminalActionBusy(busy) {
+        terminalHttpBusy = busy;
+        const ids = ['btnCompileRun'];
+        for (const id of ids) {
+            const btn = document.getElementById(id);
+            if (!btn) continue;
+            if (!btn.dataset.origText) btn.dataset.origText = btn.textContent;
+            btn.disabled = busy;
+            btn.textContent = busy ? '…' : btn.dataset.origText;
+        }
+    }
+
+    const compileLists = { tests: [], asm: [], out: [] };
+
+    function fillCompileFileSelect(items) {
+        const sel = document.getElementById('compileFile');
+        if (!sel) return;
+        const prev = sel.value;
+        sel.innerHTML = '';
+        const list = Array.isArray(items) ? items : [];
+        for (const item of list) {
+            const opt = document.createElement('option');
+            opt.value = item;
+            opt.textContent = item;
+            sel.appendChild(opt);
+        }
+        if (prev && list.includes(prev)) sel.value = prev;
+    }
+
+    function updateCompileFileOptions() {
+        const kindEl = document.getElementById('compileKind');
+        const kind = kindEl ? kindEl.value : 'c';
+        let list = [];
+        if (kind === 'c') list = compileLists.tests;
+        else if (kind === 'asm') list = compileLists.asm;
+        else list = compileLists.out;
+        fillCompileFileSelect(list);
+    }
+
+    async function refreshCompileFileLists() {
+        try {
+            const res = await fetch(apiUrl('/api/files'));
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const data = await res.json();
+            compileLists.tests = data.tests || [];
+            compileLists.asm = data.asm || [];
+            compileLists.out = (data.out || []).filter((x) => !String(x).startsWith('.'));
+            updateCompileFileOptions();
+        } catch (err) {
+            compileLists.tests = [];
+            compileLists.asm = [];
+            compileLists.out = [];
+            fillCompileFileSelect([]);
+            addTerminalMessage('[Compile] 无法拉取文件列表（请配置 SIM_API_BASE 并确保 /api/files 含 asm 字段）: ' + (err && err.message ? err.message : err), true);
+        }
+    }
+
+    function terminalRunCompile() {
+        const kindEl = document.getElementById('compileKind');
+        const kind = kindEl ? kindEl.value : 'c';
+        const file = (document.getElementById('compileFile') && document.getElementById('compileFile').value || '').trim();
+        if (!file) {
+            addTerminalMessage('[Compile] 请先选择文件', true);
+            return;
+        }
+        terminalRunAction('compile', kind, file);
+    }
+
+    async function terminalRunAction(category, action, compileFile) {
+        if (terminalHttpBusy) {
+            addTerminalMessage('[Compile] 已有请求在执行中', true);
+            return;
+        }
+        const payload = { category, action };
+        if (category === 'compile') {
+            payload.file = compileFile || '';
+        }
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 60000);
+        setTerminalActionBusy(true);
+        addTerminalMessage(`[HTTP] ${category} ${action}` + (payload.file ? ` — ${payload.file}` : ''));
+        try {
+            const res = await fetch(apiUrl('/api/action'), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+                signal: controller.signal
+            });
+            const data = await res.json();
+            addTerminalMessage('[结果] ' + JSON.stringify(data, null, 2));
+        } catch (err) {
+            addTerminalMessage('[失败] ' + (err && err.name === 'AbortError' ? '请求超时' : (err.message || err)), true);
+        } finally {
+            clearTimeout(timeoutId);
+            setTerminalActionBusy(false);
+        }
+    }
+
     const reconnectDelayMs = 3000;
 
     let backendOnline = false;
@@ -714,7 +913,7 @@
     }
 
     // 通过 WS 请求执行命令（用于文件树和文件读写）
-    async function execCommand(cmd, showLoad = true) {
+    async function execCommand(cmd, showLoad = true, timeoutMs = 15000) {
         if (!backendOnline) {
             throw new Error('后端未连接，无法执行命令');
         }
@@ -729,11 +928,37 @@
                         pendingExec.delete(id);
                         reject(new Error('命令执行超时'));
                     }
-                }, 15000);
+                }, timeoutMs);
             });
             return result;
         } finally {
             if (showLoad) showLoading(false);
+        }
+    }
+
+    function utf8TextToBase64(text) {
+        const bytes = new TextEncoder().encode(text);
+        let binary = '';
+        for (let i = 0; i < bytes.length; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binary);
+    }
+
+    /** 大单帧 heredoc 易撑爆 WebSocket / 超时；大文件用 base64 分块追加再解码写入 */
+    async function saveLargeFileViaBase64Chunks(absPath, text) {
+        const b64 = utf8TextToBase64(text);
+        const tmp = `/tmp/opencpu_save_${Date.now()}_${Math.random().toString(16).slice(2)}.b64`;
+        const partSize = 10000;
+        await execCommand(`rm -f "${tmp}" && : > "${tmp}"`, true, 30000);
+        for (let i = 0; i < b64.length; i += partSize) {
+            const part = b64.slice(i, i + partSize);
+            const q = part.replace(/'/g, `'\"'\"'`);
+            await execCommand(`printf '%s' '${q}' >> "${tmp}"`, false, 60000);
+        }
+        const dec = await execCommand(`base64 -d "${tmp}" > "${absPath}" && rm -f "${tmp}"`, true, 120000);
+        if (dec.stderr && dec.stderr.trim() && dec.returncode !== 0) {
+            throw new Error(dec.stderr.trim());
         }
     }
 
@@ -848,24 +1073,60 @@
         }
     }
 
+    const SAVE_HEREDOC_MAX = 20000;
+
     async function saveCurrentFile() {
         if (!activeFilePath) {
-            addTerminalMessage('没有打开的文件，请先从左侧选择文件', true);
+            addTerminalMessage('没有打开的文件，请先从左侧选择文件或使用「新建文件」', true);
             return;
         }
         const newContent = codeEditor.innerText;
-        const cmd = `cat > "${activeFilePath}" << 'EOF_OPENCPU'\n${newContent}\nEOF_OPENCPU`;
         addTerminalMessage(`保存中: ${activeFilePath}`);
         try {
-            const result = await execCommand(cmd, true);
-            if (result.stderr && result.stderr.trim() && !result.stderr.includes('EOF_OPENCPU')) {
-                addTerminalMessage(`保存警告: ${result.stderr}`, true);
-                return;
+            if (newContent.length <= SAVE_HEREDOC_MAX) {
+                const cmd = `cat > "${activeFilePath}" << 'EOF_OPENCPU'\n${newContent}\nEOF_OPENCPU`;
+                const result = await execCommand(cmd, true, 60000);
+                if (result.stderr && result.stderr.trim() && !result.stderr.includes('EOF_OPENCPU')) {
+                    addTerminalMessage(`保存警告: ${result.stderr}`, true);
+                    return;
+                }
+            } else {
+                addTerminalMessage(`（内容较大，使用分块 base64 写入，请勿关闭页面…）`);
+                await saveLargeFileViaBase64Chunks(activeFilePath, newContent);
             }
             activeFileContent = newContent;
             addTerminalMessage(`✅ 文件已保存: ${activeFilePath}`);
         } catch (err) {
             addTerminalMessage(`❌ 保存失败: ${err.message}`, true);
+        }
+    }
+
+    async function createNewFile() {
+        if (!backendOnline) {
+            addTerminalMessage('后端未连接，无法新建', true);
+            return;
+        }
+        const name = window.prompt('在当前目录下新建文件，请输入文件名（可含子路径，如 notes.txt 或 sub/foo.c）', '');
+        if (name == null) return;
+        const trimmed = name.trim().replace(/^\/+/, '');
+        if (!trimmed || trimmed.includes('..')) {
+            addTerminalMessage('无效文件名（不能为空或含 ..）', true);
+            return;
+        }
+        const full = `${currentDirectory.replace(/\/+$/, '')}/${trimmed}`;
+        try {
+            const touch = await execCommand(`touch "${full}"`, true, 30000);
+            if (touch.stderr && touch.stderr.trim() && touch.returncode !== 0) {
+                throw new Error(touch.stderr.trim());
+            }
+            activeFilePath = full;
+            activeFileContent = '';
+            codeEditor.innerText = '';
+            activeFileTab.innerHTML = `📄 ${trimmed.split('/').pop()}`;
+            addTerminalMessage(`已新建并打开: ${full}（编辑后点保存）`);
+            await refreshFileTree();
+        } catch (err) {
+            addTerminalMessage(`❌ 新建失败: ${err.message}`, true);
         }
     }
 
@@ -882,13 +1143,13 @@
     function isAllowedRemoteFileCommand(cmd) {
         const t = String(cmd || '').trim();
         if (!t) return { ok: false, reason: '空命令' };
-        const blocked = /^(make|ninja|cmake|meson|\.\/build\/|\.\/build\b|\.\/compile|gcc|g\+\+|clang|clang\+\+|ld\.|ar\b|riscv|python\d*\b|pip\d*\b|node\b|npm\b|curl\b|wget\b|ssh\b|scp\b|git\b|sudo\b|docker\b)/i;
+        const blocked = /^(ninja|cmake|meson|\.\/build\/|\.\/build\b|\.\/compile|gcc|g\+\+|clang|clang\+\+|ld\.|ar\b|riscv|python\d*\b|pip\d*\b|node\b|npm\b|curl\b|wget\b|ssh\b|scp\b|git\b|sudo\b|docker\b)/i;
         if (blocked.test(t)) {
-            return { ok: false, reason: '已禁止：编译/仿真/包管理类命令。请在「运行程序 run_0501.html」执行 make、build/test 等。' };
+            return { ok: false, reason: '已禁止：编译器/仿真器直跑等。make 可在本终端手动输入；运行测试见 run_0501.html。' };
         }
         const allowed = /^(cd|ls|pwd|mkdir|rmdir|touch|cp|mv|rm|cat|head|tail|less|more|ln|chmod|chown|stat|file|hexdump|od|du|df|tree|find|grep|wc|sort|uniq|diff|vim|vi|nano|sed|awk)\b/i;
         if (allowed.test(t)) return { ok: true };
-        if (/^echo\s/i.test(t) && (/>|>>)/.test(t))) return { ok: true };
+        if (/^echo\s/i.test(t) && />>?/.test(t)) return { ok: true };
         return { ok: false, reason: '仅允许目录与文件相关命令（如 cd、ls、cat、cp、mv、rm、mkdir、touch、vim/nano 等）。' };
     }
 
@@ -913,12 +1174,19 @@
     function init() {
         initResizableSplit();
         connectBackend();
+        refreshCompileFileLists();
+        const compileKindEl = document.getElementById('compileKind');
+        if (compileKindEl) {
+            compileKindEl.addEventListener('change', () => updateCompileFileOptions());
+        }
 
         refreshTreeBtn.addEventListener('click', () => {
             if (backendOnline) refreshFileTree();
             else addTerminalMessage('后端未连接，无法刷新', true);
         });
         saveFileBtn.addEventListener('click', saveCurrentFile);
+        const newFileBtn = document.getElementById('newFileBtn');
+        if (newFileBtn) newFileBtn.addEventListener('click', createNewFile);
         resetEditorBtn.addEventListener('click', resetEditor);
         sendCmdBtn.addEventListener('click', sendTerminalCommand);
 

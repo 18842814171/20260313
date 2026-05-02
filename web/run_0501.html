@@ -202,7 +202,7 @@
   </aside>
 
   <h1 class="title" style="text-align:left; font-size: 28px;">运行程序</h1>
-  <p class="muted" style="margin:0 0 12px;">编译、执行 RISC-V 程序；串口交互；生成与查看波形图。</p>
+  <p class="muted" style="margin:0 0 12px;">执行 RISC-V 程序；串口交互；生成与查看波形图。编译与 make 在「连接终端」页。</p>
 
   <div class="row">
     <div class="card">
@@ -218,26 +218,6 @@
 
   <div class="row">
     <div class="card">
-      <h2>Build</h2>
-      <p class="muted">对应 README: <code>make</code></p>
-      <div class="btns">
-        <button onclick="runAction('build','make')">make</button>
-        <button onclick="runAction('build','clean')">make clean</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Compile</h2>
-      <label>tests/ 文件</label>
-      <select id="testsFile"></select>
-      <div class="btns">
-        <button onclick="runAction('compile','c')">c</button>
-        <button onclick="runAction('compile','asm')">asm</button>
-        <button onclick="runAction('compile','dump')">dump</button>
-      </div>
-    </div>
-
-    <div class="card">
       <h2>运行程序</h2>
       <p class="muted">对应 README: <code>./build/test ...</code> 与 <code>./build/waveform ...</code></p>
       <label>out/ 文件夹中的二进制文件</label>
@@ -247,8 +227,7 @@
       <p class="muted">控制写入日志文件的最大步数，只影响日志大小。</p>
       <label>max steps (0=默认)</label>
       <input id="maxSteps" type="number" value="0" min="0" />
-      <p class="muted">CPU 最多运行多少步；0 表示用程序默认上限。</p>
-      
+      <p class="muted">CPU 最多运行多少步；0 表示用程序默认上限。带地图的程序请用「绘图仪」页运行。</p>
       <label>log/ 文件（日志文件名，如果不指定，默认与程序名称一致）</label>
       <input id="runLogFile" type="text" list="runLogFileList" placeholder="如 -2.txt" />
       <datalist id="runLogFileList"></datalist>
@@ -280,7 +259,7 @@
       <input id="waveJsonFile" type="text" value="wave.json" />
       <label>每页步数</label>
       <input id="pageSize" type="number" value="20" min="1" />
-      <label>可显示变量（从 JSON tracks 中选择）</label>
+      <label>可显示变量（从 JSON tracks 中选择，最多同时 8 路）</label>
       <div class="track-picker-row">
         <select id="trackPicker"></select>
         <button type="button" onclick="addSelectedTrack()">添加</button>
@@ -312,6 +291,8 @@
     let waveData = null;
     let currentPage = 0;
     let selectedTrackNames = [];
+    /** 用于区分是否换了 JSON 文件；同文件再次「加载波形」时保留已选通道 */
+    let lastLoadedWaveJsonName = '';
     let waveCursorStep = null;
     let waveViewGeom = null;
     let actionInFlight = false;
@@ -329,6 +310,14 @@
       return base ? (base + path) : path;
     }
 
+    /** 避免 DOM 缺字段时抛错（例如改版遗漏 id） */
+    function getInputValue(id, defaultValue = '') {
+      const el = document.getElementById(id);
+      if (!el) return defaultValue;
+      const v = el.value;
+      return v != null && typeof v !== 'undefined' ? String(v) : defaultValue;
+    }
+
     function saveApiBase() {
       const v = (document.getElementById('apiBase').value || '').trim();
       localStorage.setItem('SIM_API_BASE', v);
@@ -339,7 +328,6 @@
     async function refreshFiles() {
       const res = await fetch(apiUrl('/api/files'));
       const data = await res.json();
-      fillSelect('testsFile', data.tests || []);
       fillSelect('outFile', (data.out || []).filter((x) => !String(x).startsWith('.')));
       fillDatalistInput('logFile', 'logFileList', data.log || []);
       fillDatalistInput('runLogFile', 'runLogFileList', data.log || []);
@@ -539,18 +527,16 @@
           '请先在右侧点击「打开串口」并等待连接成功，再点「在串口中运行」。非交互程序仍可用卡片上的「运行（HTTP，无串口输入）」。';
         return;
       }
-      const file = document.getElementById('outFile').value;
+      const file = getInputValue('outFile').trim();
       if (!file) {
         document.getElementById('output').textContent = '请先在「运行程序」卡片中选择 out/ 下的二进制。';
         return;
       }
-      const logSteps = Number(document.getElementById('logSteps').value || 2000);
-      const maxSteps = Number(document.getElementById('maxSteps').value || 0);
-      const mapName = document.getElementById('mapName').value.trim();
+      const logSteps = Number(getInputValue('logSteps', '2000') || 2000);
+      const maxSteps = Number(getInputValue('maxSteps', '0') || 0);
       const cmdParts = ['./build/test', file];
       if (maxSteps > 0) cmdParts.push(String(maxSteps));
       cmdParts.push('--debug=1', `--log-steps=${logSteps}`);
-      if (mapName) cmdParts.push(`--map=${mapName}`);
       serialRunDoneToken = `__SERIAL_DONE_${Date.now()}__`;
       const runCmd = `${cmdParts.join(' ')}; echo ${serialRunDoneToken}`;
       const lines = parseSerialInputLines();
@@ -581,14 +567,11 @@
         return;
       }
       const payload = { category, action };
-      if (category === 'compile') {
-        payload.file = document.getElementById('testsFile').value;
-      } else if (category === 'simulate') {
-        payload.file = document.getElementById('outFile').value;
-        payload.log_steps = Number(document.getElementById('logSteps').value || 2000);
-        payload.max_steps = Number(document.getElementById('maxSteps').value || 0);
-        payload.map = document.getElementById('mapName').value.trim();
-        payload.log_file = document.getElementById('runLogFile').value;
+      if (category === 'simulate') {
+        payload.file = getInputValue('outFile');
+        payload.log_steps = Number(getInputValue('logSteps', '2000') || 2000);
+        payload.max_steps = Number(getInputValue('maxSteps', '0') || 0);
+        payload.log_file = getInputValue('runLogFile');
         // HTTP 不附带串口输入；交互请用「在串口中运行」
       } else if (category === 'waveform') {
         payload.file = document.getElementById('logFile').value;
@@ -807,6 +790,10 @@
     function addSelectedTrack() {
       const name = document.getElementById('trackPicker').value;
       if (!name) return;
+      if (selectedTrackNames.length >= 8) {
+        document.getElementById('output').textContent = '最多同时显示 8 路信号，请先移除一路再添加。';
+        return;
+      }
       if (!selectedTrackNames.includes(name)) {
         selectedTrackNames.push(name);
       }
@@ -829,7 +816,9 @@
     }
 
     async function copyLogSignalPath() {
-      const text = document.getElementById('logSignalPath').textContent.trim();
+      const pathEl = document.getElementById('logSignalPath');
+      if (!pathEl) return;
+      const text = pathEl.textContent.trim();
       try {
         await navigator.clipboard.writeText(text);
         document.getElementById('output').textContent = `已复制路径: ${text}\n字段清单宏：PIPE_*_LOG_FIELDS；日志开关：include/utils/utils.hpp 里的 SimLogConfig::log_pipe_signals`;
@@ -993,7 +982,26 @@
       currentPage = 0;
       waveCursorStep = null;
       updateTrackPicker();
-      resetPreferredTracks();
+
+      const available = new Set((waveData?.tracks || []).map(t => t.name));
+      const fileChanged = name !== lastLoadedWaveJsonName;
+      lastLoadedWaveJsonName = name;
+
+      if (fileChanged) {
+        selectedTrackNames = selectedTrackNames.filter(n => available.has(n));
+        if (selectedTrackNames.length === 0) {
+          const preferred = ['pc_if', 'pc_id', 'opcode', 'wb_reg', 'wb_val', 'mem_rw', 'mem_addr', 'control'];
+          selectedTrackNames = preferred.filter(n => available.has(n));
+          if (selectedTrackNames.length === 0 && Array.isArray(waveData.tracks)) {
+            selectedTrackNames = waveData.tracks.slice(0, 8).map(t => t.name);
+          }
+        }
+      } else {
+        selectedTrackNames = selectedTrackNames.filter(n => available.has(n));
+      }
+      selectedTrackNames = selectedTrackNames.slice(0, 8);
+
+      renderSelectedTracks();
       renderWavePage();
     }
 

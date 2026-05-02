@@ -42,8 +42,7 @@ class OpenCPUUI {
                 window.location.href = 'custom-inst.html';
                 break;
             case 'peripheral':
-                // 后端注意，此为虚拟数据，请修改：外设功能待后端实现
-                this.showModal('添加外设', '外设添加功能正在开发中，敬请期待！\n\n后续将支持：\n• UART 串口\n• 定时器\n• GPIO 控制');
+                window.location.href = 'peripheral.html';
                 break;
             case 'storage':
                 window.location.href = 'map_plotter.html';

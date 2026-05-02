@@ -78,7 +78,7 @@ Step: 4
   WB: r10 = 0x6 (from ALU)
   FWD: x11 <- MEM/WB
   FWD: x11 <- EX/MEM
-  MUL (multiplier): issue, latency=4 rs1=0x6 rs2=0x7
+  MUL/mult (multiplier): issue MUL, latency=4 rs1=0x6 rs2=0x7
   Decoded Instruction: ADDI
   ID pc: 0x1000c
     rs1=x0 rs2=x5 rd=x12
@@ -148,7 +148,7 @@ Step: 7
 Step: 8
 ==============================
   WB: r13 = 0xe (from ALU)
-  MUL (multiplier): complete, rd=x10 prod=0x2a
+  MUL/mult (multiplier): complete, rd=x10 result=0x2a
 ==============================
 Step: 9
 ==============================

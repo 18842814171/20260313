@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- [占位/后端] 地图 JSON 下拉依赖 GET /api/files 的 JSON 字段 plot_json（字符串数组，为 plot 目录下 *.json 文件名）。若未实现，页面仍可通过手动输入框传参。 -->
+<!-- 地图 JSON 下拉：GET /api/files 的 plot_json（与 plot 同源，仅 *.json）；旧后端仅有 plot 时前端会筛 .json -->
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -22,6 +22,10 @@
     #mapPreviewImg { max-width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; }
     .nav { margin-bottom: 16px; }
     .nav a { margin-right: 12px; }
+    .cad-layer-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+    .cad-layer-table th, .cad-layer-table td { border: 1px solid #cbd5e1; padding: 6px 8px; text-align: left; }
+    .cad-layer-table input[type="color"] { width: 44px; height: 30px; padding: 0; border: 1px solid #94a3b8; cursor: pointer; vertical-align: middle; }
+    h2.section-title { margin: 0 0 8px; font-size: 17px; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -32,13 +36,14 @@
   <div class="hints">
     <div>（1）此页面用于运行绘图仪功能：仅执行 <code>map_device_caller_test</code>，并通过 <code>--map</code> 指定 <code>plot/</code> 目录下的地图 JSON（CAD 实体数组、像素图或瓦片图格式见 <code>include/maploader.hpp</code>）。</div>
     <div style="margin-top:8px;">（2）如需在仓库中新增或修改地图 JSON，请返回首页进入「连接终端」页进行文件读写（SSH 读写 <code>plot/*.json</code>）。</div>
+    <div style="margin-top:8px;">（3）像素图 / 瓦片图配色见 <code>include/maploader.hpp</code> 与 <code>color_schema.hpp</code>。<strong>CAD 实体地图</strong>可用下方「按图层配色」生成带 <code>cad_style</code> 的包装 JSON；亦可手写 <code>{ "entities": [...], "cad_style": { ... } }</code>（字段见头文件）。内置中文图层表仍在 C++ 中作默认，可被 JSON 覆盖。</div>
   </div>
 
   <div class="card">
     <label for="apiBase">API Base URL（与运行控制台相同，可留空同源）</label>
     <input id="apiBase" type="text" placeholder="http://主机:5000" />
     <button type="button" id="saveApi">保存连接配置</button>
-    <p class="muted">地图 JSON 下拉列表来自接口字段 <code>plot_json</code>；若后端尚未实现，可手动在下方输入框填写文件名（如 <code>maploader_sample.json</code>）。</p>
+    <p class="muted">下拉列表来自 <code>/api/files</code> 的 <code>plot_json</code>（与 <code>plot</code> 目录一致，仅 .json）；仅旧接口时可从 <code>plot</code> 筛出 .json。也可手动填写文件名。</p>
 
     <label for="plotJsonSelect">plot/ 下可用于地图的 JSON</label>
     <select id="plotJsonSelect"></select>
@@ -56,9 +61,40 @@
     </div>
   </div>
 
+  <div class="card">
+    <h2 class="section-title">CAD 地图 · 按图层配色</h2>
+    <p class="muted">当 JSON 根为实体数组 <code>[{ "type", "layer", "attributes" }, ...]</code> 时，点「扫描图层」列出所有 <code>layer</code>，设置背景、默认色与各图层颜色后下载包装文件。保存到 VM 的 <code>plot/</code> 后，在上方下拉选择该文件再运行（模拟器会读 <code>cad_style</code>）。</p>
+    <button type="button" id="scanCadLayersBtn">扫描当前地图的图层</button>
+    <div id="cadStyleEditor" style="display:none; margin-top: 14px;">
+      <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+        <label>背景 <input type="color" id="cadBgColor" value="#000000" title="画布背景" /></label>
+        <label>未列出图层的默认色 <input type="color" id="cadDefaultLayerColor" value="#d2d2d2" /></label>
+      </div>
+      <label style="display:block; margin-top:10px;">
+        <input type="checkbox" id="cadUseBuiltin" checked />
+        未在下表单独指定的图层仍使用内置中文图层表（与仓库默认一致）
+      </label>
+      <table class="cad-layer-table">
+        <thead><tr><th>图层名</th><th>颜色</th></tr></thead>
+        <tbody id="cadLayerTbody"></tbody>
+      </table>
+      <button type="button" id="downloadCadWrappedBtn" style="margin-top:10px;">下载包装后的 JSON</button>
+      <p id="cadWrapNote" class="muted" style="margin-top:8px;"></p>
+    </div>
+  </div>
+
   <script>
     const FIXED_ELF = 'map_device_caller_test';
     const PREVIEW_FILE = 'map_device_preview.ppm';
+    /** 与仓库 plot/*.json 同步的候选名；在后端未提供 plot_json 或离线时使用 */
+    const BUNDLED_PLOT_JSON = ['wave.json', 'wave_pipe.json', 'wave0.json', 'wave2.json', 'maploader_sample.json'];
+
+    window.addEventListener('unhandledrejection', (event) => {
+      const msg = String((event.reason && event.reason.message) || event.reason || '');
+      if (msg.includes('message port closed')) {
+        event.preventDefault();
+      }
+    });
 
     function currentApiBase() {
       return (localStorage.getItem('SIM_API_BASE') || '').trim().replace(/\/+$/, '');
@@ -87,7 +123,18 @@
       return sel;
     }
 
-    function fillPlotJsonSelect(items) {
+    function plotJsonListFromApi(data) {
+      const fromKey = Array.isArray(data.plot_json) ? data.plot_json : [];
+      if (fromKey.length) {
+        return fromKey.filter((n) => n && !String(n).startsWith('.'));
+      }
+      const plot = Array.isArray(data.plot) ? data.plot : [];
+      return plot.filter(
+        (n) => n && String(n).toLowerCase().endsWith('.json') && !String(n).startsWith('.')
+      );
+    }
+
+    function fillPlotJsonSelect(items, extraNote) {
       const sel = document.getElementById('plotJsonSelect');
       const prev = sel.value;
       sel.innerHTML = '';
@@ -99,20 +146,31 @@
         sel.appendChild(opt);
       }
       if (prev && list.includes(prev)) sel.value = prev;
-      document.getElementById('mapListNote').textContent =
-        list.length ? `共 ${list.length} 个 JSON（来自 /api/files 的 plot_json）。` :
-        '未从服务器取得 plot_json 列表：请在后端 /api/files 响应中加入键 plot_json（plot 目录下 *.json 文件名数组），或用手动输入框指定。';
+      const noteEl = document.getElementById('mapListNote');
+      if (list.length) {
+        noteEl.textContent = extraNote
+          ? `共 ${list.length} 个 JSON。${extraNote}`
+          : `共 ${list.length} 个 JSON（plot/ 下 *.json，来自 /api/files）。`;
+      } else {
+        noteEl.textContent = '未找到可用 JSON：请检查 plot/ 目录或用手动输入框指定。';
+      }
     }
 
     async function loadPlotJsonList() {
       try {
         const res = await fetch(apiUrl('/api/files'));
+        if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
-        const plotJson = data.plot_json || data.plotJson || [];
-        fillPlotJsonSelect(plotJson);
+        let list = plotJsonListFromApi(data);
+        let extra = '';
+        if (!list.length) {
+          list = BUNDLED_PLOT_JSON.slice();
+          extra = '接口未返回可用的 plot/*.json 列表，已用内置候选。';
+        }
+        fillPlotJsonSelect(list, extra);
       } catch (e) {
-        fillPlotJsonSelect([]);
-        setOut('加载文件列表失败: ' + (e && e.message ? e.message : e));
+        fillPlotJsonSelect(BUNDLED_PLOT_JSON.slice(), '无法连接 /api/files，已用内置候选列表。');
+        setOut('加载文件列表: ' + (e && e.message ? e.message : e));
       }
     }
 
@@ -212,6 +270,132 @@
     };
 
     document.getElementById('refreshPreviewBtn').onclick = () => refreshPreview();
+
+    const CAD_BUILTIN_LAYER_RGB = {
+      '巷道': [255, 255, 255],
+      '进尺': [255, 140, 0],
+      '通风设施': [0, 255, 255],
+      '电缆': [255, 255, 0],
+      '积水线探水线': [0, 255, 0],
+    };
+
+    function plotBasenameForFetch() {
+      let m = mapArgFromInputs().trim().replace(/^plot\//, '');
+      if (!m) return '';
+      const parts = m.split('/');
+      return parts[parts.length - 1];
+    }
+
+    function rgbToHex(r, g, b) {
+      const c = (n) => Math.max(0, Math.min(255, Number(n) | 0)).toString(16).padStart(2, '0');
+      return '#' + c(r) + c(g) + c(b);
+    }
+
+    function hexToRgb(hex) {
+      const h = String(hex || '').replace(/^#/, '');
+      if (h.length !== 6) return [0, 0, 0];
+      return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+    }
+
+    let cadEntitiesBuffer = null;
+    let cadStyledDownloadName = 'map_cad_styled.json';
+
+    function escapeHtml(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    document.getElementById('scanCadLayersBtn').onclick = async () => {
+      const base = plotBasenameForFetch();
+      if (!base) {
+        setOut('请先在上方选择或填写地图 JSON 文件名。');
+        return;
+      }
+      const note = document.getElementById('cadWrapNote');
+      const editor = document.getElementById('cadStyleEditor');
+      note.textContent = '';
+      try {
+        const res = await fetch(apiUrl('/plot/' + encodeURIComponent(base)));
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = JSON.parse(await res.text());
+        if (!Array.isArray(data)) {
+          setOut('该文件根不是 JSON 数组。若已是 { "entities", "cad_style" } 包装格式，无需扫描；直接选此文件运行即可。');
+          editor.style.display = 'none';
+          cadEntitiesBuffer = null;
+          return;
+        }
+        cadEntitiesBuffer = data;
+        cadStyledDownloadName = base.replace(/\.json$/i, '') + '_styled.json';
+        const layers = new Set();
+        for (const ent of data) {
+          if (!ent || typeof ent !== 'object') continue;
+          const L = ent.layer;
+          layers.add(L === undefined || L === null ? 'DEFAULT' : String(L));
+        }
+        const sorted = [...layers].sort((a, b) => a.localeCompare(b));
+        const tbody = document.getElementById('cadLayerTbody');
+        tbody.innerHTML = '';
+        sorted.forEach((layer) => {
+          const tr = document.createElement('tr');
+          const rgb = CAD_BUILTIN_LAYER_RGB[layer] || [200, 200, 200];
+          const enc = encodeURIComponent(layer);
+          tr.innerHTML =
+            '<td>' + escapeHtml(layer) + '</td><td><input type="color" class="cadLayerPick" data-layer-enc="' +
+            enc + '" value="' + rgbToHex(rgb[0], rgb[1], rgb[2]) + '" /></td>';
+          tbody.appendChild(tr);
+        });
+        editor.style.display = 'block';
+        note.textContent = '已扫描 ' + data.length + ' 个实体，' + sorted.length + ' 个图层。下载后请将文件放入 plot/ 并选择运行。';
+        setOut('CAD 图层表已更新（' + sorted.length + ' 层）。');
+      } catch (e) {
+        editor.style.display = 'none';
+        cadEntitiesBuffer = null;
+        setOut('扫描失败: ' + (e && e.message ? e.message : e));
+      }
+    };
+
+    document.getElementById('downloadCadWrappedBtn').onclick = () => {
+      if (!cadEntitiesBuffer || !Array.isArray(cadEntitiesBuffer)) {
+        setOut('请先成功执行「扫描当前地图的图层」。');
+        return;
+      }
+      const picks = document.querySelectorAll('#cadLayerTbody input.cadLayerPick');
+      const layer_colors = {};
+      picks.forEach((inp) => {
+        const enc = inp.getAttribute('data-layer-enc');
+        if (enc == null || enc === '') return;
+        let layer;
+        try {
+          layer = decodeURIComponent(enc);
+        } catch (_) {
+          return;
+        }
+        const [r, g, b] = hexToRgb(inp.value);
+        layer_colors[layer] = [r, g, b];
+      });
+      const bg = hexToRgb(document.getElementById('cadBgColor').value);
+      const def = hexToRgb(document.getElementById('cadDefaultLayerColor').value);
+      const wrapped = {
+        entities: cadEntitiesBuffer,
+        cad_style: {
+          background: bg,
+          default_layer_color: def,
+          use_builtin_layer_colors: document.getElementById('cadUseBuiltin').checked,
+          layer_colors,
+        },
+      };
+      const text = JSON.stringify(wrapped, null, 2);
+      const blob = new Blob([text], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = cadStyledDownloadName;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      document.getElementById('cadWrapNote').textContent =
+        '已下载 ' + cadStyledDownloadName + '。请上传到 plot/（或连接终端保存），再于上方选择该文件运行。';
+      setOut('已生成包装 JSON（大小约 ' + (text.length >> 10) + ' KB）。');
+    };
 
     loadPlotJsonList();
   </script>
